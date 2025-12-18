@@ -1,0 +1,396 @@
+# compliance/config/part11_controls.yaml
+# ============================================================================
+# FDA 21 CFR Part 11 Control Definitions
+#
+# This file defines the controls used by Part11Validator to check requirements
+# for electronic records and signature compliance.
+#
+# STRUCTURE:
+#   control_id: Unique identifier (P11-XX-NNN)
+#   description: What this control requires
+#   category: Control category (audit_trail, electronic_signature, etc.)
+#   section_reference: CFR section (e.g., 11.10(e))
+#   keywords_to_detect: Terms indicating this control is addressed
+#   recommendation: Action to take if control is missing
+#
+# ============================================================================
+
+version: "1.0"
+framework: "FDA 21 CFR Part 11"
+last_updated: "2025-01-01"
+
+controls:
+  # ==========================================================================
+  # AUDIT TRAIL CONTROLS - § 11.10(e)
+  # ==========================================================================
+  # "Use of secure, computer-generated, time-stamped audit trails to
+  # independently record the date and time of operator entries and actions"
+
+  - control_id: P11-AT-001
+    description: Audit trail must capture user identity for all changes
+    category: audit_trail
+    section_reference: "11.10(e)"
+    keywords_to_detect:
+      - "user"
+      - "who"
+      - "operator"
+      - "person"
+      - "identity"
+      - "username"
+      - "user id"
+    recommendation: Add requirement to capture user identity for all record changes
+
+  - control_id: P11-AT-002
+    description: Audit trail must capture date and time of changes
+    category: audit_trail
+    section_reference: "11.10(e)"
+    keywords_to_detect:
+      - "timestamp"
+      - "when"
+      - "date"
+      - "time"
+      - "datetime"
+      - "date and time"
+    recommendation: Add requirement to capture timestamp for all changes
+
+  - control_id: P11-AT-003
+    description: Audit trail must capture before and after values
+    category: audit_trail
+    section_reference: "11.10(e)"
+    keywords_to_detect:
+      - "before"
+      - "after"
+      - "previous"
+      - "original"
+      - "new value"
+      - "old value"
+      - "changed from"
+    recommendation: Add requirement to capture before/after values for changes
+
+  - control_id: P11-AT-004
+    description: Audit trail must capture reason for change
+    category: audit_trail
+    section_reference: "11.10(e)"
+    keywords_to_detect:
+      - "reason"
+      - "why"
+      - "justification"
+      - "comment"
+      - "note"
+      - "rationale"
+    recommendation: Add requirement for change reason/justification
+
+  - control_id: P11-AT-005
+    description: Audit trail records must be immutable
+    category: audit_trail
+    section_reference: "11.10(e)"
+    keywords_to_detect:
+      - "immutable"
+      - "append-only"
+      - "cannot delete"
+      - "permanent"
+      - "unalterable"
+      - "cannot modify"
+    recommendation: Add requirement that audit records cannot be modified or deleted
+
+  - control_id: P11-AT-006
+    description: Audit trail must be available for FDA inspection
+    category: audit_trail
+    section_reference: "11.10(e)"
+    keywords_to_detect:
+      - "available"
+      - "accessible"
+      - "inspection"
+      - "review"
+      - "fda"
+      - "regulatory"
+    recommendation: Add requirement for audit trail accessibility to FDA
+
+  # ==========================================================================
+  # ELECTRONIC SIGNATURE CONTROLS - § 11.50, § 11.70, § 11.100
+  # ==========================================================================
+
+  - control_id: P11-ES-001
+    description: E-signature must display signer printed name
+    category: electronic_signature
+    section_reference: "11.50(a)(1)"
+    keywords_to_detect:
+      - "name"
+      - "printed name"
+      - "signer name"
+      - "full name"
+      - "signer"
+    recommendation: Add requirement to display signer printed name with signature
+
+  - control_id: P11-ES-002
+    description: E-signature must display date and time signed
+    category: electronic_signature
+    section_reference: "11.50(a)(2)"
+    keywords_to_detect:
+      - "date"
+      - "time"
+      - "timestamp"
+      - "when signed"
+      - "signing time"
+    recommendation: Add requirement to capture signature date and time
+
+  - control_id: P11-ES-003
+    description: E-signature must display meaning of signature
+    category: electronic_signature
+    section_reference: "11.50(a)(3)"
+    keywords_to_detect:
+      - "meaning"
+      - "purpose"
+      - "reviewed"
+      - "approved"
+      - "verified"
+      - "authored"
+      - "witnessed"
+    recommendation: Add requirement to capture signature meaning/purpose
+
+  - control_id: P11-ES-004
+    description: E-signature must be permanently linked to record
+    category: electronic_signature
+    section_reference: "11.70"
+    keywords_to_detect:
+      - "linked"
+      - "bound"
+      - "associated"
+      - "cannot separate"
+      - "permanent"
+      - "attached"
+    recommendation: Add requirement that signature is permanently linked to record
+
+  - control_id: P11-ES-005
+    description: E-signature requires identity verification
+    category: electronic_signature
+    section_reference: "11.100(a)"
+    keywords_to_detect:
+      - "authenticate"
+      - "verify identity"
+      - "password"
+      - "credential"
+      - "confirm identity"
+    recommendation: Add requirement for identity verification before signing
+
+  - control_id: P11-ES-006
+    description: E-signature unique to individual
+    category: electronic_signature
+    section_reference: "11.100(a)"
+    keywords_to_detect:
+      - "unique"
+      - "individual"
+      - "personal"
+      - "not shared"
+      - "single user"
+    recommendation: Add requirement that signatures are unique to individuals
+
+  # ==========================================================================
+  # ACCESS CONTROL - § 11.10(d), § 11.10(g)
+  # ==========================================================================
+
+  - control_id: P11-AC-001
+    description: System must limit access to authorized individuals
+    category: access_control
+    section_reference: "11.10(d)"
+    keywords_to_detect:
+      - "authorized"
+      - "permission"
+      - "role-based"
+      - "access control"
+      - "restrict"
+    recommendation: Add requirement for role-based access control
+
+  - control_id: P11-AC-002
+    description: System must use unique user identification
+    category: access_control
+    section_reference: "11.10(d)"
+    keywords_to_detect:
+      - "unique"
+      - "user id"
+      - "username"
+      - "individual"
+      - "personal account"
+    recommendation: Add requirement for unique user identification
+
+  - control_id: P11-AC-003
+    description: System must enforce password policies
+    category: access_control
+    section_reference: "11.10(d)"
+    keywords_to_detect:
+      - "password"
+      - "complexity"
+      - "expiration"
+      - "history"
+      - "strength"
+    recommendation: Add requirement for password complexity and expiration
+
+  - control_id: P11-AC-004
+    description: System must lock accounts after failed attempts
+    category: access_control
+    section_reference: "11.10(d)"
+    keywords_to_detect:
+      - "lockout"
+      - "failed attempt"
+      - "lock"
+      - "disable"
+      - "suspend"
+    recommendation: Add requirement for account lockout after failed logins
+
+  - control_id: P11-AC-005
+    description: System must implement session timeout
+    category: access_control
+    section_reference: "11.10(d)"
+    keywords_to_detect:
+      - "timeout"
+      - "session"
+      - "inactivity"
+      - "auto-logout"
+      - "idle"
+    recommendation: Add requirement for automatic session timeout
+
+  - control_id: P11-AC-006
+    description: Authority checks before operations
+    category: access_control
+    section_reference: "11.10(g)"
+    keywords_to_detect:
+      - "authority"
+      - "permission check"
+      - "verify access"
+      - "authorization check"
+    recommendation: Add requirement for authority verification before operations
+
+  # ==========================================================================
+  # DATA INTEGRITY - § 11.10(a), § 11.10(c)
+  # ==========================================================================
+
+  - control_id: P11-DI-001
+    description: System must prevent unauthorized record changes
+    category: data_integrity
+    section_reference: "11.10(a)"
+    keywords_to_detect:
+      - "prevent"
+      - "unauthorized"
+      - "protect"
+      - "restrict"
+      - "block"
+    recommendation: Add requirement to prevent unauthorized modifications
+
+  - control_id: P11-DI-002
+    description: System must validate data input
+    category: data_integrity
+    section_reference: "11.10(c)"
+    keywords_to_detect:
+      - "validate"
+      - "validation"
+      - "verify"
+      - "check"
+      - "input check"
+    recommendation: Add requirement for data input validation
+
+  - control_id: P11-DI-003
+    description: System must detect unauthorized alterations
+    category: data_integrity
+    section_reference: "11.10(c)"
+    keywords_to_detect:
+      - "detect"
+      - "tamper"
+      - "alteration"
+      - "checksum"
+      - "hash"
+      - "integrity check"
+    recommendation: Add requirement for detecting unauthorized alterations
+
+  - control_id: P11-DI-004
+    description: Ensure accurate and complete records
+    category: data_integrity
+    section_reference: "11.10(a)"
+    keywords_to_detect:
+      - "accurate"
+      - "complete"
+      - "integrity"
+      - "correct"
+      - "reliable"
+    recommendation: Add requirement for ensuring record accuracy and completeness
+
+  # ==========================================================================
+  # RECORD RETENTION - § 11.10(c)
+  # ==========================================================================
+
+  - control_id: P11-RR-001
+    description: Records must be retained for required period
+    category: record_retention
+    section_reference: "11.10(c)"
+    keywords_to_detect:
+      - "retain"
+      - "retention"
+      - "years"
+      - "period"
+      - "archive"
+      - "lifecycle"
+    recommendation: Add requirement specifying retention period
+
+  - control_id: P11-RR-002
+    description: Records must be retrievable throughout retention
+    category: record_retention
+    section_reference: "11.10(c)"
+    keywords_to_detect:
+      - "retrieve"
+      - "access"
+      - "readable"
+      - "available"
+      - "searchable"
+    recommendation: Add requirement for record retrieval capability
+
+  - control_id: P11-RR-003
+    description: Backup and recovery procedures
+    category: record_retention
+    section_reference: "11.10(c)"
+    keywords_to_detect:
+      - "backup"
+      - "recovery"
+      - "restore"
+      - "disaster"
+      - "continuity"
+    recommendation: Add requirement for backup and recovery procedures
+
+  - control_id: P11-RR-004
+    description: Records readable throughout retention period
+    category: record_retention
+    section_reference: "11.10(c)"
+    keywords_to_detect:
+      - "readable"
+      - "format"
+      - "migration"
+      - "convert"
+      - "legacy"
+    recommendation: Add requirement for maintaining record readability over time
+
+  # ==========================================================================
+  # SYSTEM VALIDATION - § 11.10(a)
+  # ==========================================================================
+
+  - control_id: P11-SV-001
+    description: System must be validated for intended use
+    category: system_validation
+    section_reference: "11.10(a)"
+    keywords_to_detect:
+      - "validate"
+      - "validation"
+      - "qualify"
+      - "qualification"
+      - "iq"
+      - "oq"
+      - "pq"
+    recommendation: Add requirement for system validation
+
+  - control_id: P11-SV-002
+    description: Change control procedures
+    category: system_validation
+    section_reference: "11.10(k)(2)"
+    keywords_to_detect:
+      - "change control"
+      - "change management"
+      - "version control"
+      - "release"
+    recommendation: Add requirement for change control procedures

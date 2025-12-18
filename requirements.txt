@@ -1,0 +1,6 @@
+# Requirements Toolkit - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Excel file parsing
+# R EQUIVALENT: Like install.packages("readxl")
+openpyxl>=3.1.0

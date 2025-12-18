@@ -1,0 +1,622 @@
+# compliance/config/soc2_controls.yaml
+# ============================================================================
+# SOC 2 Trust Services Criteria Control Definitions
+#
+# This file defines SOC 2 controls used by SOC2Validator to check
+# requirements against the five Trust Services Criteria (TSC).
+#
+# STRUCTURE:
+#   control_id: Unique identifier (SOC2-XXX-NNN)
+#   description: What this control requires
+#   category: Internal category (security, availability, etc.)
+#   tsc_category: TSC name (Security, Availability, Confidentiality, Processing Integrity, Privacy)
+#   tsc_reference: AICPA reference (e.g., CC6.1, A1.1, P1.1)
+#   keywords_to_detect: Terms indicating this control is addressed
+#   recommendation: Action to take if control is missing
+#
+# ============================================================================
+
+version: "1.0"
+framework: "SOC 2 Trust Services Criteria"
+last_updated: "2025-01-01"
+
+controls:
+  # ==========================================================================
+  # SECURITY (Common Criteria) - CC Series
+  # ==========================================================================
+
+  # CC6.1 - Logical and Physical Access Controls
+  - control_id: SOC2-SEC-001
+    description: Logical access controls implemented
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC6.1"
+    keywords_to_detect:
+      - "access control"
+      - "authorization"
+      - "permission"
+      - "role"
+      - "privilege"
+    recommendation: Add requirement for logical access controls
+
+  - control_id: SOC2-SEC-002
+    description: Authentication mechanisms
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC6.1"
+    keywords_to_detect:
+      - "authenticate"
+      - "password"
+      - "credential"
+      - "mfa"
+      - "multi-factor"
+      - "identity"
+    recommendation: Add requirement for authentication mechanisms
+
+  - control_id: SOC2-SEC-003
+    description: Data encryption
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC6.1"
+    keywords_to_detect:
+      - "encrypt"
+      - "tls"
+      - "ssl"
+      - "https"
+      - "cipher"
+      - "cryptographic"
+    recommendation: Add requirement for data encryption
+
+  # CC6.2 - Access Registration and Authorization
+  - control_id: SOC2-SEC-004
+    description: Access provisioning procedures
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC6.2"
+    keywords_to_detect:
+      - "provision"
+      - "deprovision"
+      - "onboard"
+      - "offboard"
+      - "grant access"
+    recommendation: Add requirement for access provisioning procedures
+
+  - control_id: SOC2-SEC-005
+    description: Access approval workflow
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC6.2"
+    keywords_to_detect:
+      - "approve"
+      - "approval"
+      - "request"
+      - "workflow"
+      - "authorize"
+    recommendation: Add requirement for access approval workflow
+
+  # CC6.3 - Access Removal
+  - control_id: SOC2-SEC-006
+    description: Timely access removal
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC6.3"
+    keywords_to_detect:
+      - "revoke"
+      - "remove access"
+      - "disable"
+      - "termination"
+      - "offboard"
+    recommendation: Add requirement for timely access removal
+
+  # CC6.6 - Security Events
+  - control_id: SOC2-SEC-007
+    description: Security event logging
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC6.6"
+    keywords_to_detect:
+      - "log"
+      - "monitor"
+      - "alert"
+      - "detect"
+      - "siem"
+      - "audit"
+    recommendation: Add requirement for security event logging
+
+  - control_id: SOC2-SEC-008
+    description: Security event alerting
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC6.6"
+    keywords_to_detect:
+      - "alert"
+      - "notify"
+      - "alarm"
+      - "escalate"
+      - "incident"
+    recommendation: Add requirement for security event alerting
+
+  # CC6.7 - Vulnerability Management
+  - control_id: SOC2-SEC-009
+    description: Vulnerability scanning
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC6.7"
+    keywords_to_detect:
+      - "vulnerability"
+      - "scan"
+      - "assessment"
+      - "penetration"
+      - "security test"
+    recommendation: Add requirement for vulnerability scanning
+
+  - control_id: SOC2-SEC-010
+    description: Patch management
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC6.7"
+    keywords_to_detect:
+      - "patch"
+      - "update"
+      - "remediate"
+      - "fix"
+      - "security update"
+    recommendation: Add requirement for patch management
+
+  # CC7.2 - System Monitoring
+  - control_id: SOC2-SEC-011
+    description: Intrusion detection
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC7.2"
+    keywords_to_detect:
+      - "intrusion"
+      - "ids"
+      - "ips"
+      - "detect"
+      - "firewall"
+    recommendation: Add requirement for intrusion detection
+
+  - control_id: SOC2-SEC-012
+    description: System monitoring and anomaly detection
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC7.2"
+    keywords_to_detect:
+      - "monitor"
+      - "anomaly"
+      - "baseline"
+      - "deviation"
+      - "unusual"
+    recommendation: Add requirement for system monitoring
+
+  # CC7.3 - Security Incident Response
+  - control_id: SOC2-SEC-013
+    description: Incident response procedures
+    category: security
+    tsc_category: Security
+    tsc_reference: "CC7.3"
+    keywords_to_detect:
+      - "incident"
+      - "response"
+      - "breach"
+      - "security event"
+      - "escalate"
+    recommendation: Add requirement for incident response procedures
+
+  # ==========================================================================
+  # AVAILABILITY - A Series
+  # ==========================================================================
+
+  # A1.1 - Current Processing Capacity
+  - control_id: SOC2-AVL-001
+    description: System availability monitoring
+    category: availability
+    tsc_category: Availability
+    tsc_reference: "A1.1"
+    keywords_to_detect:
+      - "uptime"
+      - "availability"
+      - "monitor"
+      - "health check"
+      - "status"
+    recommendation: Add requirement for availability monitoring
+
+  - control_id: SOC2-AVL-002
+    description: Capacity planning
+    category: availability
+    tsc_category: Availability
+    tsc_reference: "A1.1"
+    keywords_to_detect:
+      - "capacity"
+      - "scale"
+      - "performance"
+      - "load"
+      - "throughput"
+    recommendation: Add requirement for capacity planning
+
+  - control_id: SOC2-AVL-003
+    description: Redundancy and failover
+    category: availability
+    tsc_category: Availability
+    tsc_reference: "A1.1"
+    keywords_to_detect:
+      - "redundant"
+      - "failover"
+      - "high availability"
+      - "replica"
+      - "cluster"
+    recommendation: Add requirement for redundancy/failover
+
+  # A1.2 - Recovery Operations
+  - control_id: SOC2-AVL-004
+    description: Backup procedures
+    category: availability
+    tsc_category: Availability
+    tsc_reference: "A1.2"
+    keywords_to_detect:
+      - "backup"
+      - "snapshot"
+      - "copy"
+      - "replicate"
+    recommendation: Add requirement for backup procedures
+
+  - control_id: SOC2-AVL-005
+    description: Recovery procedures
+    category: availability
+    tsc_category: Availability
+    tsc_reference: "A1.2"
+    keywords_to_detect:
+      - "recovery"
+      - "restore"
+      - "rpo"
+      - "rto"
+      - "recover"
+    recommendation: Add requirement for recovery procedures
+
+  - control_id: SOC2-AVL-006
+    description: Disaster recovery plan
+    category: availability
+    tsc_category: Availability
+    tsc_reference: "A1.2"
+    keywords_to_detect:
+      - "disaster recovery"
+      - "dr"
+      - "business continuity"
+      - "bcp"
+      - "contingency"
+    recommendation: Add requirement for disaster recovery planning
+
+  - control_id: SOC2-AVL-007
+    description: Backup testing
+    category: availability
+    tsc_category: Availability
+    tsc_reference: "A1.2"
+    keywords_to_detect:
+      - "test backup"
+      - "restore test"
+      - "recovery test"
+      - "dr test"
+    recommendation: Add requirement for backup testing
+
+  # ==========================================================================
+  # CONFIDENTIALITY - C Series
+  # ==========================================================================
+
+  # C1.1 - Confidential Information Identification
+  - control_id: SOC2-CON-001
+    description: Data classification
+    category: confidentiality
+    tsc_category: Confidentiality
+    tsc_reference: "C1.1"
+    keywords_to_detect:
+      - "classify"
+      - "classification"
+      - "sensitive"
+      - "confidential"
+      - "label"
+    recommendation: Add requirement for data classification
+
+  - control_id: SOC2-CON-002
+    description: Data handling procedures
+    category: confidentiality
+    tsc_category: Confidentiality
+    tsc_reference: "C1.1"
+    keywords_to_detect:
+      - "handle"
+      - "handling"
+      - "procedure"
+      - "protocol"
+      - "process"
+    recommendation: Add requirement for data handling procedures
+
+  # C1.2 - Confidentiality Commitments
+  - control_id: SOC2-CON-003
+    description: Access restrictions for confidential data
+    category: confidentiality
+    tsc_category: Confidentiality
+    tsc_reference: "C1.2"
+    keywords_to_detect:
+      - "restrict"
+      - "need to know"
+      - "access control"
+      - "permission"
+      - "authorized"
+    recommendation: Add requirement for confidential data access controls
+
+  - control_id: SOC2-CON-004
+    description: Encryption of confidential data
+    category: confidentiality
+    tsc_category: Confidentiality
+    tsc_reference: "C1.2"
+    keywords_to_detect:
+      - "encrypt"
+      - "mask"
+      - "obfuscate"
+      - "protect"
+      - "secure"
+    recommendation: Add requirement for confidential data encryption
+
+  - control_id: SOC2-CON-005
+    description: Confidential data disposal
+    category: confidentiality
+    tsc_category: Confidentiality
+    tsc_reference: "C1.2"
+    keywords_to_detect:
+      - "dispose"
+      - "destroy"
+      - "delete"
+      - "purge"
+      - "wipe"
+    recommendation: Add requirement for secure data disposal
+
+  # ==========================================================================
+  # PROCESSING INTEGRITY - PI Series
+  # ==========================================================================
+
+  # PI1.1 - Processing Completeness
+  - control_id: SOC2-PI-001
+    description: Input validation
+    category: processing_integrity
+    tsc_category: Processing Integrity
+    tsc_reference: "PI1.1"
+    keywords_to_detect:
+      - "validate"
+      - "validation"
+      - "input check"
+      - "format"
+      - "verify input"
+    recommendation: Add requirement for input validation
+
+  - control_id: SOC2-PI-002
+    description: Completeness checks
+    category: processing_integrity
+    tsc_category: Processing Integrity
+    tsc_reference: "PI1.1"
+    keywords_to_detect:
+      - "complete"
+      - "completeness"
+      - "all records"
+      - "total"
+      - "count"
+    recommendation: Add requirement for completeness checks
+
+  # PI1.2 - Processing Accuracy
+  - control_id: SOC2-PI-003
+    description: Error handling
+    category: processing_integrity
+    tsc_category: Processing Integrity
+    tsc_reference: "PI1.2"
+    keywords_to_detect:
+      - "error handling"
+      - "exception"
+      - "error"
+      - "fail"
+      - "graceful"
+    recommendation: Add requirement for error handling
+
+  - control_id: SOC2-PI-004
+    description: Calculation accuracy
+    category: processing_integrity
+    tsc_category: Processing Integrity
+    tsc_reference: "PI1.2"
+    keywords_to_detect:
+      - "accurate"
+      - "accuracy"
+      - "correct"
+      - "calculate"
+      - "precision"
+    recommendation: Add requirement for calculation accuracy
+
+  # PI1.3 - Processing Timeliness
+  - control_id: SOC2-PI-005
+    description: Output verification
+    category: processing_integrity
+    tsc_category: Processing Integrity
+    tsc_reference: "PI1.3"
+    keywords_to_detect:
+      - "reconcile"
+      - "verify output"
+      - "check"
+      - "compare"
+      - "validate output"
+    recommendation: Add requirement for output verification
+
+  # PI1.4 - Processing Authorization
+  - control_id: SOC2-PI-006
+    description: Transaction audit trail
+    category: processing_integrity
+    tsc_category: Processing Integrity
+    tsc_reference: "PI1.4"
+    keywords_to_detect:
+      - "audit trail"
+      - "transaction log"
+      - "track"
+      - "history"
+      - "record"
+    recommendation: Add requirement for transaction audit trail
+
+  - control_id: SOC2-PI-007
+    description: Processing authorization
+    category: processing_integrity
+    tsc_category: Processing Integrity
+    tsc_reference: "PI1.4"
+    keywords_to_detect:
+      - "authorize"
+      - "approve"
+      - "permission"
+      - "allow"
+    recommendation: Add requirement for processing authorization
+
+  # ==========================================================================
+  # PRIVACY - P Series
+  # ==========================================================================
+
+  # P1 - Notice
+  - control_id: SOC2-PRI-001
+    description: Privacy notice
+    category: privacy
+    tsc_category: Privacy
+    tsc_reference: "P1.1"
+    keywords_to_detect:
+      - "notice"
+      - "policy"
+      - "inform"
+      - "disclose"
+      - "privacy policy"
+    recommendation: Add requirement for privacy notice
+
+  # P2 - Choice and Consent
+  - control_id: SOC2-PRI-002
+    description: Consent collection
+    category: privacy
+    tsc_category: Privacy
+    tsc_reference: "P2.1"
+    keywords_to_detect:
+      - "consent"
+      - "opt-in"
+      - "opt-out"
+      - "agree"
+      - "permission"
+    recommendation: Add requirement for consent management
+
+  - control_id: SOC2-PRI-003
+    description: Consent withdrawal
+    category: privacy
+    tsc_category: Privacy
+    tsc_reference: "P2.1"
+    keywords_to_detect:
+      - "withdraw"
+      - "revoke consent"
+      - "opt-out"
+      - "unsubscribe"
+    recommendation: Add requirement for consent withdrawal
+
+  # P3 - Collection
+  - control_id: SOC2-PRI-004
+    description: Data minimization
+    category: privacy
+    tsc_category: Privacy
+    tsc_reference: "P3.1"
+    keywords_to_detect:
+      - "minimal"
+      - "necessary"
+      - "limit"
+      - "only collect"
+      - "minimization"
+    recommendation: Add requirement for data minimization
+
+  - control_id: SOC2-PRI-005
+    description: Purpose limitation
+    category: privacy
+    tsc_category: Privacy
+    tsc_reference: "P3.2"
+    keywords_to_detect:
+      - "purpose"
+      - "stated purpose"
+      - "intended use"
+      - "limit use"
+    recommendation: Add requirement for purpose limitation
+
+  # P4 - Use, Retention, and Disposal
+  - control_id: SOC2-PRI-006
+    description: Data retention policy
+    category: privacy
+    tsc_category: Privacy
+    tsc_reference: "P4.1"
+    keywords_to_detect:
+      - "retention"
+      - "retain"
+      - "keep"
+      - "period"
+      - "duration"
+    recommendation: Add requirement for data retention policy
+
+  - control_id: SOC2-PRI-007
+    description: Data deletion
+    category: privacy
+    tsc_category: Privacy
+    tsc_reference: "P4.3"
+    keywords_to_detect:
+      - "delete"
+      - "dispose"
+      - "purge"
+      - "expiration"
+      - "remove"
+    recommendation: Add requirement for data deletion procedures
+
+  # P5 - Access
+  - control_id: SOC2-PRI-008
+    description: Data subject access
+    category: privacy
+    tsc_category: Privacy
+    tsc_reference: "P5.1"
+    keywords_to_detect:
+      - "access request"
+      - "data subject"
+      - "right to access"
+      - "dsar"
+      - "export"
+    recommendation: Add requirement for data subject access
+
+  # P6 - Disclosure
+  - control_id: SOC2-PRI-009
+    description: Third-party disclosure controls
+    category: privacy
+    tsc_category: Privacy
+    tsc_reference: "P6.1"
+    keywords_to_detect:
+      - "third party"
+      - "share"
+      - "disclose"
+      - "transfer"
+      - "vendor"
+    recommendation: Add requirement for disclosure controls
+
+  # P7 - Quality
+  - control_id: SOC2-PRI-010
+    description: Data accuracy and quality
+    category: privacy
+    tsc_category: Privacy
+    tsc_reference: "P7.1"
+    keywords_to_detect:
+      - "accurate"
+      - "quality"
+      - "update"
+      - "correct"
+      - "maintain"
+    recommendation: Add requirement for data accuracy
+
+  # P8 - Monitoring and Enforcement
+  - control_id: SOC2-PRI-011
+    description: Privacy compliance monitoring
+    category: privacy
+    tsc_category: Privacy
+    tsc_reference: "P8.1"
+    keywords_to_detect:
+      - "compliance"
+      - "audit"
+      - "review"
+      - "assess"
+      - "monitor"
+    recommendation: Add requirement for privacy compliance monitoring

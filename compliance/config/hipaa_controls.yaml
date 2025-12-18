@@ -1,0 +1,456 @@
+# compliance/config/hipaa_controls.yaml
+# ============================================================================
+# HIPAA Safeguard Definitions
+#
+# This file defines HIPAA security and privacy safeguards used by
+# HIPAAValidator to check requirements for healthcare compliance.
+#
+# STRUCTURE:
+#   control_id: Unique identifier (HIPAA-XX-XXX-NNN)
+#   description: What this safeguard requires
+#   category: Safeguard category (access_control, encryption, etc.)
+#   safeguard_type: Administrative, Physical, or Technical
+#   section_reference: CFR reference (e.g., 164.312(a))
+#   keywords_to_detect: Terms indicating this safeguard is addressed
+#   recommendation: Action to take if safeguard is missing
+#
+# ============================================================================
+
+version: "1.0"
+framework: "HIPAA Security and Privacy Rules"
+last_updated: "2025-01-01"
+
+controls:
+  # ==========================================================================
+  # TECHNICAL SAFEGUARDS - 45 CFR § 164.312
+  # ==========================================================================
+
+  # Access Control - § 164.312(a)(1)
+  - control_id: HIPAA-TS-AC-001
+    description: Unique user identification (Required)
+    category: access_control
+    safeguard_type: Technical
+    section_reference: "164.312(a)(2)(i)"
+    keywords_to_detect:
+      - "unique"
+      - "user id"
+      - "username"
+      - "individual"
+      - "personal account"
+    recommendation: Add requirement for unique user identification
+
+  - control_id: HIPAA-TS-AC-002
+    description: Emergency access procedure (Required)
+    category: access_control
+    safeguard_type: Technical
+    section_reference: "164.312(a)(2)(ii)"
+    keywords_to_detect:
+      - "emergency"
+      - "break glass"
+      - "emergency access"
+      - "override"
+    recommendation: Add requirement for emergency access procedures
+
+  - control_id: HIPAA-TS-AC-003
+    description: Automatic logoff (Addressable)
+    category: access_control
+    safeguard_type: Technical
+    section_reference: "164.312(a)(2)(iii)"
+    keywords_to_detect:
+      - "timeout"
+      - "logoff"
+      - "auto-logout"
+      - "inactivity"
+      - "session"
+    recommendation: Add requirement for automatic session termination
+
+  - control_id: HIPAA-TS-AC-004
+    description: Encryption and decryption (Addressable)
+    category: access_control
+    safeguard_type: Technical
+    section_reference: "164.312(a)(2)(iv)"
+    keywords_to_detect:
+      - "encrypt"
+      - "decrypt"
+      - "cipher"
+      - "aes"
+    recommendation: Add requirement for ePHI encryption
+
+  # Audit Controls - § 164.312(b)
+  - control_id: HIPAA-TS-AU-001
+    description: Audit controls to record ePHI access (Required)
+    category: audit_logging
+    safeguard_type: Technical
+    section_reference: "164.312(b)"
+    keywords_to_detect:
+      - "audit"
+      - "log"
+      - "access"
+      - "record"
+      - "track"
+      - "monitor"
+    recommendation: Add requirement to log all ePHI access
+
+  - control_id: HIPAA-TS-AU-002
+    description: Regular audit log review
+    category: audit_logging
+    safeguard_type: Technical
+    section_reference: "164.312(b)"
+    keywords_to_detect:
+      - "review"
+      - "monitor"
+      - "examine"
+      - "analyze"
+      - "audit review"
+    recommendation: Add requirement for regular audit log review
+
+  # Integrity - § 164.312(c)(1)
+  - control_id: HIPAA-TS-IN-001
+    description: Mechanism to authenticate ePHI (Addressable)
+    category: phi_handling
+    safeguard_type: Technical
+    section_reference: "164.312(c)(2)"
+    keywords_to_detect:
+      - "authenticate"
+      - "verify"
+      - "integrity"
+      - "valid"
+      - "checksum"
+    recommendation: Add requirement for ePHI authentication mechanism
+
+  # Person or Entity Authentication - § 164.312(d)
+  - control_id: HIPAA-TS-PE-001
+    description: Verify person/entity identity (Required)
+    category: access_control
+    safeguard_type: Technical
+    section_reference: "164.312(d)"
+    keywords_to_detect:
+      - "authenticate"
+      - "verify identity"
+      - "credential"
+      - "identity"
+      - "confirm"
+    recommendation: Add requirement for identity authentication
+
+  # Transmission Security - § 164.312(e)(1)
+  - control_id: HIPAA-TS-TR-001
+    description: Integrity controls for PHI transmission (Addressable)
+    category: encryption
+    safeguard_type: Technical
+    section_reference: "164.312(e)(2)(i)"
+    keywords_to_detect:
+      - "integrity"
+      - "checksum"
+      - "hash"
+      - "verify"
+      - "transmission"
+    recommendation: Add requirement to verify transmission integrity
+
+  - control_id: HIPAA-TS-TR-002
+    description: Encryption for PHI transmission (Addressable)
+    category: encryption
+    safeguard_type: Technical
+    section_reference: "164.312(e)(2)(ii)"
+    keywords_to_detect:
+      - "encrypt"
+      - "tls"
+      - "ssl"
+      - "https"
+      - "secure transmission"
+    recommendation: Add requirement for encryption of PHI in transit
+
+  # Encryption at Rest
+  - control_id: HIPAA-TS-EN-001
+    description: Encryption for PHI at rest
+    category: encryption
+    safeguard_type: Technical
+    section_reference: "164.312(a)(2)(iv)"
+    keywords_to_detect:
+      - "encrypt"
+      - "at rest"
+      - "storage"
+      - "stored"
+      - "database"
+      - "disk"
+    recommendation: Add requirement for encryption of stored PHI
+
+  # ==========================================================================
+  # ADMINISTRATIVE SAFEGUARDS - 45 CFR § 164.308
+  # ==========================================================================
+
+  # Security Management Process - § 164.308(a)(1)
+  - control_id: HIPAA-AS-SM-001
+    description: Risk analysis (Required)
+    category: training
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(1)(ii)(A)"
+    keywords_to_detect:
+      - "risk"
+      - "assessment"
+      - "analysis"
+      - "vulnerability"
+      - "threat"
+    recommendation: Add requirement for risk analysis
+
+  - control_id: HIPAA-AS-SM-002
+    description: Risk management (Required)
+    category: training
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(1)(ii)(B)"
+    keywords_to_detect:
+      - "risk management"
+      - "mitigate"
+      - "remediate"
+      - "control"
+    recommendation: Add requirement for risk management procedures
+
+  - control_id: HIPAA-AS-SM-003
+    description: Sanction policy (Required)
+    category: training
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(1)(ii)(C)"
+    keywords_to_detect:
+      - "sanction"
+      - "discipline"
+      - "penalty"
+      - "consequence"
+    recommendation: Add requirement for sanction policy
+
+  # Workforce Security - § 164.308(a)(3)
+  - control_id: HIPAA-AS-WF-001
+    description: Authorization and/or supervision (Addressable)
+    category: access_control
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(3)(ii)(A)"
+    keywords_to_detect:
+      - "authorize"
+      - "clearance"
+      - "background"
+      - "verify"
+      - "supervise"
+    recommendation: Add requirement for workforce authorization
+
+  - control_id: HIPAA-AS-WF-002
+    description: Workforce clearance procedure (Addressable)
+    category: access_control
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(3)(ii)(B)"
+    keywords_to_detect:
+      - "clearance"
+      - "background check"
+      - "screening"
+      - "verify"
+    recommendation: Add requirement for workforce clearance procedures
+
+  - control_id: HIPAA-AS-WF-003
+    description: Termination procedures (Addressable)
+    category: access_control
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(3)(ii)(C)"
+    keywords_to_detect:
+      - "termination"
+      - "revoke"
+      - "disable"
+      - "remove access"
+      - "offboard"
+    recommendation: Add requirement for access termination procedures
+
+  # Information Access Management - § 164.308(a)(4)
+  - control_id: HIPAA-AS-IA-001
+    description: Access authorization (Addressable)
+    category: access_control
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(4)(ii)(B)"
+    keywords_to_detect:
+      - "access authorization"
+      - "grant access"
+      - "approve access"
+      - "permission"
+    recommendation: Add requirement for access authorization procedures
+
+  - control_id: HIPAA-AS-IA-002
+    description: Access establishment and modification (Addressable)
+    category: access_control
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(4)(ii)(C)"
+    keywords_to_detect:
+      - "provision"
+      - "establish"
+      - "modify"
+      - "change access"
+    recommendation: Add requirement for access establishment procedures
+
+  # Security Awareness and Training - § 164.308(a)(5)
+  - control_id: HIPAA-AS-TR-001
+    description: Security awareness training (Addressable)
+    category: training
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(5)(ii)(A)"
+    keywords_to_detect:
+      - "training"
+      - "awareness"
+      - "educate"
+      - "train"
+    recommendation: Add requirement for security awareness training
+
+  - control_id: HIPAA-AS-TR-002
+    description: Password management training (Addressable)
+    category: training
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(5)(ii)(D)"
+    keywords_to_detect:
+      - "password"
+      - "training"
+      - "credential"
+      - "management"
+    recommendation: Add requirement for password management training
+
+  # Security Incident Procedures - § 164.308(a)(6)
+  - control_id: HIPAA-AS-SI-001
+    description: Security incident response and reporting (Required)
+    category: breach_notification
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(6)(ii)"
+    keywords_to_detect:
+      - "incident"
+      - "response"
+      - "report"
+      - "breach"
+      - "security event"
+    recommendation: Add requirement for incident response procedures
+
+  # Contingency Plan - § 164.308(a)(7)
+  - control_id: HIPAA-AS-CP-001
+    description: Data backup plan (Required)
+    category: phi_handling
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(7)(ii)(A)"
+    keywords_to_detect:
+      - "backup"
+      - "data backup"
+      - "copy"
+      - "replicate"
+    recommendation: Add requirement for data backup plan
+
+  - control_id: HIPAA-AS-CP-002
+    description: Disaster recovery plan (Required)
+    category: phi_handling
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(7)(ii)(B)"
+    keywords_to_detect:
+      - "disaster"
+      - "recovery"
+      - "dr"
+      - "continuity"
+    recommendation: Add requirement for disaster recovery plan
+
+  - control_id: HIPAA-AS-CP-003
+    description: Emergency mode operation plan (Required)
+    category: phi_handling
+    safeguard_type: Administrative
+    section_reference: "164.308(a)(7)(ii)(C)"
+    keywords_to_detect:
+      - "emergency"
+      - "mode"
+      - "operation"
+      - "continuity"
+    recommendation: Add requirement for emergency mode operations
+
+  # Business Associate Contracts - § 164.308(b)
+  - control_id: HIPAA-AS-BA-001
+    description: Business associate agreements (Required)
+    category: business_associate
+    safeguard_type: Administrative
+    section_reference: "164.308(b)(1)"
+    keywords_to_detect:
+      - "baa"
+      - "agreement"
+      - "contract"
+      - "business associate"
+      - "vendor"
+    recommendation: Add requirement for BAA with third parties handling PHI
+
+  # ==========================================================================
+  # BREACH NOTIFICATION - 45 CFR § 164.400-414
+  # ==========================================================================
+
+  - control_id: HIPAA-BN-001
+    description: Breach detection mechanism
+    category: breach_notification
+    safeguard_type: Administrative
+    section_reference: "164.404"
+    keywords_to_detect:
+      - "detect"
+      - "identify"
+      - "discover"
+      - "breach"
+      - "unauthorized"
+    recommendation: Add requirement for breach detection
+
+  - control_id: HIPAA-BN-002
+    description: Breach notification to individuals
+    category: breach_notification
+    safeguard_type: Administrative
+    section_reference: "164.404"
+    keywords_to_detect:
+      - "notify"
+      - "notification"
+      - "inform"
+      - "communicate"
+      - "individual"
+    recommendation: Add requirement for breach notification to individuals
+
+  - control_id: HIPAA-BN-003
+    description: Breach notification to HHS
+    category: breach_notification
+    safeguard_type: Administrative
+    section_reference: "164.408"
+    keywords_to_detect:
+      - "hhs"
+      - "secretary"
+      - "report"
+      - "government"
+    recommendation: Add requirement for breach notification to HHS
+
+  - control_id: HIPAA-BN-004
+    description: Breach documentation
+    category: breach_notification
+    safeguard_type: Administrative
+    section_reference: "164.414"
+    keywords_to_detect:
+      - "document"
+      - "record"
+      - "log"
+      - "maintain"
+      - "breach log"
+    recommendation: Add requirement for breach documentation
+
+  # ==========================================================================
+  # MINIMUM NECESSARY - 45 CFR § 164.502(b)
+  # ==========================================================================
+
+  - control_id: HIPAA-MN-001
+    description: Minimum necessary standard for uses and disclosures
+    category: minimum_necessary
+    safeguard_type: Administrative
+    section_reference: "164.502(b)"
+    keywords_to_detect:
+      - "minimum necessary"
+      - "need to know"
+      - "role-based"
+      - "limit"
+      - "restrict"
+      - "least privilege"
+    recommendation: Add requirement to limit PHI access to minimum necessary
+
+  - control_id: HIPAA-MN-002
+    description: Role-based access to PHI
+    category: minimum_necessary
+    safeguard_type: Administrative
+    section_reference: "164.514(d)"
+    keywords_to_detect:
+      - "role"
+      - "role-based"
+      - "job function"
+      - "responsibility"
+    recommendation: Add requirement for role-based PHI access
