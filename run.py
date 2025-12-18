@@ -476,10 +476,14 @@ def run_pipeline(
         stats = uat_generator.get_stats()
         if verbose:
             print_info("By type:")
-            print(f"      • Happy Path: {stats['happy_path_tests']}")
-            print(f"      • Negative: {stats['negative_tests']}")
-            print(f"      • Edge Cases: {stats['edge_case_tests']}")
-            print(f"      • Boundary: {stats['boundary_tests']}")
+            by_type = stats.get('by_type', {})
+            print(f"      • Happy Path: {by_type.get('happy_path', 0)}")
+            print(f"      • Validation: {by_type.get('validation', 0)}")
+            print(f"      • Negative: {by_type.get('negative', 0)}")
+            print(f"      • Edge Cases: {by_type.get('edge_case', 0)}")
+            # Show skipped non-technical items
+            if stats.get('non_technical_skipped', 0) > 0:
+                print(f"      • Skipped (non-technical): {stats['non_technical_skipped']}")
 
     except Exception as e:
         print_error(f"Failed to generate test cases: {e}")

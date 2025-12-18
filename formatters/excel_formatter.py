@@ -477,15 +477,16 @@ class ExcelFormatter:
         # ================================================================
         headers = [
             'Test ID',
+            'Source Story',  # NEW: Links back to user story
             'Category',
             'Title',
+            'Test Type',
             'Pre-Requisites',
             'Test Steps',
             'Expected Results',
             'MoSCoW',
             'Est. Time',
             'Notes',
-            'Test Type'
         ]
 
         for col, header in enumerate(headers, 1):
@@ -499,55 +500,72 @@ class ExcelFormatter:
         # DATA ROWS
         # ================================================================
         for row_idx, tc in enumerate(test_cases, 2):
-            # Test ID
-            ws.cell(row=row_idx, column=1, value=tc.get('test_id', 'N/A'))
+            col = 1
 
-            # Category
-            ws.cell(row=row_idx, column=2, value=tc.get('category', 'General'))
+            # Test ID (col 1)
+            ws.cell(row=row_idx, column=col, value=tc.get('test_id', 'N/A'))
+            col += 1
 
-            # Title
-            ws.cell(row=row_idx, column=3, value=tc.get('title', 'Untitled'))
+            # Source Story (col 2) - NEW
+            ws.cell(row=row_idx, column=col, value=tc.get('source_story_id', 'N/A'))
+            col += 1
 
-            # Pre-Requisites — join list with newlines
-            prereqs = tc.get('prerequisites', [])
-            prereqs_text = '\n'.join([f"• {p}" for p in prereqs])
-            ws.cell(row=row_idx, column=4, value=prereqs_text)
+            # Category (col 3)
+            ws.cell(row=row_idx, column=col, value=tc.get('category', 'General'))
+            col += 1
 
-            # Test Steps — already numbered, join with newlines
-            steps = tc.get('test_steps', [])
-            steps_text = '\n'.join(steps)
-            ws.cell(row=row_idx, column=5, value=steps_text)
+            # Title (col 4)
+            ws.cell(row=row_idx, column=col, value=tc.get('title', 'Untitled'))
+            col += 1
 
-            # Expected Results — join with newlines
-            expected = tc.get('expected_results', [])
-            expected_text = '\n'.join(expected)
-            ws.cell(row=row_idx, column=6, value=expected_text)
-
-            # MoSCoW — with color coding
-            moscow = tc.get('moscow', 'Should Have')
-            cell = ws.cell(row=row_idx, column=7, value=moscow)
-            if moscow in self.priority_fills:
-                cell.fill = self.priority_fills[moscow]
-
-            # Est. Time
-            ws.cell(row=row_idx, column=8, value=tc.get('est_time', '5 min'))
-
-            # Notes
-            ws.cell(row=row_idx, column=9, value=tc.get('notes', ''))
-
-            # Test Type — with readable format
+            # Test Type (col 5) — with readable format
             test_type = tc.get('test_type', 'unknown')
             type_display = {
                 'happy_path': 'Happy Path',
                 'negative': 'Negative',
                 'edge_case': 'Edge Case',
-                'boundary': 'Boundary'
-            }.get(test_type, test_type)
-            ws.cell(row=row_idx, column=10, value=type_display)
+                'boundary': 'Boundary',
+                'validation': 'Validation',
+            }.get(test_type, test_type.replace('_', ' ').title())
+            ws.cell(row=row_idx, column=col, value=type_display)
+            col += 1
+
+            # Pre-Requisites (col 6) — join list with newlines
+            prereqs = tc.get('prerequisites', [])
+            prereqs_text = '\n'.join([f"• {p}" for p in prereqs])
+            ws.cell(row=row_idx, column=col, value=prereqs_text)
+            col += 1
+
+            # Test Steps (col 7) — already numbered, join with newlines
+            steps = tc.get('test_steps', [])
+            steps_text = '\n'.join(steps)
+            ws.cell(row=row_idx, column=col, value=steps_text)
+            col += 1
+
+            # Expected Results (col 8) — join with newlines
+            expected = tc.get('expected_results', [])
+            expected_text = '\n'.join(expected)
+            ws.cell(row=row_idx, column=col, value=expected_text)
+            col += 1
+
+            # MoSCoW (col 9) — with color coding
+            moscow = tc.get('moscow', 'Should Have')
+            cell = ws.cell(row=row_idx, column=col, value=moscow)
+            if moscow in self.priority_fills:
+                cell.fill = self.priority_fills[moscow]
+            col += 1
+
+            # Est. Time (col 10)
+            ws.cell(row=row_idx, column=col, value=tc.get('est_time', '5 min'))
+            col += 1
+
+            # Notes (col 11)
+            ws.cell(row=row_idx, column=col, value=tc.get('notes', ''))
+            col += 1
 
             # Apply data formatting to all cells in this row
-            for col in range(1, 11):
-                cell = ws.cell(row=row_idx, column=col)
+            for c in range(1, col):
+                cell = ws.cell(row=row_idx, column=c)
                 cell.alignment = self.data_alignment
                 cell.border = self.cell_border
 

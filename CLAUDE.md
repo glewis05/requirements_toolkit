@@ -61,6 +61,89 @@ templates/       → Standard output templates
 **Source:** [Origin of requirement]
 ```
 
+## Acceptance Criteria vs UAT Test Cases
+
+**IMPORTANT SEPARATION OF CONCERNS:**
+
+### Acceptance Criteria (user_story_generator.py)
+- Define **WHAT** success looks like
+- High-level testable statements
+- Success metrics
+- **Owned by:** Product/Business
+- **Generated from:** config/acceptance_patterns.yaml
+
+Example:
+```
+ACCEPTANCE CRITERIA:
+• Count of invited patients displays accurately
+• Metrics are segmented by program/channel
+• Data exportable for offline analysis
+
+SUCCESS METRICS:
+• Zero discrepancy between source and display
+• Data refresh completes within 15 minutes
+```
+
+### UAT Test Cases (uat_generator.py)
+- Define **HOW** to verify it works
+- Step-by-step test procedures
+- Gherkin scenarios for expected behavior
+- **Owned by:** QA/Testers
+- **Derived from:** Acceptance criteria
+
+Example:
+```
+Test ID: PROP-RECRUIT-002
+Title: Validate: Count of invited patients displays accurately
+Test Steps:
+  1. Navigate to the relevant feature
+  2. Verify: Count of invited patients displays accurately
+  3. Document actual behavior
+  4. Compare to expected behavior
+Expected Results:
+  **Given** the feature is accessible
+  **When** the validation is performed
+  **Then** Count of invited patients displays accurately
+```
+
+**The UAT generator DERIVES test cases from acceptance criteria — it does not duplicate them.**
+
+## Story ID Format
+
+Story IDs use the format: `PREFIX-CATEGORY-SEQ`
+
+Examples:
+- `PROP-RECRUIT-001` — Recruitment analytics
+- `PROP-MSG-002` — Messaging/notifications
+- `PROP-DASH-001` — Dashboard/display
+- `PROP-WF-001` — Workflow change (non-technical)
+
+Categories are determined from:
+1. Explicit 'Type' column in the requirement
+2. Keyword matching against `config/requirement_templates.yaml`
+3. Default to 'GEN' if no match
+
+## Configuration Files
+
+### config/acceptance_patterns.yaml
+Defines HIGH-LEVEL acceptance criteria patterns for different requirement types:
+- `dashboard_display` — Data visualization requirements
+- `recruitment_analytics` — Patient recruitment, enrollment, consent
+- `notification_tracking` — Email, SMS, reminders
+- `data_entry` — Form input and validation
+- `data_export` — Reports and exports
+- `integration_sync` — API and cross-system integration
+- `user_access` — Authentication and permissions
+- `workflow_process` — Non-technical process changes
+
+### config/requirement_templates.yaml
+Maps requirement types to:
+- `category_abbrev` — Used in Story IDs (e.g., RECRUIT, MSG, DASH)
+- `typical_roles` — Default user roles for this type
+- `acceptance_patterns` — Which patterns to use
+- `keywords_to_detect` — How to auto-detect this type
+- `is_technical` — False for workflow changes (skipped by UAT generator)
+
 ## Key Commands
 - Parse Excel: Process requirements from Excel files
 - Parse Diagram: Extract requirements from Visio/Lucidchart exports

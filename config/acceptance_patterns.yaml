@@ -1,0 +1,224 @@
+# config/acceptance_patterns.yaml
+# ============================================================================
+# PURPOSE: Define HIGH-LEVEL acceptance criteria patterns
+#
+# These patterns define WHAT success looks like (not HOW to test it).
+# UAT test cases are derived from these patterns in the UAT generator.
+#
+# STRUCTURE:
+#   pattern_name:
+#     description: "What this pattern covers"
+#     testable_statements:
+#       - "Statement with {placeholder} for context substitution"
+#     success_metrics:
+#       - "Measurable outcome"
+#
+# PLACEHOLDERS:
+#   {X} - numeric value (seconds, minutes, count)
+#   {N} - record count
+#   {metric} - the metric being tracked
+#   {dimension} - filter/segment dimension
+#   {time_period} - daily, weekly, monthly
+#   {format} - CSV, Excel, PDF
+#   {patient_status} - invited, consented, declined
+#   {notification_type} - email, SMS, reminder
+#   {start_stage}, {end_stage} - funnel stages
+#
+# ============================================================================
+
+# ============================================================================
+# DASHBOARD / DISPLAY PATTERNS
+# ============================================================================
+
+dashboard_display:
+  description: "Requirements for viewing data, metrics, or visualizations"
+  testable_statements:
+    - "Data loads within {X} seconds"
+    - "Visual displays {metric} with clear labels"
+    - "Data is segmented/filterable by {dimension}"
+    - "Display updates when underlying data changes"
+    - "User can only view data they have permission to access"
+    - "Empty state shows helpful message when no data exists"
+  success_metrics:
+    - "100% data accuracy between source and display"
+    - "Dashboard available 99.9% of uptime"
+    - "Page load time under 3 seconds for 95th percentile"
+
+# ============================================================================
+# RECRUITMENT / ANALYTICS PATTERNS
+# ============================================================================
+
+recruitment_analytics:
+  description: "Requirements for tracking patient recruitment, enrollment, consent"
+  testable_statements:
+    - "Count of {patient_status} patients displays accurately"
+    - "Metrics are segmented by program/channel"
+    - "Funnel shows progression from {start_stage} to {end_stage}"
+    - "Aggregated view available (not patient-level by default)"
+    - "Data exportable for offline analysis"
+    - "Historical trends visible for comparison"
+    - "Conversion rates calculated correctly between stages"
+  success_metrics:
+    - "Zero discrepancy between source consent records and dashboard"
+    - "All consent status changes reflected within {X} minutes"
+    - "Data refresh completes within 15 minutes of source update"
+
+# ============================================================================
+# NOTIFICATION / MESSAGING PATTERNS
+# ============================================================================
+
+notification_tracking:
+  description: "Requirements for email, SMS, reminder tracking"
+  testable_statements:
+    - "System logs {notification_type} sent with timestamp"
+    - "Opt-out status captured with timestamp and sequence"
+    - "Aggregate counts available by {time_period}"
+    - "Failed/bounced notifications flagged for follow-up"
+    - "Delivery status tracked (sent, delivered, opened, failed)"
+    - "User can view notification history"
+  success_metrics:
+    - "100% of opt-outs honored within 24 hours"
+    - "Bounce rate tracked and reported weekly"
+    - "All notification events logged with full audit trail"
+
+# ============================================================================
+# DATA ENTRY / FORM PATTERNS
+# ============================================================================
+
+data_entry:
+  description: "Requirements for creating, editing, or submitting data"
+  testable_statements:
+    - "Required fields are validated before submission"
+    - "User receives confirmation upon successful save"
+    - "Validation errors display clear, actionable messages"
+    - "Audit trail captures who, when, and what changed"
+    - "Form preserves data on validation failure (no data loss)"
+    - "Concurrent edits are detected and handled"
+  success_metrics:
+    - "Zero data loss on form submission"
+    - "100% of changes captured in audit trail"
+    - "All validation rules enforced consistently"
+
+# ============================================================================
+# DATA EXPORT / REPORTING PATTERNS
+# ============================================================================
+
+data_export:
+  description: "Requirements for exporting, downloading, or reporting data"
+  testable_statements:
+    - "Export completes within {X} seconds for up to {N} records"
+    - "Export format matches specification ({format})"
+    - "Export includes all visible/filtered data"
+    - "Column headers match display labels"
+    - "Large exports handled gracefully (pagination or background job)"
+    - "Export includes metadata (date generated, filters applied)"
+  success_metrics:
+    - "Exports match on-screen data 100%"
+    - "Export available for all supported formats"
+    - "No timeout errors for standard data volumes"
+
+# ============================================================================
+# INTEGRATION / SYNC PATTERNS
+# ============================================================================
+
+integration_sync:
+  description: "Requirements for API, data sync, cross-system integration"
+  testable_statements:
+    - "Data syncs between systems within {X} minutes"
+    - "Duplicate records are detected and prevented"
+    - "Sync errors trigger alerts to admin"
+    - "Audit trail tracks source system for each record"
+    - "API handles rate limiting gracefully"
+    - "Sync status visible to administrators"
+  success_metrics:
+    - "99.9% sync success rate"
+    - "Zero undetected duplicates"
+    - "All sync failures logged and alerted within 5 minutes"
+
+# ============================================================================
+# USER ACCESS / AUTHENTICATION PATTERNS
+# ============================================================================
+
+user_access:
+  description: "Requirements for login, authentication, permissions"
+  testable_statements:
+    - "User can only access features permitted by their role"
+    - "Failed login attempts are logged"
+    - "Session times out after {X} minutes of inactivity"
+    - "Password meets complexity requirements"
+    - "Account lockout after {N} failed attempts"
+    - "User can reset password via email"
+  success_metrics:
+    - "Zero unauthorized access incidents"
+    - "100% of access attempts logged"
+    - "Session management meets security policy"
+
+# ============================================================================
+# CONSENT / AGREEMENT PATTERNS
+# ============================================================================
+
+consent_management:
+  description: "Requirements for consent forms, e-signatures, consent tracking"
+  testable_statements:
+    - "Consent form displays all required disclosures"
+    - "Signature captured with timestamp and IP address"
+    - "User can download signed consent copy"
+    - "Consent version tracked for compliance"
+    - "Consent status is immutable once captured"
+    - "Withdrawal of consent is logged and honored"
+  success_metrics:
+    - "100% of consents have valid signatures"
+    - "Consent audit trail meets regulatory requirements"
+    - "Zero consent records modified after capture"
+
+# ============================================================================
+# WORKFLOW / PROCESS PATTERNS (NON-TECHNICAL)
+# ============================================================================
+
+workflow_process:
+  description: "Non-technical requirements - process or workflow changes"
+  is_technical: false
+  testable_statements:
+    - "Process documentation is updated"
+    - "Staff are trained on new workflow"
+    - "Workflow validated with stakeholders"
+    - "Roles and responsibilities are clearly defined"
+    - "Escalation path documented"
+  success_metrics:
+    - "Workflow adopted by team within {X} weeks"
+    - "100% of staff completed training"
+    - "Process documented in SOP"
+
+# ============================================================================
+# SEARCH / FILTER PATTERNS
+# ============================================================================
+
+search_filter:
+  description: "Requirements for searching, filtering, or querying data"
+  testable_statements:
+    - "Search results return within {X} seconds"
+    - "Search matches on specified fields"
+    - "Filters can be combined (AND logic)"
+    - "No results state shows helpful suggestions"
+    - "Search history/recent searches available"
+    - "Filters persist across page navigation"
+  success_metrics:
+    - "Search accuracy meets 95% relevance threshold"
+    - "Zero false negatives for exact matches"
+
+# ============================================================================
+# LIST / TABLE PATTERNS
+# ============================================================================
+
+list_display:
+  description: "Requirements for displaying lists or tables of data"
+  testable_statements:
+    - "List displays up to {N} items per page"
+    - "Pagination available for large datasets"
+    - "Sorting available on key columns"
+    - "Selection allows bulk actions"
+    - "Empty list shows helpful message"
+    - "Loading state shown while fetching data"
+  success_metrics:
+    - "List loads within 2 seconds for standard page size"
+    - "Pagination handles 10,000+ records gracefully"

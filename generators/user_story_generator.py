@@ -2,35 +2,53 @@
 # ============================================================================
 # PURPOSE: Transform requirements into well-formed user stories
 #
-# MAJOR UPDATES:
-#   - Uses ALL context columns from Excel (notes, decisions, impacts)
-#   - Generates HYBRID acceptance criteria (testable statements + Gherkin + metrics)
-#   - NO generic boilerplate - all criteria derived from actual requirement
-#   - Classifies requirement types (Technical Feature, Workflow Change, Out of Scope)
-#   - New Story ID format: PREFIX-CATEGORY-SEQ (e.g., PROP-RECRUIT-001)
+# This module transforms raw requirements (from Excel/Word/Lucidchart parsers)
+# into standardized user stories with acceptance criteria.
+#
+# KEY FEATURES:
+#   - Loads acceptance patterns and requirement templates from YAML configs
+#   - Auto-detects requirement type from Type column or keyword matching
+#   - Generates acceptance criteria from patterns (WHAT success looks like)
+#   - Uses template's category_abbrev for Story ID: PREFIX-CATEGORY-SEQ
+#   - Fills placeholders from requirement context
+#
+# SEPARATION OF CONCERNS:
+#   - Acceptance Criteria (this file): WHAT success looks like
+#   - UAT Test Cases (uat_generator.py): HOW to verify it works
 #
 # AVIATION ANALOGY:
 #   Like creating a flight plan from raw data - we use ALL available information
 #   (weather, NOTAMs, aircraft performance, crew status) not just the basics.
+#   The acceptance criteria define "mission success" while UAT test cases
+#   define the verification procedures.
 #
 # ============================================================================
 
 import re
+import os
+from pathlib import Path
 from typing import Optional
 from difflib import SequenceMatcher
+
+# YAML for loading config files
+try:
+    import yaml
+except ImportError:
+    raise ImportError("PyYAML required. Install with: pip3 install pyyaml")
 
 
 class UserStoryGenerator:
     """
     PURPOSE:
         Transform raw requirements into well-formed user stories using
-        ALL available context from the source document.
+        config-driven acceptance criteria patterns.
 
     KEY FEATURES:
-        - Consumes context_columns dict from parser (notes, decisions, impacts)
-        - Generates specific acceptance criteria from actual requirement content
-        - Classifies requirement types based on context keywords
-        - New Story ID format: PREFIX-CATEGORY-SEQ
+        - Loads patterns from config/acceptance_patterns.yaml
+        - Loads templates from config/requirement_templates.yaml
+        - Auto-detects requirement type via keywords
+        - Generates acceptance criteria (not test cases)
+        - Story IDs: PREFIX-CATEGORY-SEQ (e.g., PROP-RECRUIT-001)
 
     OUTPUT STRUCTURE:
         {
@@ -38,101 +56,64 @@ class UserStoryGenerator:
             "title": "...",
             "user_story": "As a [role], I want [capability], so that [benefit]",
             "priority": "High",
-            "role": "analyst",
+            "role": "research coordinator",
             "capability": "...",
             "benefit": "...",
-            "requirement_type": "Technical Feature" | "Workflow Change" | "Out of Scope" | "Completed",
-            "acceptance_criteria": [...],  # HYBRID format
+            "requirement_type": "recruitment_analytics",
+            "category_abbrev": "RECRUIT",
+            "is_technical": True,
+            "acceptance_criteria": [
+                "ACCEPTANCE CRITERIA:",
+                "• Count of invited patients displays accurately",
+                "• Metrics are segmented by program/channel",
+                "",
+                "SUCCESS METRICS:",
+                "• Zero discrepancy between source and display"
+            ],
             "description": "...",
             "flags": [...],
             "source_requirement": {...}
         }
+
+    USAGE:
+        generator = UserStoryGenerator(prefix="PROP")
+        stories = generator.generate(requirements)
     """
-
-    # ========================================================================
-    # CATEGORY MAPPINGS FOR STORY IDs
-    # ========================================================================
-    # Maps keywords to category codes for ID generation
-    # Format: PREFIX-CATEGORY-SEQ (e.g., PROP-RECRUIT-001)
-
-    CATEGORY_MAPPINGS = {
-        # Recruitment/Analytics
-        'RECRUIT': ['recruitment', 'recruit', 'analytics', 'metric', 'kpi', 'dashboard',
-                   'tracking', 'volume', 'conversion', 'funnel', 'outreach'],
-        # Enrollment/Onboarding
-        'ENROLL': ['enrollment', 'enroll', 'onboard', 'registration', 'signup', 'sign-up'],
-        # Authentication/Access
-        'AUTH': ['authentication', 'auth', 'login', 'logout', 'password', 'access',
-                'permission', 'role', 'sso', 'oauth', 'mfa', '2fa'],
-        # Dashboard/Display
-        'DASH': ['dashboard', 'display', 'view', 'visualization', 'chart', 'graph',
-                'report', 'summary', 'overview'],
-        # Reporting
-        'RPT': ['report', 'export', 'download', 'csv', 'excel', 'pdf'],
-        # Consent/Agreement
-        'CONSENT': ['consent', 'agreement', 'econsent', 'e-consent', 'signature',
-                   'authorization', 'hipaa', 'gdpr'],
-        # Messaging/Notifications
-        'MSG': ['message', 'email', 'sms', 'notification', 'alert', 'reminder',
-               'communication', 'outbound'],
-        # Data/Records
-        'DATA': ['data', 'record', 'patient', 'user', 'profile', 'demographics',
-                'information', 'storage', 'database'],
-        # Integration/API
-        'INTEG': ['integration', 'api', 'sync', 'import', 'connect', 'webhook',
-                 'external', 'third-party'],
-        # Billing/Payment
-        'BILL': ['billing', 'payment', 'invoice', 'subscription', 'charge', 'fee'],
-        # Admin/Settings
-        'ADMIN': ['admin', 'administrator', 'settings', 'configuration', 'config',
-                 'manage', 'management'],
-    }
-
-    # Default category if no match
-    DEFAULT_CATEGORY = 'GEN'
-
-    # ========================================================================
-    # REQUIREMENT TYPE CLASSIFICATION
-    # ========================================================================
-    # Keywords that indicate non-technical requirements
-
-    WORKFLOW_CHANGE_KEYWORDS = [
-        'workflow', 'process change', 'manual process', 'procedure update',
-        'training', 'policy', 'sop', 'standard operating'
-    ]
-
-    OUT_OF_SCOPE_KEYWORDS = [
-        'out of scope', 'removed from scope', 'not viable', 'rejected',
-        'deferred', 'not feasible', 'cancelled', 'canceled', 'deprecated',
-        'not applicable', 'n/a', 'tbd'
-    ]
-
-    COMPLETED_KEYWORDS = [
-        'completed', 'complete', 'done', 'finished', 'shipped',
-        'released', 'deployed', 'implemented', 'live'
-    ]
 
     def __init__(
         self,
         prefix: str = "REQ",
         default_role: str = "user",
         default_priority: str = "Medium",
-        similarity_threshold: float = 0.75
+        similarity_threshold: float = 0.75,
+        config_dir: Optional[str] = None
     ) -> None:
         """
         PURPOSE:
-            Initialize the generator with configuration.
+            Initialize the generator and load config files.
 
         PARAMETERS:
             prefix (str): Prefix for Story IDs (e.g., "PROP", "GRX", "NCCN")
             default_role (str): Default user role when none detected
             default_priority (str): Default priority when none specified
             similarity_threshold (float): Threshold for duplicate detection (0.0-1.0)
+            config_dir (str): Path to config directory (default: ./config)
         """
         self.prefix = prefix
         self.default_role = default_role
         self.default_priority = default_priority
         self.similarity_threshold = similarity_threshold
+
+        # Determine config directory
+        if config_dir:
+            self.config_dir = Path(config_dir)
+        else:
+            # Default: config/ relative to this file's parent directory
+            self.config_dir = Path(__file__).parent.parent / "config"
+
+        # Load configuration files
+        self.acceptance_patterns = self._load_yaml("acceptance_patterns.yaml")
+        self.requirement_templates = self._load_yaml("requirement_templates.yaml")
 
         # Track stories for duplicate detection
         self._all_stories: list[dict] = []
@@ -144,19 +125,47 @@ class UserStoryGenerator:
         self.stats = {
             'total_input': 0,
             'total_output': 0,
-            'technical_features': 0,
-            'workflow_changes': 0,
-            'out_of_scope': 0,
-            'completed': 0,
+            'by_type': {},
+            'technical': 0,
+            'non_technical': 0,
             'duplicates_found': 0,
         }
 
-        # Valid user roles
-        self.valid_roles = {
-            'user', 'admin', 'administrator', 'manager', 'customer',
-            'patient', 'clinician', 'doctor', 'nurse', 'staff',
-            'analyst', 'researcher', 'coordinator', 'operator'
-        }
+    # ========================================================================
+    # CONFIG LOADING
+    # ========================================================================
+
+    def _load_yaml(self, filename: str) -> dict:
+        """
+        PURPOSE:
+            Load a YAML config file.
+
+        PARAMETERS:
+            filename (str): Name of the YAML file in config_dir
+
+        RETURNS:
+            dict: Parsed YAML content
+
+        RAISES:
+            FileNotFoundError: If config file doesn't exist
+            yaml.YAMLError: If YAML is malformed
+        """
+        filepath = self.config_dir / filename
+
+        if not filepath.exists():
+            raise FileNotFoundError(
+                f"Config file not found: {filepath}\n"
+                f"Expected in: {self.config_dir}"
+            )
+
+        with open(filepath, 'r', encoding='utf-8') as f:
+            content = yaml.safe_load(f)
+
+        return content or {}
+
+    # ========================================================================
+    # MAIN GENERATION METHOD
+    # ========================================================================
 
     def generate(self, requirements: list[dict]) -> list[dict]:
         """
@@ -164,7 +173,7 @@ class UserStoryGenerator:
             Transform requirements into user stories.
 
         PARAMETERS:
-            requirements (list[dict]): Requirements from ExcelParser with context_columns
+            requirements (list[dict]): Requirements from parsers with context_columns
 
         RETURNS:
             list[dict]: List of user story dictionaries
@@ -192,55 +201,59 @@ class UserStoryGenerator:
             Transform a single requirement into a user story.
 
         APPROACH:
-            1. Combine description + ALL context columns for full understanding
-            2. Classify requirement type
-            3. Extract role, capability, benefit
-            4. Generate HYBRID acceptance criteria
-            5. Create story ID in PREFIX-CATEGORY-SEQ format
+            1. Build full context from all available text
+            2. Detect requirement type (from Type column or keywords)
+            3. Get template for that type
+            4. Generate Story ID using template's category_abbrev
+            5. Extract role, capability, benefit
+            6. Generate acceptance criteria from patterns
+            7. Build complete story dict
         """
         # Get all available text for analysis
         full_context = self._build_full_context(req)
 
-        # Classify requirement type
-        req_type = self._classify_requirement_type(req, full_context)
+        # Detect requirement type and get template
+        req_type, template = self._detect_requirement_type(req, full_context)
 
-        # Track stats
-        if req_type == 'Technical Feature':
-            self.stats['technical_features'] += 1
-        elif req_type == 'Workflow Change':
-            self.stats['workflow_changes'] += 1
-        elif req_type == 'Out of Scope':
-            self.stats['out_of_scope'] += 1
-        elif req_type == 'Completed':
-            self.stats['completed'] += 1
+        # Check if technical or non-technical
+        is_technical = template.get('is_technical', True)
 
-        # Generate story ID
-        category = self._detect_category(req, full_context)
-        story_id = self._generate_story_id(category)
+        # Update stats
+        self.stats['by_type'][req_type] = self.stats['by_type'].get(req_type, 0) + 1
+        if is_technical:
+            self.stats['technical'] += 1
+        else:
+            self.stats['non_technical'] += 1
+
+        # Get category abbreviation for Story ID
+        category_abbrev = template.get('category_abbrev', 'GEN')
+
+        # Generate Story ID: PREFIX-CATEGORY-SEQ
+        story_id = self._generate_story_id(category_abbrev)
 
         # Extract story components
-        role = self._extract_role(full_context)
+        role = self._extract_role(req, full_context, template)
         capability = self._extract_capability(req, full_context)
-        benefit = self._extract_benefit(req, full_context)
+        benefit = self._extract_benefit(req, full_context, template)
 
-        # Build user story text (only for Technical Features)
-        if req_type == 'Technical Feature':
+        # Build user story text
+        if is_technical:
             user_story = f"As a {role}, I want to {capability}, so that {benefit}"
         else:
-            # Non-technical items don't use "As a..." format
+            # Non-technical items use different format
             user_story = self._build_non_technical_summary(req, req_type, full_context)
 
-        # Generate acceptance criteria (HYBRID format)
-        if req_type == 'Technical Feature':
-            acceptance_criteria = self._generate_hybrid_acceptance_criteria(req, full_context, capability)
+        # Generate acceptance criteria from patterns
+        if is_technical:
+            acceptance_criteria = self._generate_acceptance_criteria(req, full_context, template)
         else:
-            acceptance_criteria = self._generate_non_technical_criteria(req, req_type, full_context)
+            acceptance_criteria = self._generate_non_technical_criteria(req, req_type, template)
 
         # Build description with context
         description = self._build_rich_description(req, full_context)
 
         # Identify flags/issues
-        flags = self._identify_flags(req, full_context, req_type)
+        flags = self._identify_flags(req, full_context, is_technical, req_type)
 
         # Get priority
         priority = req.get('priority', self.default_priority)
@@ -257,7 +270,8 @@ class UserStoryGenerator:
             'capability': capability,
             'benefit': benefit,
             'requirement_type': req_type,
-            'category': category,
+            'category_abbrev': category_abbrev,
+            'is_technical': is_technical,
             'acceptance_criteria': acceptance_criteria,
             'description': description,
             'flags': flags,
@@ -267,6 +281,299 @@ class UserStoryGenerator:
                 'source_file': req.get('source_file'),
             }
         }
+
+    # ========================================================================
+    # REQUIREMENT TYPE DETECTION
+    # ========================================================================
+
+    def _detect_requirement_type(self, req: dict, full_context: str) -> tuple[str, dict]:
+        """
+        PURPOSE:
+            Detect requirement type and return the matching template.
+
+        DETECTION PRIORITY:
+            1. Check 'Type' column if present - normalize and match to template
+            2. Scan full_context for keywords_to_detect
+            3. First template with matching keyword wins
+            4. Default to 'general' if no match
+
+        RETURNS:
+            tuple: (type_name, template_dict)
+        """
+        context_lower = full_context.lower()
+
+        # STEP 1: Check explicit Type column
+        # ================================================================
+        explicit_type = (req.get('type') or '').lower().strip()
+
+        if explicit_type:
+            # Try to match explicit type to a template name
+            for template_name, template in self.requirement_templates.items():
+                # Check if explicit type matches template name or description
+                if template_name in explicit_type or explicit_type in template_name:
+                    return (template_name, template)
+
+                # Check if explicit type matches any keyword
+                for keyword in template.get('keywords_to_detect', []):
+                    if keyword in explicit_type:
+                        return (template_name, template)
+
+        # STEP 2: Keyword matching on full context
+        # ================================================================
+        # Check each template's keywords (in order of specificity)
+        # More specific templates should be checked first
+        priority_order = [
+            'recruitment_analytics',  # Very specific
+            'consent_management',
+            'messaging_notifications',
+            'integration',
+            'authentication_access',
+            'workflow_change',
+            'reporting',
+            'search_filter',
+            'admin_settings',
+            'dashboard_reporting',
+            'data_management',
+            'general',  # Fallback last
+        ]
+
+        for template_name in priority_order:
+            if template_name not in self.requirement_templates:
+                continue
+
+            template = self.requirement_templates[template_name]
+            keywords = template.get('keywords_to_detect', [])
+
+            for keyword in keywords:
+                if keyword.lower() in context_lower:
+                    return (template_name, template)
+
+        # STEP 3: Default to general
+        # ================================================================
+        return ('general', self.requirement_templates.get('general', {}))
+
+    # ========================================================================
+    # STORY ID GENERATION
+    # ========================================================================
+
+    def _generate_story_id(self, category_abbrev: str) -> str:
+        """
+        PURPOSE:
+            Generate Story ID in format: PREFIX-CATEGORY-SEQ
+
+        EXAMPLES:
+            PROP-RECRUIT-001, PROP-RECRUIT-002, PROP-DASH-001
+
+        PARAMETERS:
+            category_abbrev (str): Category abbreviation from template
+
+        RETURNS:
+            str: Generated story ID
+        """
+        # Increment sequence for this category
+        if category_abbrev not in self._category_sequences:
+            self._category_sequences[category_abbrev] = 0
+        self._category_sequences[category_abbrev] += 1
+
+        seq = self._category_sequences[category_abbrev]
+        return f"{self.prefix}-{category_abbrev}-{seq:03d}"
+
+    # ========================================================================
+    # ACCEPTANCE CRITERIA GENERATION
+    # ========================================================================
+
+    def _generate_acceptance_criteria(
+        self,
+        req: dict,
+        full_context: str,
+        template: dict
+    ) -> list[str]:
+        """
+        PURPOSE:
+            Generate acceptance criteria from patterns.
+
+        OUTPUT FORMAT:
+            ACCEPTANCE CRITERIA:
+            • [Testable statement 1]
+            • [Testable statement 2]
+
+            SUCCESS METRICS:
+            • [Metric 1]
+            • [Metric 2]
+
+        APPROACH:
+            1. Get acceptance_patterns list from template
+            2. For each pattern, pull testable_statements
+            3. Fill placeholders from requirement context
+            4. Add success_metrics section
+        """
+        criteria = []
+        success_metrics = []
+
+        # Get pattern names from template
+        pattern_names = template.get('acceptance_patterns', ['dashboard_display'])
+
+        # Collect testable statements and metrics from all patterns
+        for pattern_name in pattern_names:
+            pattern = self.acceptance_patterns.get(pattern_name, {})
+
+            # Get testable statements
+            statements = pattern.get('testable_statements', [])
+            for stmt in statements:
+                # Fill placeholders
+                filled = self._fill_placeholders(stmt, req, full_context)
+                criteria.append(f"• {filled}")
+
+            # Get success metrics
+            metrics = pattern.get('success_metrics', [])
+            for metric in metrics:
+                filled = self._fill_placeholders(metric, req, full_context)
+                if filled not in success_metrics:  # Dedupe
+                    success_metrics.append(filled)
+
+        # Build output
+        output = []
+
+        if criteria:
+            output.append("ACCEPTANCE CRITERIA:")
+            # Deduplicate while preserving order
+            seen = set()
+            for c in criteria:
+                if c not in seen:
+                    seen.add(c)
+                    output.append(c)
+
+        if success_metrics:
+            output.append("")
+            output.append("SUCCESS METRICS:")
+            for m in success_metrics:
+                output.append(f"• {m}")
+
+        return output
+
+    def _fill_placeholders(self, text: str, req: dict, full_context: str) -> str:
+        """
+        PURPOSE:
+            Fill placeholders in pattern text with context from requirement.
+
+        PLACEHOLDERS:
+            {X} - numeric value (default: "N")
+            {N} - record count (default: "1000")
+            {metric} - extracted from title/description
+            {dimension} - common dimension (program, channel, date)
+            {time_period} - daily/weekly/monthly
+            {format} - CSV, Excel
+            {patient_status} - from context
+            {notification_type} - email, SMS
+
+        APPROACH:
+            Try to extract actual values from context, fall back to sensible defaults.
+        """
+        context_lower = full_context.lower()
+        title = req.get('title', '')
+        description = req.get('description', '')
+
+        # Extract metric name from title
+        metric = title if len(title) < 50 else title[:50]
+
+        # Detect dimension from context
+        dimension = "program"
+        if "channel" in context_lower:
+            dimension = "channel"
+        elif "date" in context_lower or "time" in context_lower:
+            dimension = "date range"
+        elif "site" in context_lower:
+            dimension = "site"
+
+        # Detect patient status
+        patient_status = "patients"
+        for status in ['invited', 'consented', 'enrolled', 'declined', 'eligible']:
+            if status in context_lower:
+                patient_status = status
+                break
+
+        # Detect notification type
+        notification_type = "notification"
+        for ntype in ['email', 'sms', 'reminder', 'alert']:
+            if ntype in context_lower:
+                notification_type = ntype
+                break
+
+        # Detect format
+        export_format = "CSV/Excel"
+        if "pdf" in context_lower:
+            export_format = "PDF"
+        elif "csv" in context_lower:
+            export_format = "CSV"
+        elif "excel" in context_lower:
+            export_format = "Excel"
+
+        # Extract any numbers from context for {X} and {N}
+        # Avoid years (2020-2030) and very large numbers
+        numbers = re.findall(r'\b(\d+)\b', full_context)
+        valid_numbers = [n for n in numbers if not (2020 <= int(n) <= 2030) and int(n) < 10000]
+        x_value = valid_numbers[0] if valid_numbers else "3"  # Default 3 seconds
+        n_value = valid_numbers[1] if len(valid_numbers) > 1 else "1000"
+
+        # Fill placeholders
+        result = text
+        result = result.replace("{metric}", metric)
+        result = result.replace("{dimension}", dimension)
+        result = result.replace("{patient_status}", patient_status)
+        result = result.replace("{notification_type}", notification_type)
+        result = result.replace("{format}", export_format)
+        result = result.replace("{time_period}", "daily/weekly")
+        result = result.replace("{start_stage}", "invitation")
+        result = result.replace("{end_stage}", "enrollment")
+        result = result.replace("{X}", x_value)
+        result = result.replace("{N}", n_value)
+
+        return result
+
+    def _generate_non_technical_criteria(
+        self,
+        req: dict,
+        req_type: str,
+        template: dict
+    ) -> list[str]:
+        """
+        PURPOSE:
+            Generate criteria for non-technical (workflow change) items.
+        """
+        output = []
+        context_columns = req.get('context_columns', {})
+
+        # Get patterns for this type
+        pattern_names = template.get('acceptance_patterns', ['workflow_process'])
+
+        for pattern_name in pattern_names:
+            pattern = self.acceptance_patterns.get(pattern_name, {})
+            statements = pattern.get('testable_statements', [])
+
+            output.append("PROCESS CHANGE REQUIREMENTS:")
+            for stmt in statements:
+                output.append(f"• {stmt}")
+
+            metrics = pattern.get('success_metrics', [])
+            if metrics:
+                output.append("")
+                output.append("SUCCESS METRICS:")
+                for m in metrics:
+                    # Replace {X} with reasonable default
+                    m = m.replace("{X}", "2")
+                    output.append(f"• {m}")
+
+        # Add notes if available
+        notes = context_columns.get('Notes', '') or context_columns.get('Supplemental notes', '')
+        if notes:
+            output.append("")
+            output.append(f"NOTES: {notes[:300]}")
+
+        return output
+
+    # ========================================================================
+    # CONTEXT BUILDING
+    # ========================================================================
 
     def _build_full_context(self, req: dict) -> str:
         """
@@ -302,116 +609,64 @@ class UserStoryGenerator:
 
         return "\n".join(parts)
 
-    def _classify_requirement_type(self, req: dict, full_context: str) -> str:
+    # ========================================================================
+    # ROLE EXTRACTION
+    # ========================================================================
+
+    def _extract_role(self, req: dict, full_context: str, template: dict) -> str:
         """
         PURPOSE:
-            Classify requirement as Technical Feature, Workflow Change,
-            Out of Scope, or Completed.
+            Extract user role from context or use template's typical_roles.
 
-        RETURNS:
-            str: One of "Technical Feature", "Workflow Change", "Out of Scope", "Completed"
+        PRIORITY:
+            1. Explicit role in text ("As a manager...")
+            2. Template's typical_roles[0]
+            3. Default role
         """
         context_lower = full_context.lower()
-        status = (req.get('status') or '').lower()
 
-        # Check for Completed
-        if any(kw in status or kw in context_lower for kw in self.COMPLETED_KEYWORDS):
-            return 'Completed'
-
-        # Check for Out of Scope
-        if any(kw in context_lower for kw in self.OUT_OF_SCOPE_KEYWORDS):
-            return 'Out of Scope'
-
-        # Check for Workflow Change
-        if any(kw in context_lower for kw in self.WORKFLOW_CHANGE_KEYWORDS):
-            return 'Workflow Change'
-
-        # Default to Technical Feature
-        return 'Technical Feature'
-
-    def _detect_category(self, req: dict, full_context: str) -> str:
-        """
-        PURPOSE:
-            Detect category for Story ID from Type column or keywords.
-
-        RETURNS:
-            str: Category code (e.g., "RECRUIT", "AUTH", "DASH")
-        """
-        # First, check the Type column from the requirement
-        req_type = (req.get('type') or '').lower()
-
-        # Then check full context
-        search_text = f"{req_type} {full_context}".lower()
-
-        # Find matching category
-        for category_code, keywords in self.CATEGORY_MAPPINGS.items():
-            if any(kw in search_text for kw in keywords):
-                return category_code
-
-        return self.DEFAULT_CATEGORY
-
-    def _generate_story_id(self, category: str) -> str:
-        """
-        PURPOSE:
-            Generate Story ID in format: PREFIX-CATEGORY-SEQ
-
-        EXAMPLES:
-            PROP-RECRUIT-001, PROP-RECRUIT-002, PROP-AUTH-001
-        """
-        # Increment sequence for this category
-        if category not in self._category_sequences:
-            self._category_sequences[category] = 0
-        self._category_sequences[category] += 1
-
-        seq = self._category_sequences[category]
-        return f"{self.prefix}-{category}-{seq:03d}"
-
-    def _extract_role(self, full_context: str) -> str:
-        """Extract user role from context."""
-        context_lower = full_context.lower()
+        # Valid roles to look for
+        valid_roles = {
+            'user', 'admin', 'administrator', 'manager', 'customer',
+            'patient', 'clinician', 'doctor', 'nurse', 'staff',
+            'analyst', 'researcher', 'coordinator', 'operator',
+            'research coordinator', 'program manager', 'data analyst'
+        }
 
         # Look for explicit role mentions
         patterns = [
-            r'as\s+an?\s+(\w+)',
+            r'as\s+an?\s+(\w+(?:\s+\w+)?)',  # "as a research coordinator"
             r'(\w+)\s+(?:shall|must|should|can|will)',
             r'(?:allow|enable)\s+(\w+)s?\s+to',
-            r'(\w+)s?\s+(?:need|want|require)',
         ]
 
         for pattern in patterns:
             match = re.search(pattern, context_lower)
             if match:
-                role = match.group(1).lower()
-                if role in self.valid_roles:
+                role = match.group(1).lower().strip()
+                if role in valid_roles:
                     return role
 
+        # Use template's typical_roles
+        typical_roles = template.get('typical_roles', [])
+        if typical_roles:
+            return typical_roles[0]
+
         return self.default_role
+
+    # ========================================================================
+    # CAPABILITY EXTRACTION
+    # ========================================================================
 
     def _extract_capability(self, req: dict, full_context: str) -> str:
         """
         PURPOSE:
             Extract the core capability from the requirement.
-
-        APPROACH:
-            Use context columns if they contain refined/clarified requirements.
-            Fall back to description/title otherwise.
         """
-        # Check if context columns contain refinements
-        context_columns = req.get('context_columns', {})
-
-        # Priority: Supplemental notes often contain refined requirements
-        for key in ['Supplemental notes', 'Supplemental Notes', 'Notes', 'Clarification']:
-            if key in context_columns and context_columns[key]:
-                # Check if it looks like a refined requirement
-                notes = context_columns[key]
-                if len(notes) > 50 and not notes.lower().startswith('option'):
-                    # Use the notes as additional context, but still extract from description
-                    pass
-
-        # Primary source: description
+        # Primary source: description, then title
         description = req.get('description') or req.get('title') or ''
 
-        # Clean and extract the core capability
+        # Clean and extract
         capability = self._clean_capability_text(description)
 
         return capability
@@ -434,22 +689,27 @@ class UserStoryGenerator:
 
         return text or "access the requested feature"
 
-    def _extract_benefit(self, req: dict, full_context: str) -> str:
-        """Extract the business benefit from the requirement."""
-        # Check Impact column first
+    # ========================================================================
+    # BENEFIT EXTRACTION
+    # ========================================================================
+
+    def _extract_benefit(self, req: dict, full_context: str, template: dict) -> str:
+        """
+        PURPOSE:
+            Extract the business benefit from the requirement.
+        """
         context_columns = req.get('context_columns', {})
 
+        # Check Impact column first
         for key in ['Impact', 'Business Value', 'Benefit', 'Justification']:
             if key in context_columns and context_columns[key]:
                 benefit = context_columns[key]
-                # Clean it up
                 benefit = re.sub(r'^(?:to\s+)?', '', benefit, flags=re.IGNORECASE)
                 if len(benefit) > 10:
-                    # Capitalize 'i' to 'I'
                     benefit = re.sub(r'\bi\b', 'I', benefit)
                     return benefit
 
-        # Look in the main text for "so that" clause
+        # Look in main text for "so that" clause
         description = req.get('description') or ''
         match = re.search(r'so\s+that\s+(.+?)(?:\.|$)', description, re.IGNORECASE)
         if match:
@@ -457,197 +717,22 @@ class UserStoryGenerator:
             benefit = re.sub(r'\bi\b', 'I', benefit)
             return benefit
 
-        # Default based on type
-        req_type = req.get('type', '').lower()
-        if 'analytics' in req_type or 'report' in req_type:
+        # Default based on template type
+        template_desc = template.get('description', '')
+        if 'analytics' in template_desc.lower():
             return "I can make data-driven decisions"
-        elif 'consent' in req_type:
+        elif 'consent' in template_desc.lower():
             return "the process is compliant and documented"
-        elif 'recruitment' in req_type:
+        elif 'recruitment' in template_desc.lower():
             return "I can track and improve outreach effectiveness"
+        elif 'notification' in template_desc.lower():
+            return "communications are tracked and optimized"
 
         return "the system meets business requirements"
 
-    def _generate_hybrid_acceptance_criteria(
-        self,
-        req: dict,
-        full_context: str,
-        capability: str
-    ) -> list[str]:
-        """
-        PURPOSE:
-            Generate HYBRID acceptance criteria:
-            1. TESTABLE STATEMENTS (3-5 specific, measurable outcomes)
-            2. KEY SCENARIOS in Gherkin format (2-3 scenarios)
-            3. SMART SUCCESS METRICS (1-2 measurable outcomes)
-
-        NO GENERIC BOILERPLATE - all criteria derived from actual content.
-        """
-        criteria = []
-        context_columns = req.get('context_columns', {})
-        description = req.get('description') or ''
-        title = req.get('title') or ''
-
-        # ================================================================
-        # PART 1: TESTABLE STATEMENTS from actual requirement
-        # ================================================================
-        criteria.append("### Testable Requirements")
-
-        # Extract specific metrics from context
-        testable = self._extract_testable_statements(req, full_context)
-        criteria.extend(testable)
-
-        # ================================================================
-        # PART 2: KEY SCENARIOS in Gherkin format
-        # ================================================================
-        criteria.append("")
-        criteria.append("### Key Scenarios")
-
-        scenarios = self._generate_gherkin_scenarios(req, full_context, capability)
-        criteria.extend(scenarios)
-
-        # ================================================================
-        # PART 3: SUCCESS METRICS from Impact column
-        # ================================================================
-        impact = context_columns.get('Impact', '')
-        if impact:
-            criteria.append("")
-            criteria.append("### Success Metrics")
-            criteria.append(f"- Success: {impact}")
-
-        return criteria
-
-    def _extract_testable_statements(self, req: dict, full_context: str) -> list[str]:
-        """Extract specific, testable statements from the requirement."""
-        statements = []
-        description = req.get('description') or req.get('title') or ''
-        context_columns = req.get('context_columns', {})
-
-        # Look for quantifiable items in the description
-        # Numbers, percentages, time durations
-        numbers = re.findall(r'\b(\d+(?:\.\d+)?)\s*(%|seconds?|minutes?|hours?|days?|items?|users?)\b', full_context, re.IGNORECASE)
-        for num, unit in numbers:
-            statements.append(f"- System handles {num} {unit} as specified")
-
-        # Extract explicit requirements from description
-        desc_clean = description.strip()
-        if desc_clean:
-            # Main requirement as testable statement
-            statements.append(f"- {desc_clean}")
-
-        # Check Dependencies column for additional requirements
-        deps = context_columns.get('Dependencies', '')
-        if deps and len(deps) > 20:
-            # Extract key dependency statements
-            dep_parts = deps.split('.')
-            for part in dep_parts[:2]:  # First 2 sentences
-                part = part.strip()
-                if len(part) > 20:
-                    statements.append(f"- Depends on: {part}")
-
-        # Check Notes for clarifications
-        notes = context_columns.get('Notes', '') or context_columns.get('Supplemental notes', '')
-        if notes:
-            # Look for bullet points or numbered items
-            items = re.findall(r'(?:^|\n)\s*[-•*\d.]+\s*(.+?)(?=\n|$)', notes)
-            for item in items[:3]:  # First 3 items
-                item = item.strip()
-                if len(item) > 15:
-                    statements.append(f"- {item}")
-
-        # Ensure we have at least some statements
-        if len(statements) < 2:
-            title = req.get('title') or ''
-            if title:
-                statements.append(f"- Feature: {title}")
-
-        return statements[:5]  # Limit to 5
-
-    def _generate_gherkin_scenarios(
-        self,
-        req: dict,
-        full_context: str,
-        capability: str
-    ) -> list[str]:
-        """Generate Gherkin scenarios based on requirement content."""
-        scenarios = []
-        description = req.get('description') or ''
-        req_type = (req.get('type') or '').lower()
-
-        # Determine context based on requirement type
-        if 'analytics' in req_type or 'dashboard' in req_type or 'tracking' in req_type:
-            scenarios.append("Given a user is viewing the dashboard")
-            scenarios.append(f"When the data updates")
-            scenarios.append(f"Then the {capability} is displayed accurately")
-            scenarios.append("")
-            scenarios.append("Given historical data exists")
-            scenarios.append("When user selects a date range")
-            scenarios.append("Then only data within that range is shown")
-
-        elif 'consent' in req_type or 'enrollment' in req_type:
-            scenarios.append("Given a patient is in the consent flow")
-            scenarios.append(f"When they complete {capability}")
-            scenarios.append("Then the system records completion timestamp")
-            scenarios.append("")
-            scenarios.append("Given a patient abandons the flow")
-            scenarios.append("When they return later")
-            scenarios.append("Then they resume from where they left off")
-
-        elif 'report' in req_type or 'export' in req_type:
-            scenarios.append("Given data is available")
-            scenarios.append(f"When user requests {capability}")
-            scenarios.append("Then the export completes within 30 seconds")
-            scenarios.append("")
-            scenarios.append("Given no data exists")
-            scenarios.append("When user requests export")
-            scenarios.append("Then a helpful empty state message is shown")
-
-        else:
-            # Generic but still specific to the capability
-            scenarios.append(f"Given the user has appropriate permissions")
-            scenarios.append(f"When they attempt to {capability}")
-            scenarios.append("Then the action completes successfully")
-            scenarios.append("")
-            scenarios.append("Given invalid input is provided")
-            scenarios.append(f"When the user submits")
-            scenarios.append("Then clear error messages guide correction")
-
-        return scenarios
-
-    def _generate_non_technical_criteria(
-        self,
-        req: dict,
-        req_type: str,
-        full_context: str
-    ) -> list[str]:
-        """Generate criteria for non-technical items."""
-        criteria = []
-        context_columns = req.get('context_columns', {})
-
-        if req_type == 'Workflow Change':
-            criteria.append("### Process Change Requirements")
-            criteria.append("- Stakeholders have been notified of the change")
-            criteria.append("- Updated SOP/documentation is available")
-            criteria.append("- Training plan is defined if needed")
-            if context_columns.get('Notes'):
-                criteria.append(f"- Note: {context_columns['Notes'][:200]}")
-
-        elif req_type == 'Out of Scope':
-            criteria.append("### Out of Scope")
-            criteria.append("- Item has been documented as out of scope")
-            criteria.append("- Stakeholders have acknowledged")
-            # Include reason if available
-            for key in ['Notes', 'Supplemental notes', 'Reason']:
-                if key in context_columns:
-                    criteria.append(f"- Reason: {context_columns[key][:200]}")
-                    break
-
-        elif req_type == 'Completed':
-            criteria.append("### Completed")
-            criteria.append("- Feature has been implemented and tested")
-            criteria.append("- Documentation is updated")
-
-        return criteria
+    # ========================================================================
+    # NON-TECHNICAL SUMMARY
+    # ========================================================================
 
     def _build_non_technical_summary(
         self,
@@ -658,14 +743,14 @@ class UserStoryGenerator:
         """Build summary for non-technical items (no 'As a...' format)."""
         description = req.get('description') or req.get('title') or ''
 
-        if req_type == 'Workflow Change':
+        if req_type == 'workflow_change':
             return f"[WORKFLOW CHANGE] {description}"
-        elif req_type == 'Out of Scope':
-            return f"[OUT OF SCOPE] {description}"
-        elif req_type == 'Completed':
-            return f"[COMPLETED] {description}"
 
-        return description
+        return f"[{req_type.upper().replace('_', ' ')}] {description}"
+
+    # ========================================================================
+    # DESCRIPTION BUILDING
+    # ========================================================================
 
     def _build_rich_description(self, req: dict, full_context: str) -> str:
         """Build description incorporating context columns."""
@@ -694,6 +779,10 @@ class UserStoryGenerator:
 
         return " ".join(parts)
 
+    # ========================================================================
+    # TITLE BUILDING
+    # ========================================================================
+
     def _build_title(self, req: dict, capability: str) -> str:
         """Build story title."""
         # Prefer original title if available and reasonable
@@ -707,22 +796,30 @@ class UserStoryGenerator:
 
         return title.title()
 
+    # ========================================================================
+    # FLAG IDENTIFICATION
+    # ========================================================================
+
     def _identify_flags(
         self,
         req: dict,
         full_context: str,
+        is_technical: bool,
         req_type: str
     ) -> list[str]:
         """Identify issues that need attention."""
         flags = []
 
         # Non-technical items always flagged
-        if req_type == 'Workflow Change':
+        if not is_technical:
             flags.append('workflow_change')
-        elif req_type == 'Out of Scope':
-            flags.append('out_of_scope')
-        elif req_type == 'Completed':
+
+        # Check status for completed/out-of-scope
+        status = (req.get('status') or '').lower()
+        if any(kw in status for kw in ['complete', 'done', 'finished', 'live']):
             flags.append('completed')
+        if any(kw in status for kw in ['out of scope', 'deferred', 'cancelled']):
+            flags.append('out_of_scope')
 
         # Check for vague language
         vague_terms = self._check_vague_language(full_context)
@@ -746,10 +843,9 @@ class UserStoryGenerator:
         found = []
         text_lower = text.lower()
         for pattern in vague_patterns:
-            if re.search(pattern, text_lower):
-                match = re.search(pattern, text_lower)
-                if match:
-                    found.append(match.group(0))
+            match = re.search(pattern, text_lower)
+            if match:
+                found.append(match.group(0))
 
         return found
 
@@ -763,6 +859,10 @@ class UserStoryGenerator:
 
         text_lower = text.lower()
         return any(re.search(p, text_lower) for p in uncertainty_patterns)
+
+    # ========================================================================
+    # DUPLICATE DETECTION
+    # ========================================================================
 
     def _is_duplicate(self, story: dict) -> bool:
         """Check if story is similar to existing ones."""
@@ -778,6 +878,10 @@ class UserStoryGenerator:
                 return True
 
         return False
+
+    # ========================================================================
+    # STATISTICS
+    # ========================================================================
 
     def get_stats(self) -> dict:
         """Return generation statistics."""
@@ -798,7 +902,7 @@ def generate_user_stories(
         Convenience function to generate user stories.
 
     PARAMETERS:
-        requirements (list[dict]): Requirements from ExcelParser
+        requirements (list[dict]): Requirements from parsers
         prefix (str): Prefix for Story IDs (e.g., "PROP", "GRX")
         default_role (str): Default user role
 
@@ -814,9 +918,9 @@ def generate_user_stories(
 # ============================================================================
 
 if __name__ == "__main__":
-    print("=" * 60)
-    print("USER STORY GENERATOR TEST")
-    print("=" * 60)
+    print("=" * 70)
+    print("USER STORY GENERATOR TEST (Config-Driven)")
+    print("=" * 70)
 
     # Sample requirements with context_columns
     sample_requirements = [
@@ -835,20 +939,20 @@ if __name__ == "__main__":
             }
         },
         {
-            'title': 'Consent Flow Tracking',
-            'description': 'See where users stop in the consent process',
+            'title': 'Email Opt-Out Tracking',
+            'description': 'Track when patients opt out of email reminders',
             'priority': 'Medium',
             'status': 'Planned',
-            'type': 'Consent Analytics',
+            'type': 'Messaging',
             'row_number': 3,
             'context_columns': {
-                'Impact': 'Improves UX and conversion',
-                'Dependencies': 'Needs event tracking and funnel analytics',
+                'Impact': 'Compliance requirement for CAN-SPAM',
+                'Dependencies': 'Email service integration',
             }
         },
         {
-            'title': 'Manual Process Update',
-            'description': 'Update the manual review workflow',
+            'title': 'Manual Review Process',
+            'description': 'Update the manual review workflow for data validation',
             'priority': 'Low',
             'status': 'Planned',
             'type': 'Process',
@@ -859,22 +963,30 @@ if __name__ == "__main__":
         },
     ]
 
-    generator = UserStoryGenerator(prefix="TEST")
-    stories = generator.generate(sample_requirements)
+    try:
+        generator = UserStoryGenerator(prefix="TEST")
+        stories = generator.generate(sample_requirements)
 
-    print(f"\nGenerated {len(stories)} stories:")
-    for story in stories:
-        print(f"\n{'-'*60}")
-        print(f"ID: {story['generated_id']}")
-        print(f"Title: {story['title']}")
-        print(f"Type: {story['requirement_type']}")
-        print(f"Priority: {story['priority']}")
-        print(f"\nUser Story:\n  {story['user_story']}")
-        print(f"\nAcceptance Criteria:")
-        for ac in story['acceptance_criteria'][:5]:
-            print(f"  {ac}")
-        if story['flags']:
-            print(f"\nFlags: {', '.join(story['flags'])}")
+        print(f"\nGenerated {len(stories)} stories:")
+        for story in stories:
+            print(f"\n{'─'*70}")
+            print(f"ID: {story['generated_id']}")
+            print(f"Title: {story['title']}")
+            print(f"Type: {story['requirement_type']} ({story['category_abbrev']})")
+            print(f"Technical: {story['is_technical']}")
+            print(f"Priority: {story['priority']}")
+            print(f"\nUser Story:\n  {story['user_story']}")
+            print(f"\nAcceptance Criteria:")
+            for ac in story['acceptance_criteria']:
+                print(f"  {ac}")
+            if story['flags']:
+                print(f"\nFlags: {', '.join(story['flags'])}")
 
-    print(f"\n{'='*60}")
-    print("Stats:", generator.get_stats())
+        print(f"\n{'='*70}")
+        print("Stats:", generator.get_stats())
+
+    except FileNotFoundError as e:
+        print(f"\nERROR: {e}")
+        print("\nMake sure config files exist:")
+        print("  - config/acceptance_patterns.yaml")
+        print("  - config/requirement_templates.yaml")

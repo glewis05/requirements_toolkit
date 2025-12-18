@@ -1,0 +1,298 @@
+# config/requirement_templates.yaml
+# ============================================================================
+# PURPOSE: Map requirement types to acceptance patterns and metadata
+#
+# This file defines how different types of requirements are processed:
+#   - category_abbrev: Used in Story IDs (PREFIX-ABBREV-SEQ)
+#   - typical_roles: Default user roles if none detected
+#   - acceptance_patterns: Which patterns to use for acceptance criteria
+#   - keywords_to_detect: How to auto-detect this type from text
+#
+# DETECTION PRIORITY:
+#   1. If requirement has explicit 'Type' column, match to template by name
+#   2. Otherwise, scan text for keywords_to_detect
+#   3. First template with matching keyword wins
+#   4. Default to 'general' if no match
+#
+# STORY ID FORMAT: PREFIX-CATEGORY_ABBREV-SEQ
+#   Example: PROP-RECRUIT-001, PROP-RECRUIT-002, PROP-DASH-001
+#
+# ============================================================================
+
+# ============================================================================
+# RECRUITMENT / ANALYTICS
+# ============================================================================
+
+recruitment_analytics:
+  category_abbrev: RECRUIT
+  description: "Patient recruitment, enrollment funnels, consent tracking, study analytics"
+  typical_roles:
+    - "research coordinator"
+    - "program manager"
+    - "analyst"
+  acceptance_patterns:
+    - recruitment_analytics
+    - dashboard_display
+  keywords_to_detect:
+    - "recruit"
+    - "enroll"
+    - "consent"
+    - "decline"
+    - "invite"
+    - "funnel"
+    - "conversion"
+    - "outreach"
+    - "engagement"
+    - "program"
+    - "study"
+    - "patient volume"
+    - "analytics"
+
+# ============================================================================
+# DASHBOARD / REPORTING
+# ============================================================================
+
+dashboard_reporting:
+  category_abbrev: DASH
+  description: "Dashboards, visualizations, metrics displays, reports"
+  typical_roles:
+    - "analyst"
+    - "manager"
+    - "administrator"
+  acceptance_patterns:
+    - dashboard_display
+    - data_export
+  keywords_to_detect:
+    - "dashboard"
+    - "display"
+    - "view"
+    - "show"
+    - "visual"
+    - "chart"
+    - "graph"
+    - "metric"
+    - "kpi"
+    - "summary"
+    - "overview"
+
+# ============================================================================
+# MESSAGING / NOTIFICATIONS
+# ============================================================================
+
+messaging_notifications:
+  category_abbrev: MSG
+  description: "Email, SMS, reminders, notifications, communication tracking"
+  typical_roles:
+    - "research coordinator"
+    - "system"
+  acceptance_patterns:
+    - notification_tracking
+  keywords_to_detect:
+    - "email"
+    - "sms"
+    - "text message"
+    - "remind"
+    - "notif"
+    - "opt-out"
+    - "opt out"
+    - "unsubscribe"
+    - "communication"
+    - "outbound"
+    - "alert"
+
+# ============================================================================
+# DATA MANAGEMENT
+# ============================================================================
+
+data_management:
+  category_abbrev: DATA
+  description: "Patient data, records, lists, exports, filtering"
+  typical_roles:
+    - "research coordinator"
+    - "data analyst"
+  acceptance_patterns:
+    - data_entry
+    - data_export
+    - list_display
+  keywords_to_detect:
+    - "list"
+    - "patient"
+    - "record"
+    - "export"
+    - "download"
+    - "filter"
+    - "data"
+    - "csv"
+    - "excel"
+
+# ============================================================================
+# INTEGRATION / SYNC
+# ============================================================================
+
+integration:
+  category_abbrev: INTEG
+  description: "System integrations, APIs, data sync, cross-system validation"
+  typical_roles:
+    - "system"
+    - "administrator"
+  acceptance_patterns:
+    - integration_sync
+  keywords_to_detect:
+    - "integrat"
+    - "sync"
+    - "api"
+    - "duplicate"
+    - "cross-validate"
+    - "cross validate"
+    - "mychart"
+    - "ehr"
+    - "external"
+    - "third-party"
+    - "webhook"
+
+# ============================================================================
+# AUTHENTICATION / ACCESS
+# ============================================================================
+
+authentication_access:
+  category_abbrev: AUTH
+  description: "Login, authentication, user permissions, security"
+  typical_roles:
+    - "user"
+    - "administrator"
+  acceptance_patterns:
+    - user_access
+  keywords_to_detect:
+    - "login"
+    - "logout"
+    - "password"
+    - "access"
+    - "permission"
+    - "role"
+    - "sso"
+    - "authenticate"
+    - "session"
+    - "mfa"
+    - "2fa"
+
+# ============================================================================
+# CONSENT MANAGEMENT
+# ============================================================================
+
+consent_management:
+  category_abbrev: CONSENT
+  description: "Consent forms, e-signatures, consent tracking, compliance"
+  typical_roles:
+    - "patient"
+    - "research coordinator"
+  acceptance_patterns:
+    - consent_management
+    - recruitment_analytics
+  keywords_to_detect:
+    - "consent form"
+    - "e-consent"
+    - "econsent"
+    - "signature"
+    - "sign"
+    - "agree"
+    - "opt-in"
+    - "authorization"
+    - "hipaa consent"
+    - "gdpr"
+
+# ============================================================================
+# REPORTING / EXPORTS
+# ============================================================================
+
+reporting:
+  category_abbrev: RPT
+  description: "Reports, exports, downloads, data extracts"
+  typical_roles:
+    - "analyst"
+    - "manager"
+  acceptance_patterns:
+    - data_export
+    - dashboard_display
+  keywords_to_detect:
+    - "report"
+    - "export"
+    - "download"
+    - "pdf"
+    - "csv"
+    - "extract"
+
+# ============================================================================
+# SEARCH / FILTER
+# ============================================================================
+
+search_filter:
+  category_abbrev: SEARCH
+  description: "Search functionality, filtering, querying"
+  typical_roles:
+    - "user"
+    - "research coordinator"
+  acceptance_patterns:
+    - search_filter
+    - list_display
+  keywords_to_detect:
+    - "search"
+    - "find"
+    - "filter"
+    - "query"
+    - "lookup"
+
+# ============================================================================
+# WORKFLOW CHANGE (NON-TECHNICAL)
+# ============================================================================
+
+workflow_change:
+  category_abbrev: WF
+  description: "Non-technical process or workflow changes"
+  typical_roles:
+    - "staff"
+    - "coordinator"
+  acceptance_patterns:
+    - workflow_process
+  is_technical: false
+  keywords_to_detect:
+    - "workflow"
+    - "process change"
+    - "manual process"
+    - "procedure"
+    - "sop"
+    - "training"
+    - "policy"
+
+# ============================================================================
+# ADMIN / SETTINGS
+# ============================================================================
+
+admin_settings:
+  category_abbrev: ADMIN
+  description: "Administrative settings, configuration, system management"
+  typical_roles:
+    - "administrator"
+  acceptance_patterns:
+    - user_access
+    - data_entry
+  keywords_to_detect:
+    - "admin"
+    - "setting"
+    - "config"
+    - "manage"
+    - "setup"
+
+# ============================================================================
+# GENERAL (FALLBACK)
+# ============================================================================
+
+general:
+  category_abbrev: GEN
+  description: "Fallback for uncategorized requirements"
+  typical_roles:
+    - "user"
+  acceptance_patterns:
+    - dashboard_display
+    - data_entry
+  keywords_to_detect: []
+  # No keywords - this is the default fallback
