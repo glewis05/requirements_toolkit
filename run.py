@@ -400,7 +400,8 @@ def run_pipeline(
     print_subheader("Step 2: Generating User Stories")
 
     try:
-        story_generator = UserStoryGenerator()
+        # Pass prefix for new Story ID format: PREFIX-CATEGORY-SEQ
+        story_generator = UserStoryGenerator(prefix=prefix)
         stories = story_generator.generate(requirements)
 
         if not stories:
@@ -409,6 +410,11 @@ def run_pipeline(
             return results
 
         results['stories_count'] = len(stories)
+
+        # Get stats for requirement type breakdown
+        gen_stats = story_generator.get_stats()
+        results['story_stats'] = gen_stats
+
         print_success(f"Generated {len(stories)} user stories")
 
         # Count stories by priority
@@ -421,6 +427,17 @@ def run_pipeline(
             print_info("By priority:")
             for priority, count in sorted(priority_counts.items()):
                 print(f"      • {priority}: {count}")
+
+            # Show requirement type breakdown
+            print_info("By requirement type:")
+            if gen_stats.get('technical_features'):
+                print(f"      • Technical Features: {gen_stats['technical_features']}")
+            if gen_stats.get('workflow_changes'):
+                print(f"      • Workflow Changes: {gen_stats['workflow_changes']}")
+            if gen_stats.get('out_of_scope'):
+                print(f"      • Out of Scope: {gen_stats['out_of_scope']}")
+            if gen_stats.get('completed'):
+                print(f"      • Completed: {gen_stats['completed']}")
 
         # Check for flagged items
         flagged = [s for s in stories if s.get('flags')]
