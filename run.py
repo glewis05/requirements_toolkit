@@ -47,11 +47,13 @@ try:
     from parsers.excel_parser import ExcelParser
     from parsers.lucidchart_parser import LucidchartParser
     from parsers.word_parser import WordParser
+    from parsers.user_story_parser import UserStoryParser  # NEW: For phase 2
     from generators.user_story_generator import UserStoryGenerator
     from generators.uat_generator import UATGenerator
     from generators.traceability_generator import generate_traceability_matrix
     from formatters.github_markdown import format_for_github
     from formatters.excel_formatter import export_to_excel
+    from formatters.draft_excel_formatter import export_draft_for_review  # NEW: For phase 1
     # Compliance module - optional but recommended for regulated industries
     from compliance import (
         validate_part11, validate_hipaa, validate_soc2, validate_all,
@@ -235,6 +237,16 @@ Output formats:
              'or none (default: none)'
     )
 
+    parser.add_argument(
+        '--phase',
+        type=str,
+        choices=['draft', 'final', 'all'],
+        default='all',
+        help='Workflow phase: draft (generate stories for review), '
+             'final (generate UAT from refined stories), '
+             'all (full pipeline, default)'
+    )
+
     return parser.parse_args()
 
 
@@ -293,7 +305,8 @@ def run_pipeline(
     sheet_name: Optional[str] = None,
     output_dir: str = "outputs",
     verbose: bool = False,
-    compliance: str = "none"
+    compliance: str = "none",
+    phase: str = "all"  # NEW: draft, final, or all
 ) -> dict:
     """
     PURPOSE:
@@ -329,6 +342,7 @@ def run_pipeline(
     """
     results = {
         'success': False,
+        'phase': phase,
         'requirements_count': 0,
         'stories_count': 0,
         'test_cases_count': 0,
@@ -344,116 +358,199 @@ def run_pipeline(
     source_filename = os.path.basename(input_file)
 
     # ========================================================================
-    # STEP 1: PARSE REQUIREMENTS
+    # PHASE-SPECIFIC ROUTING
     # ========================================================================
-    print_subheader("Step 1: Parsing Requirements")
+    # Phase "final": Import refined stories (skip req parsing and story generation)
+    # Phase "draft": Parse reqs, generate stories, export for review, STOP
+    # Phase "all": Full pipeline (default)
 
-    try:
-        # Detect file type and use appropriate parser
-        # WHY: Different file types need different parsing strategies
-        _, ext = os.path.splitext(input_file)
-        ext = ext.lower()
+    requirements = []
+    stories = []
 
-        if ext in ['.xlsx', '.xls', '.xlsm']:
-            # Excel file → use ExcelParser
-            print_info("Detected: Excel file")
-            parser = ExcelParser(input_file)
-        elif ext == '.docx':
-            # Word document → use WordParser
-            print_info("Detected: Word document (.docx)")
-            parser = WordParser(input_file)
-        elif ext in ['.csv', '.svg']:
-            # Lucidchart export → use LucidchartParser
-            print_info(f"Detected: Lucidchart export ({ext})")
-            parser = LucidchartParser(input_file)
-        else:
-            raise ValueError(f"No parser available for {ext} files")
+    if phase == "final":
+        # ====================================================================
+        # PHASE 2 (FINAL): Import refined user stories
+        # ====================================================================
+        print_subheader("Step 1: Importing Refined User Stories")
 
-        # Parse the file
-        requirements = parser.parse()
+        try:
+            print_info("Phase: Final - importing refined stories from Excel")
+            story_parser = UserStoryParser(input_file)
+            stories = story_parser.parse()
 
-        if not requirements:
-            print_warning("No requirements found in file")
-            results['errors'].append("No requirements found")
-            return results
+            if not stories:
+                print_warning("No stories found in file")
+                results['errors'].append("No stories found")
+                return results
 
-        results['requirements_count'] = len(requirements)
-        print_success(f"Parsed {len(requirements)} requirements")
+            results['stories_count'] = len(stories)
+            stats = story_parser.get_stats()
 
-        if verbose:
-            # Show first few requirements
-            print_info("Sample requirements:")
-            for req in requirements[:3]:
-                desc = req.get('description', req.get('raw_text', 'N/A'))
-                if len(desc) > 60:
-                    desc = desc[:57] + "..."
-                print(f"      • {desc}")
+            print_success(f"Imported {len(stories)} refined user stories")
 
-    except Exception as e:
-        print_error(f"Failed to parse file: {e}")
-        results['errors'].append(f"Parse error: {e}")
-        return results
-
-    # ========================================================================
-    # STEP 2: GENERATE USER STORIES
-    # ========================================================================
-    print_subheader("Step 2: Generating User Stories")
-
-    try:
-        # Pass prefix for new Story ID format: PREFIX-CATEGORY-SEQ
-        story_generator = UserStoryGenerator(prefix=prefix)
-        stories = story_generator.generate(requirements)
-
-        if not stories:
-            print_warning("No user stories generated")
-            results['errors'].append("No stories generated")
-            return results
-
-        results['stories_count'] = len(stories)
-
-        # Get stats for requirement type breakdown
-        gen_stats = story_generator.get_stats()
-        results['story_stats'] = gen_stats
-
-        print_success(f"Generated {len(stories)} user stories")
-
-        # Count stories by priority
-        priority_counts = {}
-        for story in stories:
-            priority = story.get('priority', 'Medium')
-            priority_counts[priority] = priority_counts.get(priority, 0) + 1
-
-        if verbose:
-            print_info("By priority:")
-            for priority, count in sorted(priority_counts.items()):
-                print(f"      • {priority}: {count}")
-
-            # Show requirement type breakdown
-            print_info("By requirement type:")
-            if gen_stats.get('technical_features'):
-                print(f"      • Technical Features: {gen_stats['technical_features']}")
-            if gen_stats.get('workflow_changes'):
-                print(f"      • Workflow Changes: {gen_stats['workflow_changes']}")
-            if gen_stats.get('out_of_scope'):
-                print(f"      • Out of Scope: {gen_stats['out_of_scope']}")
-            if gen_stats.get('completed'):
-                print(f"      • Completed: {gen_stats['completed']}")
-
-        # Check for flagged items
-        flagged = [s for s in stories if s.get('flags')]
-        results['flagged_items'] = len(flagged)
-
-        if flagged:
-            print_warning(f"{len(flagged)} stories have quality flags")
             if verbose:
-                for story in flagged[:3]:
-                    flags = ', '.join(story.get('flags', []))
-                    print(f"      • {story.get('title', 'Untitled')[:40]}: {flags}")
+                print_info("Story status breakdown:")
+                print(f"      • Approved: {stats.get('approved', 0)}")
+                print(f"      • Draft: {stats.get('draft', 0)}")
+                print(f"      • Pending Client Review: {stats.get('pending_client_review', 0)}")
+                print(f"      • Needs Discussion: {stats.get('needs_discussion', 0)}")
+                print(f"      • Out of Scope (skipped): {stats.get('out_of_scope', 0)}")
+                print(f"      • Technical: {stats.get('technical', 0)}")
+                print(f"      • Non-technical: {stats.get('non_technical', 0)}")
 
-    except Exception as e:
-        print_error(f"Failed to generate stories: {e}")
-        results['errors'].append(f"Story generation error: {e}")
-        return results
+            # Skip to Step 3 (UAT generation)
+            # requirements are not available in final phase
+            results['requirements_count'] = stats.get('total_rows', len(stories))
+
+        except Exception as e:
+            print_error(f"Failed to import stories: {e}")
+            results['errors'].append(f"Import error: {e}")
+            return results
+
+    else:
+        # ====================================================================
+        # PHASE 1 (DRAFT) or ALL: Parse raw requirements
+        # ====================================================================
+        print_subheader("Step 1: Parsing Requirements")
+
+        try:
+            # Detect file type and use appropriate parser
+            _, ext = os.path.splitext(input_file)
+            ext = ext.lower()
+
+            if ext in ['.xlsx', '.xls', '.xlsm']:
+                print_info("Detected: Excel file")
+                parser = ExcelParser(input_file)
+            elif ext == '.docx':
+                print_info("Detected: Word document (.docx)")
+                parser = WordParser(input_file)
+            elif ext in ['.csv', '.svg']:
+                print_info(f"Detected: Lucidchart export ({ext})")
+                parser = LucidchartParser(input_file)
+            else:
+                raise ValueError(f"No parser available for {ext} files")
+
+            # Parse the file
+            requirements = parser.parse()
+
+            if not requirements:
+                print_warning("No requirements found in file")
+                results['errors'].append("No requirements found")
+                return results
+
+            results['requirements_count'] = len(requirements)
+            print_success(f"Parsed {len(requirements)} requirements")
+
+            if verbose:
+                print_info("Sample requirements:")
+                for req in requirements[:3]:
+                    desc = req.get('description', req.get('raw_text', 'N/A'))
+                    if len(desc) > 60:
+                        desc = desc[:57] + "..."
+                    print(f"      • {desc}")
+
+        except Exception as e:
+            print_error(f"Failed to parse file: {e}")
+            results['errors'].append(f"Parse error: {e}")
+            return results
+
+        # ====================================================================
+        # STEP 2: GENERATE USER STORIES (for draft and all phases)
+        # ====================================================================
+        print_subheader("Step 2: Generating User Stories")
+
+        try:
+            # Pass prefix for new Story ID format: PREFIX-CATEGORY-SEQ
+            story_generator = UserStoryGenerator(prefix=prefix)
+            stories = story_generator.generate(requirements)
+
+            if not stories:
+                print_warning("No user stories generated")
+                results['errors'].append("No stories generated")
+                return results
+
+            results['stories_count'] = len(stories)
+
+            # Get stats for requirement type breakdown
+            gen_stats = story_generator.get_stats()
+            results['story_stats'] = gen_stats
+
+            print_success(f"Generated {len(stories)} user stories")
+
+            # Count stories by priority
+            priority_counts = {}
+            for story in stories:
+                priority = story.get('priority', 'Medium')
+                priority_counts[priority] = priority_counts.get(priority, 0) + 1
+
+            if verbose:
+                print_info("By priority:")
+                for priority, count in sorted(priority_counts.items()):
+                    print(f"      • {priority}: {count}")
+
+                # Show requirement type breakdown
+                print_info("By requirement type:")
+                if gen_stats.get('technical_features'):
+                    print(f"      • Technical Features: {gen_stats['technical_features']}")
+                if gen_stats.get('workflow_changes'):
+                    print(f"      • Workflow Changes: {gen_stats['workflow_changes']}")
+                if gen_stats.get('out_of_scope'):
+                    print(f"      • Out of Scope: {gen_stats['out_of_scope']}")
+                if gen_stats.get('completed'):
+                    print(f"      • Completed: {gen_stats['completed']}")
+
+            # Check for flagged items
+            flagged = [s for s in stories if s.get('flags')]
+            results['flagged_items'] = len(flagged)
+
+            if flagged:
+                print_warning(f"{len(flagged)} stories have quality flags")
+                if verbose:
+                    for story in flagged[:3]:
+                        flags = ', '.join(story.get('flags', []))
+                        print(f"      • {story.get('title', 'Untitled')[:40]}: {flags}")
+
+        except Exception as e:
+            print_error(f"Failed to generate stories: {e}")
+            results['errors'].append(f"Story generation error: {e}")
+            return results
+
+        # ====================================================================
+        # PHASE "DRAFT": Export for review and STOP
+        # ====================================================================
+        if phase == "draft":
+            print_subheader("Step 3: Exporting Draft for Review")
+
+            try:
+                # Create draft output directory
+                draft_output_dir = os.path.join(output_dir, "drafts")
+
+                # Export using draft formatter
+                draft_filepath = export_draft_for_review(
+                    stories=stories,
+                    prefix=prefix,
+                    output_dir=draft_output_dir,
+                    source_filename=source_filename
+                )
+
+                results['output_files'].append(draft_filepath)
+                results['success'] = True
+
+                print_success(f"Draft exported: {draft_filepath}")
+                print()
+                print_info("NEXT STEPS:")
+                print(f"    1. Open and review: {draft_filepath}")
+                print("    2. Refine stories, add context, set status")
+                print(f"    3. Run: python3 run.py \"{draft_filepath}\" --prefix {prefix} --phase final")
+
+                return results
+
+            except Exception as e:
+                print_error(f"Failed to export draft: {e}")
+                results['errors'].append(f"Draft export error: {e}")
+                return results
+
+    # End of if phase != "final" block
 
     # ========================================================================
     # STEP 3: GENERATE UAT TEST CASES
@@ -577,6 +674,30 @@ def run_pipeline(
     print_subheader("Step 4: Generating Traceability Matrix")
 
     try:
+        # For final phase, we need to reconstruct requirements from stories
+        # since we don't have the original requirements
+        if phase == "final" and not requirements:
+            # Build requirements from story source info
+            requirements = []
+            for story in stories:
+                # Handle source_requirement which may be a dict or string
+                source_req = story.get('source_requirement', {})
+                if isinstance(source_req, dict):
+                    description = source_req.get('description', story.get('user_story', ''))
+                else:
+                    # String fallback
+                    description = str(source_req) if source_req else story.get('user_story', '')
+
+                req = {
+                    'requirement_id': story.get('story_id', story.get('generated_id')),
+                    'description': description,
+                    'row_number': story.get('source_row'),
+                    'title': story.get('title'),
+                    'priority': story.get('priority', 'Medium'),
+                }
+                requirements.append(req)
+            print_info(f"Reconstructed {len(requirements)} requirements from refined stories")
+
         traceability_matrix = generate_traceability_matrix(
             requirements=requirements,
             stories=stories,
@@ -722,6 +843,14 @@ def main():
         }
         print_stat("Compliance", compliance_names.get(args.compliance, args.compliance))
 
+    # Show phase (workflow mode)
+    if args.phase != 'all':
+        phase_names = {
+            'draft': 'Draft (generate stories for review, stop before UAT)',
+            'final': 'Final (import refined stories, generate UAT)'
+        }
+        print_stat("Phase", phase_names.get(args.phase, args.phase))
+
     # Validate input file
     try:
         validate_input_file(args.input_file)
@@ -743,41 +872,52 @@ def main():
         sheet_name=args.sheet,
         output_dir=args.output_dir,
         verbose=args.verbose,
-        compliance=args.compliance
+        compliance=args.compliance,
+        phase=args.phase
     )
 
     # Print summary
     print_header("Summary")
 
     if results['success']:
-        print_success("Pipeline completed successfully!")
+        # Check which phase completed
+        is_draft_phase = results.get('phase') == 'draft'
+
+        if is_draft_phase:
+            print_success("Draft generation completed!")
+        else:
+            print_success("Pipeline completed successfully!")
+
         print()
         print_stat("Requirements parsed", results['requirements_count'])
         print_stat("User stories generated", results['stories_count'])
-        print_stat("UAT test cases created", results['test_cases_count'])
 
-        # Show compliance results
-        if results['compliance_tests_count'] > 0:
-            print_stat("Compliance test cases", results['compliance_tests_count'])
+        # Only show UAT counts for non-draft phases
+        if not is_draft_phase:
+            print_stat("UAT test cases created", results['test_cases_count'])
 
-        if results['compliance_reports']:
-            print()
-            print("Compliance Summary:")
-            for framework, report in results['compliance_reports'].items():
-                score = report['summary']['compliance_score']
-                gaps = report['summary']['requirements_with_gaps']
-                print(f"    • {framework.upper()}: {score}% compliant ({gaps} requirements with gaps)")
+            # Show compliance results
+            if results['compliance_tests_count'] > 0:
+                print_stat("Compliance test cases", results['compliance_tests_count'])
 
-        # Show traceability summary
-        if results['traceability']:
-            rtm = results['traceability']
-            print()
-            print("Traceability Summary:")
-            print(f"    • Full coverage: {rtm.get('full_coverage_count', 0)} requirements ({rtm.get('full_coverage_pct', 0)}%)")
-            print(f"    • Partial coverage: {rtm.get('partial_coverage_count', 0)} requirements ({rtm.get('partial_coverage_pct', 0)}%)")
-            print(f"    • No coverage: {rtm.get('no_coverage_count', 0)} requirements ({rtm.get('no_coverage_pct', 0)}%)")
-            if rtm.get('total_gaps', 0) > 0:
-                print(f"    • {rtm.get('total_gaps', 0)} requirements have identified gaps")
+            if results['compliance_reports']:
+                print()
+                print("Compliance Summary:")
+                for framework, report in results['compliance_reports'].items():
+                    score = report['summary']['compliance_score']
+                    gaps = report['summary']['requirements_with_gaps']
+                    print(f"    • {framework.upper()}: {score}% compliant ({gaps} requirements with gaps)")
+
+            # Show traceability summary
+            if results['traceability']:
+                rtm = results['traceability']
+                print()
+                print("Traceability Summary:")
+                print(f"    • Full coverage: {rtm.get('full_coverage_count', 0)} requirements ({rtm.get('full_coverage_pct', 0)}%)")
+                print(f"    • Partial coverage: {rtm.get('partial_coverage_count', 0)} requirements ({rtm.get('partial_coverage_pct', 0)}%)")
+                print(f"    • No coverage: {rtm.get('no_coverage_count', 0)} requirements ({rtm.get('no_coverage_pct', 0)}%)")
+                if rtm.get('total_gaps', 0) > 0:
+                    print(f"    • {rtm.get('total_gaps', 0)} requirements have identified gaps")
 
         if results['flagged_items'] > 0:
             print()
@@ -789,11 +929,20 @@ def main():
             print(f"    • {filepath}")
 
         print()
-        print("Next steps:")
-        print("    1. Review the generated user stories for accuracy")
-        print("    2. Check the Traceability Matrix for coverage gaps")
-        print("    3. Refine any flagged items that need attention")
-        print("    4. Import to your project management tool or share with stakeholders")
+        if is_draft_phase:
+            # Draft-specific next steps
+            print("Next steps:")
+            print("    1. Open the draft Excel file and review each user story")
+            print("    2. Refine titles, acceptance criteria, and add meeting context")
+            print("    3. Set Status: Approved, Needs Discussion, or Out of Scope")
+            print("    4. Save the file, then run with --phase final to generate UAT")
+        else:
+            # Normal next steps
+            print("Next steps:")
+            print("    1. Review the generated user stories for accuracy")
+            print("    2. Check the Traceability Matrix for coverage gaps")
+            print("    3. Refine any flagged items that need attention")
+            print("    4. Import to your project management tool or share with stakeholders")
 
     else:
         print_error("Pipeline completed with errors")

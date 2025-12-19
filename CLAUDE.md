@@ -150,6 +150,83 @@ Maps requirement types to:
 - Generate Stories: Convert parsed requirements to user stories
 - Generate UAT: Create UAT test cases from user stories
 
+## Two-Phase Workflow (Human-in-the-Loop)
+
+For projects requiring stakeholder review before UAT generation, use the two-phase workflow:
+
+### Phase 1: Draft Generation
+```bash
+python3 run.py "requirements.xlsx" --prefix PROP --phase draft --output excel
+```
+
+**What happens:**
+1. Parse requirements from input file
+2. Generate user stories with acceptance criteria
+3. Export to draft Excel for human review
+4. **STOP** (UAT not generated yet)
+
+**Output:** `outputs/drafts/PROP_draft_user_stories_YYYYMMDD_HHMM.xlsx`
+
+**Draft Excel contains (14 columns):**
+| Column | Purpose | Editable? |
+|--------|---------|-----------|
+| Story ID | Auto-generated | No (locked) |
+| Title | Story title | Yes |
+| User Story | As a... I want... so that... | Yes |
+| Role | User role | Yes |
+| Acceptance Criteria | Auto-generated from patterns | Yes |
+| Success Metrics | Measurable outcomes | Yes |
+| Priority | Critical/High/Medium/Low | Yes (dropdown) |
+| Status | See status options below | Yes (dropdown) |
+| Your Notes | Empty - for internal reviewer comments | Yes |
+| Meeting Context | Empty - for decisions from meetings | Yes |
+| Client Feedback | Empty - for client signoff comments | Yes |
+| Is Technical | Yes/No | Yes (dropdown) |
+| Source Requirement | Original text | No (locked) |
+| Source Row | Traceability | No (locked) |
+
+### Client Review Workflow
+1. **Internal team** reviews and refines draft stories
+2. Set status to **"Pending Client Review"** and send to client
+3. **Client** adds feedback in "Client Feedback" column
+4. **Client** changes status to "Approved" or "Needs Discussion"
+5. Once approved, run `--phase final` to generate UAT
+
+### Status Options
+| Status | Color | Meaning |
+|--------|-------|---------|
+| Draft | Yellow | Not yet reviewed, needs internal attention |
+| Pending Client Review | Blue | Sent to client, awaiting response |
+| Approved | Green | Client approved, ready for UAT generation |
+| Needs Discussion | Orange | Has questions or concerns to resolve |
+| Out of Scope | Grey | Removed from scope, will be skipped |
+
+### Phase 2: Final Generation
+```bash
+python3 run.py "outputs/drafts/PROP_draft_user_stories_YYYYMMDD_HHMM.xlsx" --prefix PROP --phase final --output excel
+```
+
+**What happens:**
+1. Import refined user stories from the draft Excel
+2. Generate UAT test cases from **your refined** acceptance criteria
+3. Generate traceability matrix
+4. Export final output
+
+**Notes:**
+- Stories with Status="Out of Scope" are skipped
+- Stories with Status="Needs Discussion" or "Pending Client Review" are included but flagged
+- Client feedback is captured and flows through to UAT generation context
+- The UAT generator uses YOUR refined acceptance criteria, not auto-generated ones
+
+### Full Pipeline (Default)
+```bash
+python3 run.py "requirements.xlsx" --prefix PROP --output excel
+# OR
+python3 run.py "requirements.xlsx" --prefix PROP --phase all --output excel
+```
+
+Use `--phase all` (or omit the flag) for the original behavior: full pipeline without human review step.
+
 ## Output Contracts (for Downstream Tools)
 
 ### JSON Export Structure (--output json)
