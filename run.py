@@ -80,6 +80,20 @@ except ImportError as e:
 try:
     from database import ClientProductDatabase, get_database
     from database import queries as db_queries
+    from database.import_stories import import_stories_from_excel
+    from database.audit_queries import (
+        get_record_audit_trail,
+        get_program_audit_report,
+        get_recent_changes,
+        format_audit_for_display,
+        format_recent_changes_table,
+        format_audit_summary,
+        VALID_RECORD_TYPES
+    )
+    from formatters.audit_excel_formatter import (
+        export_audit_to_excel,
+        export_program_audit_report
+    )
     DATABASE_AVAILABLE = True
 except ImportError:
     DATABASE_AVAILABLE = False
@@ -192,10 +206,12 @@ Output formats:
         """
     )
 
-    # Required positional argument: input file
+    # Positional argument: input file (optional for audit commands)
     parser.add_argument(
         'input_file',
         type=str,
+        nargs='?',  # Optional - not required for audit commands
+        default=None,
         help='Path to the requirements file (Excel, Word .docx, or Lucidchart .csv/.svg)'
     )
 
@@ -280,6 +296,82 @@ Output formats:
         '--from-db',
         action='store_true',
         help='Load approved stories from database instead of file (for --phase final)'
+    )
+
+    # Direct import mode (bypasses parsing/generation)
+    parser.add_argument(
+        '--import-stories',
+        action='store_true',
+        help='Import refined stories directly to database (skip parsing/generation). '
+             'Requires --client and --prefix flags.'
+    )
+
+    parser.add_argument(
+        '--import-status',
+        type=str,
+        default='Approved',
+        choices=['Draft', 'Approved', 'Pending Client Review', 'Needs Discussion'],
+        help='Status to assign imported stories (default: Approved)'
+    )
+
+    parser.add_argument(
+        '--add-to-reference',
+        action='store_true',
+        help='Add approved imported stories to reference library'
+    )
+
+    # Audit history commands
+    parser.add_argument(
+        '--audit-history',
+        action='store_true',
+        help='View audit trail for a specific record. '
+             'Requires --record-type and --record-id.'
+    )
+
+    parser.add_argument(
+        '--audit-report',
+        action='store_true',
+        help='View all changes for a program within a date range. '
+             'Requires --prefix. Optional: --start-date, --end-date.'
+    )
+
+    parser.add_argument(
+        '--recent-changes',
+        action='store_true',
+        help='View recent changes across all programs.'
+    )
+
+    parser.add_argument(
+        '--record-type',
+        type=str,
+        choices=['client', 'program', 'requirement', 'user_story',
+                 'test_case', 'compliance_gap', 'traceability'],
+        help='Record type for --audit-history'
+    )
+
+    parser.add_argument(
+        '--record-id',
+        type=str,
+        help='Record ID for --audit-history (e.g., PROP-RECRUIT-001)'
+    )
+
+    parser.add_argument(
+        '--start-date',
+        type=str,
+        help='Start date for --audit-report (YYYY-MM-DD)'
+    )
+
+    parser.add_argument(
+        '--end-date',
+        type=str,
+        help='End date for --audit-report (YYYY-MM-DD)'
+    )
+
+    parser.add_argument(
+        '--days',
+        type=int,
+        default=7,
+        help='Number of days for --recent-changes (default: 7)'
     )
 
     return parser.parse_args()
@@ -1009,7 +1101,7 @@ def main():
         print_stat("Phase", phase_names.get(args.phase, args.phase))
 
     # Show database configuration
-    if args.save_to_db:
+    if args.save_to_db or args.import_stories:
         print_stat("Database", "Enabled (data/client_product_database.db)")
         if args.client:
             print_stat("Client", args.client)
@@ -1017,6 +1109,173 @@ def main():
             print_stat("Program", args.program)
         if args.from_db:
             print_stat("Load from DB", "Yes (approved stories)")
+
+    # Show import mode
+    if args.import_stories:
+        print_stat("Mode", "Direct Import (skip parsing/generation)")
+        print_stat("Import Status", args.import_status)
+        if args.add_to_reference:
+            print_stat("Add to Reference", "Yes")
+
+    # ========================================================================
+    # AUDIT COMMANDS (no input file required)
+    # ========================================================================
+    if args.audit_history or args.audit_report or args.recent_changes:
+        if not DATABASE_AVAILABLE:
+            print_error("Database module not available for audit commands.")
+            sys.exit(1)
+
+        db = get_database()
+
+        # ------------------------------------------------------------------
+        # AUDIT HISTORY: View trail for specific record
+        # ------------------------------------------------------------------
+        if args.audit_history:
+            if not args.record_type or not args.record_id:
+                print_error("--audit-history requires --record-type and --record-id")
+                print()
+                print("Example:")
+                print("  python3 run.py --audit-history --record-type user_story --record-id PROP-RECRUIT-001")
+                sys.exit(1)
+
+            print_subheader(f"Audit Trail: {args.record_id}")
+
+            entries = get_record_audit_trail(db, args.record_type, args.record_id)
+
+            if not entries:
+                print_info(f"No audit entries found for {args.record_type}: {args.record_id}")
+            else:
+                print_info(f"Found {len(entries)} audit entries")
+                print()
+
+                # Display formatted output
+                formatted = format_audit_for_display(
+                    entries,
+                    title=f"AUDIT TRAIL: {args.record_id}"
+                )
+                print(formatted)
+
+                # Export to Excel if requested
+                if args.output == 'excel':
+                    output_dir = os.path.join(args.output_dir, 'audit')
+                    os.makedirs(output_dir, exist_ok=True)
+                    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                    safe_id = args.record_id.replace('/', '_')
+                    filename = f"audit_{args.record_type}_{safe_id}_{timestamp}.xlsx"
+                    output_path = os.path.join(output_dir, filename)
+
+                    export_audit_to_excel(
+                        entries, output_path,
+                        report_title=f"Audit Trail: {args.record_id}"
+                    )
+                    print()
+                    print_success(f"Exported to: {output_path}")
+
+            db.close()
+            print()
+            sys.exit(0)
+
+        # ------------------------------------------------------------------
+        # AUDIT REPORT: View all changes for a program
+        # ------------------------------------------------------------------
+        if args.audit_report:
+            if not args.prefix:
+                print_error("--audit-report requires --prefix")
+                print()
+                print("Example:")
+                print("  python3 run.py --audit-report --prefix PROP --start-date 2024-01-01")
+                sys.exit(1)
+
+            print_subheader(f"Audit Report: {args.prefix}")
+
+            report = get_program_audit_report(
+                db, args.prefix,
+                start_date=args.start_date,
+                end_date=args.end_date
+            )
+
+            if report.get('error'):
+                print_error(report['error'])
+                db.close()
+                sys.exit(1)
+
+            program = report.get('program', {})
+            date_range = report.get('date_range', {})
+            summary = report.get('summary', {})
+            entries = report.get('entries', [])
+
+            print_info(f"Program: {program.get('name', 'N/A')} ({program.get('prefix', 'N/A')})")
+            print_info(f"Date Range: {date_range.get('start')} to {date_range.get('end')}")
+            print()
+
+            # Display summary
+            if summary.get('total_changes', 0) > 0:
+                print(format_audit_summary(summary))
+
+                # Show recent entries (first 20)
+                if entries:
+                    print(format_recent_changes_table(entries, max_entries=20))
+            else:
+                print_info("No changes found in the specified date range.")
+
+            # Export to Excel if requested
+            if args.output == 'excel' and entries:
+                output_dir = os.path.join(args.output_dir, 'audit')
+                os.makedirs(output_dir, exist_ok=True)
+                output_path = export_program_audit_report(report, output_dir)
+                print()
+                print_success(f"Exported to: {output_path}")
+
+            db.close()
+            print()
+            sys.exit(0)
+
+        # ------------------------------------------------------------------
+        # RECENT CHANGES: View recent activity
+        # ------------------------------------------------------------------
+        if args.recent_changes:
+            print_subheader(f"Recent Changes (Last {args.days} Days)")
+
+            entries = get_recent_changes(db, days=args.days)
+
+            if not entries:
+                print_info("No recent changes found.")
+            else:
+                print_info(f"Found {len(entries)} changes")
+                print(format_recent_changes_table(entries, max_entries=30))
+
+                # Export to Excel if requested
+                if args.output == 'excel':
+                    output_dir = os.path.join(args.output_dir, 'audit')
+                    os.makedirs(output_dir, exist_ok=True)
+                    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                    filename = f"recent_changes_{args.days}days_{timestamp}.xlsx"
+                    output_path = os.path.join(output_dir, filename)
+
+                    export_audit_to_excel(
+                        entries, output_path,
+                        report_title=f"Recent Changes (Last {args.days} Days)"
+                    )
+                    print()
+                    print_success(f"Exported to: {output_path}")
+
+            db.close()
+            print()
+            sys.exit(0)
+
+    # ========================================================================
+    # NORMAL MODE: Validate input file required
+    # ========================================================================
+    if not args.input_file:
+        print_error("Input file is required")
+        print()
+        print("Usage: python3 run.py <input_file> [options]")
+        print()
+        print("For audit commands, use:")
+        print("  python3 run.py --recent-changes")
+        print("  python3 run.py --audit-history --record-type user_story --record-id PROP-001")
+        print("  python3 run.py --audit-report --prefix PROP")
+        sys.exit(1)
 
     # Validate input file
     try:
@@ -1030,6 +1289,78 @@ def main():
     except ValueError as e:
         print_error(str(e))
         sys.exit(1)
+
+    # ========================================================================
+    # IMPORT MODE: Direct import to database (skip parsing/generation)
+    # ========================================================================
+    if args.import_stories:
+        if not DATABASE_AVAILABLE:
+            print_error("Database module not available for import mode.")
+            sys.exit(1)
+
+        if not args.client:
+            print_error("--client is required for --import-stories mode")
+            print()
+            print("Example:")
+            print(f'  python3 run.py "{args.input_file}" --import-stories --prefix {args.prefix} --client "Client Name"')
+            sys.exit(1)
+
+        print_subheader("Import Mode: Direct Story Import")
+        print_info("Skipping parsing/generation - importing directly to database")
+
+        # Run import
+        db = get_database()
+
+        import_result = import_stories_from_excel(
+            db_manager=db,
+            excel_path=args.input_file,
+            client_name=args.client,
+            program_name=args.program or f"{args.prefix} Program",
+            prefix=args.prefix,
+            default_status=args.import_status,
+            add_to_reference=args.add_to_reference,
+            verbose=args.verbose
+        )
+
+        db.close()
+
+        # Print summary
+        print_header("Import Summary")
+
+        if import_result['success']:
+            print_success("Import completed successfully!")
+        else:
+            print_warning("Import completed with errors")
+
+        print()
+        print_stat("Stories imported", import_result['imported'])
+        print_stat("Stories updated", import_result['updated'])
+        print_stat("Stories skipped", import_result['skipped'])
+
+        if import_result['errors']:
+            print()
+            print_warning(f"{len(import_result['errors'])} errors:")
+            for err in import_result['errors'][:5]:
+                print(f"    • {err}")
+            if len(import_result['errors']) > 5:
+                print(f"    ... and {len(import_result['errors']) - 5} more")
+
+        print()
+        print("Database:")
+        print(f"    • Client ID: {import_result['client_id']}")
+        print(f"    • Program ID: {import_result['program_id']}")
+        print(f"    • Location: data/client_product_database.db")
+
+        if import_result['story_ids']:
+            print()
+            print(f"Story IDs ({len(import_result['story_ids'])}):")
+            for sid in import_result['story_ids'][:5]:
+                print(f"    • {sid}")
+            if len(import_result['story_ids']) > 5:
+                print(f"    ... and {len(import_result['story_ids']) - 5} more")
+
+        print()
+        sys.exit(0 if import_result['success'] else 1)
 
     # Run the pipeline
     results = run_pipeline(

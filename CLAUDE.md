@@ -318,6 +318,61 @@ All changes are logged to `audit_history` for FDA 21 CFR Part 11 compliance:
 - Timestamp
 - Change reason (optional)
 
+### Direct Story Import
+
+Import refined user stories directly into the database without going through the parsing/generation pipeline.
+
+**Use Cases:**
+- Seed database with existing work from spreadsheets
+- Migrate stories from another system
+- Build reference library from historical approved stories
+- Import manually refined stories outside the pipeline
+
+**Command:**
+```bash
+# Basic import (stories marked as Approved)
+python3 run.py "refined_stories.xlsx" --import-stories --prefix PROP \
+    --client "Discover Health" --program "Propel Analytics"
+
+# Import as Draft status
+python3 run.py "stories.xlsx" --import-stories --prefix PROP \
+    --client "Acme" --import-status Draft
+
+# Add to reference library
+python3 run.py "approved_stories.xlsx" --import-stories --prefix PROP \
+    --client "Acme" --add-to-reference --verbose
+```
+
+**Flexible Column Mapping:**
+The import handles various column naming conventions:
+| Field | Accepted Column Names |
+|-------|----------------------|
+| story_id | Story ID, ID, Identifier |
+| title | Title, Name, Summary, Feature |
+| user_story | User Story, Story, Description |
+| role | Role, Actor, User, Persona |
+| acceptance_criteria | Acceptance Criteria, AC, Criteria |
+| success_metrics | Success Metrics, Metrics, KPI |
+| priority | Priority, Ranking, Importance |
+| status | Status, State, Approval |
+| is_technical | Is Technical, Technical, Tech |
+| internal_notes | Internal Notes, Your Notes, Notes |
+| client_feedback | Client Feedback, Feedback |
+
+**Behavior:**
+- Stories without IDs get auto-generated IDs: `PREFIX-CATEGORY-SEQ`
+- Stories default to 'Approved' status (use `--import-status Draft` to override)
+- Column matching is case-insensitive
+- Missing optional columns are skipped gracefully
+- Story IDs are globally unique - re-importing updates existing stories
+
+**Import Flags:**
+| Flag | Purpose |
+|------|---------|
+| `--import-stories` | Enable direct import mode |
+| `--import-status` | Status for imported stories (default: Approved) |
+| `--add-to-reference` | Add approved stories to reference library |
+
 ## Output Contracts (for Downstream Tools)
 
 ### JSON Export Structure (--output json)
