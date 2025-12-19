@@ -76,6 +76,14 @@ except ImportError as e:
         print("    └── formatters/")
         sys.exit(1)
 
+# Database module - optional for persisting results
+try:
+    from database import ClientProductDatabase, get_database
+    from database import queries as db_queries
+    DATABASE_AVAILABLE = True
+except ImportError:
+    DATABASE_AVAILABLE = False
+
 
 # ============================================================================
 # CONSOLE OUTPUT HELPERS
@@ -247,6 +255,33 @@ Output formats:
              'all (full pipeline, default)'
     )
 
+    # Database integration arguments
+    parser.add_argument(
+        '--save-to-db',
+        action='store_true',
+        help='Save results to SQLite database (data/client_product_database.db)'
+    )
+
+    parser.add_argument(
+        '--client',
+        type=str,
+        default=None,
+        help='Client name for database storage (creates if not exists)'
+    )
+
+    parser.add_argument(
+        '--program',
+        type=str,
+        default=None,
+        help='Program name for database storage (creates if not exists under client)'
+    )
+
+    parser.add_argument(
+        '--from-db',
+        action='store_true',
+        help='Load approved stories from database instead of file (for --phase final)'
+    )
+
     return parser.parse_args()
 
 
@@ -306,7 +341,11 @@ def run_pipeline(
     output_dir: str = "outputs",
     verbose: bool = False,
     compliance: str = "none",
-    phase: str = "all"  # NEW: draft, final, or all
+    phase: str = "all",  # draft, final, or all
+    save_to_db: bool = False,  # NEW: Save to SQLite database
+    client_name: Optional[str] = None,  # NEW: Client name for database
+    program_name: Optional[str] = None,  # NEW: Program name for database
+    from_db: bool = False  # NEW: Load stories from database
 ) -> dict:
     """
     PURPOSE:
@@ -351,11 +390,75 @@ def run_pipeline(
         'traceability': None,  # RTM summary
         'flagged_items': 0,
         'output_files': [],
-        'errors': []
+        'errors': [],
+        'database': None  # NEW: Database info if saved
     }
 
     # Extract source filename for documentation
     source_filename = os.path.basename(input_file)
+
+    # ========================================================================
+    # DATABASE SETUP (Optional)
+    # ========================================================================
+    db = None
+    program_id = None
+    client_id = None
+
+    if save_to_db:
+        if not DATABASE_AVAILABLE:
+            print_warning("Database module not available. Install sqlite3 or check imports.")
+            print_warning("Continuing without database persistence.")
+            save_to_db = False
+        else:
+            print_subheader("Database Setup")
+
+            try:
+                db = get_database()
+
+                # Find or create client
+                if client_name:
+                    existing_client = db.get_client_by_name(client_name)
+                    if existing_client:
+                        client_id = existing_client['client_id']
+                        print_info(f"Found existing client: {client_name}")
+                    else:
+                        client_id = db.create_client(client_name)
+                        print_success(f"Created client: {client_name} ({client_id})")
+                else:
+                    # Use default client
+                    default_client = db.get_client_by_name("Default Client")
+                    if not default_client:
+                        client_id = db.create_client("Default Client", "Auto-created default client")
+                        print_info("Created default client")
+                    else:
+                        client_id = default_client['client_id']
+
+                # Find or create program by prefix
+                existing_program = db.get_program_by_prefix(prefix)
+                if existing_program:
+                    program_id = existing_program['program_id']
+                    print_info(f"Found existing program: {existing_program['name']} ({prefix})")
+                else:
+                    # Create new program
+                    prog_name = program_name or f"{prefix} Program"
+                    program_id = db.create_program(
+                        client_id=client_id,
+                        name=prog_name,
+                        prefix=prefix,
+                        source_file=source_filename
+                    )
+                    print_success(f"Created program: {prog_name} ({prefix})")
+
+                results['database'] = {
+                    'client_id': client_id,
+                    'program_id': program_id,
+                    'prefix': prefix
+                }
+
+            except Exception as e:
+                print_error(f"Database setup failed: {e}")
+                results['errors'].append(f"Database setup error: {e}")
+                save_to_db = False  # Continue without database
 
     # ========================================================================
     # PHASE-SPECIFIC ROUTING
@@ -449,6 +552,16 @@ def run_pipeline(
                         desc = desc[:57] + "..."
                     print(f"      • {desc}")
 
+            # Save requirements to database
+            if save_to_db and db and program_id:
+                try:
+                    inserted, updated = db.save_requirements(
+                        program_id, requirements, source_filename
+                    )
+                    print_success(f"Saved to database: {inserted} new, {updated} updated")
+                except Exception as e:
+                    print_warning(f"Database save failed: {e}")
+
         except Exception as e:
             print_error(f"Failed to parse file: {e}")
             results['errors'].append(f"Parse error: {e}")
@@ -509,6 +622,14 @@ def run_pipeline(
                     for story in flagged[:3]:
                         flags = ', '.join(story.get('flags', []))
                         print(f"      • {story.get('title', 'Untitled')[:40]}: {flags}")
+
+            # Save stories to database
+            if save_to_db and db and program_id:
+                try:
+                    inserted, updated = db.save_user_stories(program_id, stories)
+                    print_success(f"Stories saved to database: {inserted} new, {updated} updated")
+                except Exception as e:
+                    print_warning(f"Database save failed: {e}")
 
         except Exception as e:
             print_error(f"Failed to generate stories: {e}")
@@ -581,6 +702,14 @@ def run_pipeline(
             # Show skipped non-technical items
             if stats.get('non_technical_skipped', 0) > 0:
                 print(f"      • Skipped (non-technical): {stats['non_technical_skipped']}")
+
+        # Save test cases to database
+        if save_to_db and db and program_id:
+            try:
+                inserted, updated = db.save_test_cases(program_id, test_cases)
+                print_success(f"Test cases saved to database: {inserted} new, {updated} updated")
+            except Exception as e:
+                print_warning(f"Database save failed: {e}")
 
     except Exception as e:
         print_error(f"Failed to generate test cases: {e}")
@@ -656,6 +785,26 @@ def run_pipeline(
                     print_success(f"Generated {len(compliance_tests)} compliance test cases")
                     results['test_cases_count'] = len(test_cases)
 
+                    # Save compliance tests to database
+                    if save_to_db and db and program_id:
+                        try:
+                            inserted, _ = db.save_test_cases(program_id, compliance_tests)
+                            print_success(f"Compliance tests saved: {inserted}")
+                        except Exception as e:
+                            print_warning(f"Database save failed: {e}")
+
+                # Save compliance gaps to database
+                if save_to_db and db and program_id:
+                    for framework, report in results['compliance_reports'].items():
+                        gaps = report.get('gaps', [])
+                        if gaps:
+                            try:
+                                count = db.save_compliance_gaps(program_id, gaps)
+                                if verbose:
+                                    print_info(f"Saved {count} {framework} gaps to database")
+                            except Exception as e:
+                                print_warning(f"Failed to save {framework} gaps: {e}")
+
                 if verbose:
                     # Show gap breakdown
                     for framework, report in results['compliance_reports'].items():
@@ -717,6 +866,14 @@ def run_pipeline(
 
         if gap_count > 0:
             print_warning(f"{gap_count} requirements have coverage gaps")
+
+        # Save traceability to database
+        if save_to_db and db and program_id:
+            try:
+                count = db.save_traceability(program_id, traceability_matrix)
+                print_success(f"Traceability saved to database: {count} records")
+            except Exception as e:
+                print_warning(f"Database save failed: {e}")
 
         if verbose:
             print_info("Coverage breakdown:")
@@ -851,6 +1008,16 @@ def main():
         }
         print_stat("Phase", phase_names.get(args.phase, args.phase))
 
+    # Show database configuration
+    if args.save_to_db:
+        print_stat("Database", "Enabled (data/client_product_database.db)")
+        if args.client:
+            print_stat("Client", args.client)
+        if args.program:
+            print_stat("Program", args.program)
+        if args.from_db:
+            print_stat("Load from DB", "Yes (approved stories)")
+
     # Validate input file
     try:
         validate_input_file(args.input_file)
@@ -873,7 +1040,11 @@ def main():
         output_dir=args.output_dir,
         verbose=args.verbose,
         compliance=args.compliance,
-        phase=args.phase
+        phase=args.phase,
+        save_to_db=args.save_to_db,
+        client_name=args.client,
+        program_name=args.program,
+        from_db=args.from_db
     )
 
     # Print summary
@@ -927,6 +1098,15 @@ def main():
         print("Output files:")
         for filepath in results['output_files']:
             print(f"    • {filepath}")
+
+        # Show database info if saved
+        if results.get('database'):
+            db_info = results['database']
+            print()
+            print("Database:")
+            print(f"    • Program ID: {db_info.get('program_id')}")
+            print(f"    • Prefix: {db_info.get('prefix')}")
+            print(f"    • Location: data/client_product_database.db")
 
         print()
         if is_draft_phase:

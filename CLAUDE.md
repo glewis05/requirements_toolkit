@@ -26,11 +26,18 @@ This toolkit parses messy requirements documents (Excel, Visio, Lucidchart) and 
 ```
 inputs/          → Drop files to process here
 outputs/         → Generated files land here
+  outputs/drafts/ → Draft Excel files for human review (--phase draft)
 config/          → Program-specific settings (test ID prefixes, etc.)
 parsers/         → Input file parsing modules
 generators/      → User story, UAT, acceptance criteria generation
 formatters/      → Output formatting (GitHub markdown, Notion, etc.)
 templates/       → Standard output templates
+database/        → SQLite database backend
+  database/schema.sql    → Full schema (10 tables, 4 views)
+  database/db_manager.py → ClientProductDatabase class
+  database/queries.py    → Common query functions
+data/            → Database storage
+  data/client_product_database.db → Main database (created at runtime)
 ```
 
 ## Output Format
@@ -226,6 +233,90 @@ python3 run.py "requirements.xlsx" --prefix PROP --phase all --output excel
 ```
 
 Use `--phase all` (or omit the flag) for the original behavior: full pipeline without human review step.
+
+## SQLite Database Backend
+
+The toolkit includes an optional SQLite database for persistent storage of all pipeline artifacts.
+
+### Database Location
+```
+data/client_product_database.db
+```
+
+### Enabling Database Storage
+Add `--save-to-db` to any run.py command:
+```bash
+# First run - creates client and program
+python3 run.py "requirements.xlsx" --prefix PROP --phase draft \
+    --save-to-db --client "Discover Health" --program "Propel Analytics"
+
+# Subsequent runs - finds existing program by prefix
+python3 run.py "requirements.xlsx" --prefix PROP --phase final --save-to-db
+
+# Full pipeline with database
+python3 run.py "requirements.xlsx" --prefix PROP --output excel \
+    --compliance all --save-to-db --client "Acme Corp"
+```
+
+### Database Schema (10 Tables)
+| Table | Purpose |
+|-------|---------|
+| `clients` | Top-level organizations |
+| `programs` | Projects under each client (unique prefix: PROP, GRX, etc.) |
+| `requirements` | Raw requirements from source files |
+| `user_stories` | Stories with full lifecycle tracking (Draft → Approved) |
+| `uat_test_cases` | Test cases with execution status (Pass/Fail/Blocked) |
+| `traceability` | Req → Story → Test links with coverage status |
+| `compliance_gaps` | Gap tracking by framework (Part11/HIPAA/SOC2) |
+| `audit_history` | Complete change log for regulatory compliance |
+| `story_reference` | Reference library of high-quality approved stories |
+| `import_batches` | File import tracking |
+
+### Database Views
+- `v_program_summary` — Dashboard stats by program
+- `v_story_workflow` — Story status with test counts
+- `v_compliance_dashboard` — Gap counts by framework/severity
+- `v_test_execution` — Test status counts by type
+
+### Command Line Options
+| Flag | Purpose |
+|------|---------|
+| `--save-to-db` | Enable database storage |
+| `--client` | Client name (creates if not exists) |
+| `--program` | Program name (creates if not exists under client) |
+| `--from-db` | Load approved stories from database (for --phase final) |
+
+### Programmatic Access
+```python
+from database import ClientProductDatabase, get_database
+from database import queries
+
+# Get database instance
+db = get_database()
+
+# Create client and program
+client_id = db.create_client("Acme Corp")
+program_id = db.create_program(client_id, "Analytics", "ACME")
+
+# Save pipeline output
+db.save_requirements(program_id, requirements, "source.xlsx")
+db.save_user_stories(program_id, stories)
+db.save_test_cases(program_id, test_cases)
+
+# Query functions
+summary = db.get_program_summary(program_id)
+health = queries.get_program_health_score(db, program_id)
+tree = queries.get_client_program_tree(db)
+```
+
+### Audit Trail (Regulatory Compliance)
+All changes are logged to `audit_history` for FDA 21 CFR Part 11 compliance:
+- Record type (client, program, story, test_case, etc.)
+- Action (Created, Updated, Deleted, Status Changed, Approved)
+- Old/new values
+- Who made the change
+- Timestamp
+- Change reason (optional)
 
 ## Output Contracts (for Downstream Tools)
 
