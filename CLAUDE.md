@@ -9,6 +9,49 @@ This toolkit parses messy requirements documents (Excel, Visio, Lucidchart) and 
 - Aviation background — aviation analogies work well for complex concepts
 - Prefers detailed explanations with heavy inline comments
 
+## Database Architecture
+
+### Unified Database Design
+
+All Propel Health toolkits share a **single unified database**:
+
+| Location | Purpose |
+|----------|---------|
+| `~/projects/data/client_product_database.db` | Requirements, configurations, UAT, access management |
+
+This toolkit accesses the database via **symlink**:
+```
+~/projects/requirements_toolkit/data/client_product_database.db → ~/projects/data/client_product_database.db
+```
+
+**Why unified?**
+- Programs are the central entity connecting requirements AND configurations
+- All programs have requirements (features, user stories)
+- All programs have configurations (helpdesk info, settings)
+- Some programs have clinics with clinic-specific configurations
+- Single source of truth for audit trail
+
+### Requirements Tables (this toolkit manages)
+- `requirements` - Raw requirements from source documents
+- `user_stories` - Generated user stories with acceptance criteria
+- `uat_test_cases` - Test cases derived from stories (UAT toolkit extends)
+- `traceability` - Requirements → Stories → Tests mapping
+- `compliance_gaps` - Part 11/HIPAA/SOC 2 gaps
+
+### Shared Tables
+- `clients` - Client organizations (Propel Health, etc.)
+- `programs` - All programs (P4M, Px4M, ONB, etc.) - shared with all toolkits
+- `audit_history` - Unified audit trail for compliance
+
+### Configuration Tables (configurations_toolkit manages)
+- `clinics`, `locations` - Clinic hierarchy under programs
+- `config_definitions`, `config_values` - Configuration settings
+- `providers` - Healthcare providers at locations
+- `users`, `user_access` - Access management
+
+### MCP Server Integration
+The `propel_mcp` server connects to the unified database for all operations.
+
 ## Code Standards
 
 ### Python Style
@@ -36,8 +79,8 @@ database/        → SQLite database backend
   database/schema.sql    → Full schema (10 tables, 4 views)
   database/db_manager.py → ClientProductDatabase class
   database/queries.py    → Common query functions
-data/            → Database storage
-  data/client_product_database.db → Main database (created at runtime)
+data/            → Database access (symlink)
+  data/client_product_database.db → Symlink to unified DB at ~/projects/data/
 ```
 
 ## Output Format
