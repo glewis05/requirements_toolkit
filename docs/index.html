@@ -6,1320 +6,245 @@
     <title>Propel Health | Requirements Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --color-bg: #f8fafb;
-            --color-surface: #ffffff;
-            --color-border: #e2e8f0;
-            --color-border-light: #f1f5f9;
-            --color-text: #1e293b;
-            --color-text-secondary: #64748b;
-            --color-text-muted: #94a3b8;
-            --color-primary: #0f766e;
-            --color-primary-light: #ccfbf1;
-            --color-primary-dark: #0d9488;
-            --color-accent: #0ea5e9;
-            --color-accent-light: #e0f2fe;
-            --color-must-have: #dc2626;
-            --color-must-have-bg: #fee2e2;
-            --color-should-have: #059669;
-            --color-should-have-bg: #d1fae5;
-            --color-could-have: #d97706;
-            --color-could-have-bg: #fef3c7;
-            --color-draft: #6366f1;
-            --color-draft-bg: #e0e7ff;
-            --color-p4m: #0f766e;
-            --color-p4m-light: #ccfbf1;
-            --color-plat: #7c3aed;
-            --color-plat-light: #ede9fe;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -4px rgba(0,0,0,0.05);
-            --radius-sm: 6px;
-            --radius-md: 10px;
-            --radius-lg: 16px;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--color-bg);
-            color: var(--color-text);
-            line-height: 1.6;
-            font-size: 15px;
-        }
-
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
-            color: white;
-            padding: 2.5rem 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .header-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.12);
-            padding: 0.4rem 0.9rem;
-            border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-bottom: 0.75rem;
-            backdrop-filter: blur(4px);
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-            letter-spacing: -0.02em;
-        }
-
-        .header p {
-            opacity: 0.85;
-            font-size: 1rem;
-            max-width: 600px;
-        }
-
-        .header-meta {
-            display: flex;
-            gap: 2rem;
-            margin-top: 1.25rem;
-            flex-wrap: wrap;
-        }
-
-        .header-meta-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.15rem;
-        }
-
-        .header-meta-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            opacity: 0.6;
-        }
-
-        .header-meta-value {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        /* Main */
-        .main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* Summary Grid */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .summary-card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: 1.1rem;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .summary-card-label {
-            font-size: 0.75rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 0.2rem;
-        }
-
-        .summary-card-value {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--color-primary);
-        }
-
-        .summary-card-sub {
-            font-size: 0.75rem;
-            color: var(--color-text-muted);
-            margin-top: 0.15rem;
-        }
-
-        /* Filters */
-        .filters {
-            display: flex;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .filter-btn {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--color-border);
-            background: var(--color-surface);
-            border-radius: 100px;
-            font-family: inherit;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .filter-btn:hover {
-            border-color: var(--color-primary);
-            color: var(--color-primary);
-        }
-
-        .filter-btn.active {
-            background: var(--color-primary);
-            border-color: var(--color-primary);
-            color: white;
-        }
-
-        .filter-btn.p4m.active {
-            background: var(--color-p4m);
-            border-color: var(--color-p4m);
-        }
-
-        .filter-btn.plat.active {
-            background: var(--color-plat);
-            border-color: var(--color-plat);
-        }
-
-        .search-box {
-            flex: 1;
-            min-width: 200px;
-            max-width: 300px;
-            position: relative;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 0.5rem 1rem 0.5rem 2.5rem;
-            border: 1px solid var(--color-border);
-            border-radius: 100px;
-            font-family: inherit;
-            font-size: 0.85rem;
-            background: var(--color-surface);
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--color-primary);
-        }
-
-        .search-box svg {
-            position: absolute;
-            left: 0.85rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--color-text-muted);
-        }
-
-        /* Category Sections */
-        .category-section {
-            margin-bottom: 2rem;
-        }
-
-        .category-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--color-border);
-        }
-
-        .category-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-        }
-
-        .category-icon.analytics { background: #dbeafe; color: #2563eb; }
-        .category-icon.audit { background: #fce7f3; color: #db2777; }
-        .category-icon.config { background: #fef3c7; color: #d97706; }
-        .category-icon.dash { background: #d1fae5; color: #059669; }
-        .category-icon.record { background: #e0e7ff; color: #4f46e5; }
-        .category-icon.referral { background: #ccfbf1; color: #0f766e; }
-        .category-icon.role { background: #fae8ff; color: #a855f7; }
-
-        .category-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--color-text);
-        }
-
-        .category-count {
-            font-size: 0.8rem;
-            color: var(--color-text-muted);
-            margin-left: auto;
-        }
-
-        /* Story Cards */
-        .stories-grid {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .story-card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-            transition: box-shadow 0.2s ease;
-        }
-
-        .story-card:hover {
-            box-shadow: var(--shadow-md);
-        }
-
-        .story-card.hidden {
-            display: none;
-        }
-
-        .story-header {
-            padding: 1.25rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
-            flex-wrap: wrap;
-            cursor: pointer;
-        }
-
-        .story-header:hover {
-            background: var(--color-bg);
-        }
-
-        .story-id {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 500;
-            padding: 0.2rem 0.5rem;
-            border-radius: var(--radius-sm);
-            margin-bottom: 0.4rem;
-            display: inline-block;
-        }
-
-        .story-id.p4m {
-            background: var(--color-p4m-light);
-            color: var(--color-p4m);
-        }
-
-        .story-id.plat {
-            background: var(--color-plat-light);
-            color: var(--color-plat);
-        }
-
-        .story-title {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--color-text);
-            margin-bottom: 0.25rem;
-        }
-
-        .story-meta {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .badge {
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            padding: 0.25rem 0.5rem;
-            border-radius: 100px;
-        }
-
-        .badge-must-have { background: var(--color-must-have-bg); color: var(--color-must-have); }
-        .badge-should-have { background: var(--color-should-have-bg); color: var(--color-should-have); }
-        .badge-could-have { background: var(--color-could-have-bg); color: var(--color-could-have); }
-        .badge-draft { background: var(--color-draft-bg); color: var(--color-draft); }
-
-        .story-toggle {
-            color: var(--color-text-muted);
-            transition: transform 0.2s ease;
-        }
-
-        .story-card.open .story-toggle {
-            transform: rotate(180deg);
-        }
-
-        .story-body {
-            display: none;
-            padding: 0 1.25rem 1.25rem;
-            border-top: 1px solid var(--color-border-light);
-        }
-
-        .story-card.open .story-body {
-            display: block;
-        }
-
-        .story-section {
-            margin-top: 1rem;
-        }
-
-        .story-section-title {
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--color-text-muted);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .story-section-title::before {
-            content: '';
-            width: 3px;
-            height: 12px;
-            background: var(--color-primary);
-            border-radius: 2px;
-        }
-
-        .user-story {
-            font-size: 0.95rem;
-            color: var(--color-text);
-            background: linear-gradient(135deg, var(--color-primary-light) 0%, #f0fdfa 100%);
-            padding: 0.9rem 1rem;
-            border-radius: var(--radius-md);
-            border-left: 3px solid var(--color-primary);
-            font-style: italic;
-        }
-
-        .acceptance-criteria {
-            list-style: none;
-            counter-reset: criteria;
-        }
-
-        .acceptance-criteria li {
-            counter-increment: criteria;
-            display: flex;
-            gap: 0.6rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--color-border-light);
-            align-items: flex-start;
-            font-size: 0.9rem;
-        }
-
-        .acceptance-criteria li:last-child {
-            border-bottom: none;
-        }
-
-        .acceptance-criteria li::before {
-            content: counter(criteria);
-            min-width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--color-accent-light);
-            color: var(--color-accent);
-            border-radius: 50%;
-            font-size: 0.7rem;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
-        .test-count {
-            font-size: 0.8rem;
-            color: var(--color-text-secondary);
-            background: var(--color-bg);
-            padding: 0.5rem 0.75rem;
-            border-radius: var(--radius-sm);
-            margin-top: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .test-count svg {
-            color: var(--color-text-muted);
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--color-text-muted);
-            font-size: 0.85rem;
-            border-top: 1px solid var(--color-border);
-            margin-top: 2rem;
-        }
-
-        .footer a {
-            color: var(--color-primary);
-            text-decoration: none;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header { padding: 1.5rem 1rem; }
-            .header h1 { font-size: 1.5rem; }
-            .main { padding: 1rem; }
-            .summary-grid { grid-template-columns: repeat(2, 1fr); }
-            .filters { flex-direction: column; align-items: stretch; }
-            .search-box { max-width: none; }
-        }
-
-        /* Print */
-        @media print {
-            .story-body { display: block !important; }
-            .filters { display: none; }
-        }
+        :root{--color-bg:#f8fafb;--color-surface:#fff;--color-border:#e2e8f0;--color-border-light:#f1f5f9;--color-text:#1e293b;--color-text-secondary:#64748b;--color-text-muted:#94a3b8;--color-primary:#0f766e;--color-primary-light:#ccfbf1;--color-accent:#0ea5e9;--color-accent-light:#e0f2fe;--color-must-have:#dc2626;--color-must-have-bg:#fee2e2;--color-high:#dc2626;--color-high-bg:#fee2e2;--color-should-have:#059669;--color-should-have-bg:#d1fae5;--color-medium:#d97706;--color-medium-bg:#fef3c7;--color-could-have:#6366f1;--color-could-have-bg:#e0e7ff;--color-draft:#64748b;--color-draft-bg:#f1f5f9;--color-p4m:#0f766e;--color-p4m-light:#ccfbf1;--color-plat:#7c3aed;--color-plat-light:#ede9fe;--color-dis:#0369a1;--color-dis-light:#e0f2fe;--color-onb:#c2410c;--color-onb-light:#ffedd5;--shadow-sm:0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 6px -1px rgba(0,0,0,.05),0 2px 4px -2px rgba(0,0,0,.05);--radius-sm:6px;--radius-md:10px;--radius-lg:16px}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--color-bg);color:var(--color-text);line-height:1.6;font-size:15px}
+        .header{background:linear-gradient(135deg,#134e4a 0%,#1e3a5f 100%);color:#fff;padding:2.5rem 2rem;position:relative;overflow:hidden}
+        .header::before{content:'';position:absolute;top:-50%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 70%);border-radius:50%}
+        .header-content{max-width:1400px;margin:0 auto;position:relative;z-index:1}
+        .header-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.12);padding:.4rem .9rem;border-radius:100px;font-size:.8rem;font-weight:500;margin-bottom:.75rem}
+        .header h1{font-size:2rem;font-weight:700;margin-bottom:.4rem}
+        .header p{opacity:.85;font-size:1rem}
+        .header-meta{display:flex;gap:2rem;margin-top:1.25rem;flex-wrap:wrap}
+        .header-meta-item{display:flex;flex-direction:column}
+        .header-meta-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;opacity:.6}
+        .header-meta-value{font-weight:600;font-size:.95rem}
+        .main{max-width:1400px;margin:0 auto;padding:2rem}
+        .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin-bottom:2rem}
+        .summary-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:1rem;box-shadow:var(--shadow-sm)}
+        .summary-card-label{font-size:.75rem;color:var(--color-text-secondary)}
+        .summary-card-value{font-size:1.5rem;font-weight:700;color:var(--color-primary)}
+        .summary-card-sub{font-size:.7rem;color:var(--color-text-muted)}
+        .filters{display:flex;gap:.75rem;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center}
+        .filter-group{display:flex;gap:.5rem;flex-wrap:wrap}
+        .filter-btn{padding:.5rem 1rem;border:1px solid var(--color-border);background:var(--color-surface);border-radius:100px;font-family:inherit;font-size:.85rem;font-weight:500;color:var(--color-text-secondary);cursor:pointer;transition:all .15s ease}
+        .filter-btn:hover{border-color:var(--color-primary);color:var(--color-primary)}
+        .filter-btn.active{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+        .filter-btn.p4m.active{background:var(--color-p4m);border-color:var(--color-p4m)}
+        .filter-btn.plat.active{background:var(--color-plat);border-color:var(--color-plat)}
+        .filter-btn.dis.active{background:var(--color-dis);border-color:var(--color-dis)}
+        .filter-btn.onb.active{background:var(--color-onb);border-color:var(--color-onb)}
+        .search-box{flex:1;min-width:200px;max-width:300px;position:relative}
+        .search-box input{width:100%;padding:.5rem 1rem .5rem 2.5rem;border:1px solid var(--color-border);border-radius:100px;font-family:inherit;font-size:.85rem}
+        .search-box input:focus{outline:none;border-color:var(--color-primary)}
+        .search-box svg{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--color-text-muted)}
+        .category-section{margin-bottom:2rem}
+        .category-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--color-border)}
+        .category-icon{width:32px;height:32px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1rem}
+        .category-icon.referral{background:#ccfbf1}.category-icon.analytics{background:#dbeafe}.category-icon.audit,.category-icon.record{background:#fce7f3}.category-icon.config{background:#fef3c7}.category-icon.dash{background:#d1fae5}.category-icon.role{background:#fae8ff}.category-icon.recruit{background:#e0f2fe}.category-icon.form,.category-icon.step{background:#ffedd5}.category-icon.admin{background:#e0e7ff}.category-icon.save{background:#dcfce7}.category-icon.ui{background:#fef9c3}.category-icon.export{background:#f3e8ff}.category-icon.gene{background:#ffe4e6}
+        .category-title{font-size:1.1rem;font-weight:600}
+        .category-count{font-size:.8rem;color:var(--color-text-muted);margin-left:auto}
+        .stories-grid{display:grid;gap:.75rem}
+        .story-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden}
+        .story-card:hover{box-shadow:var(--shadow-md)}
+        .story-card.hidden{display:none}
+        .story-header{padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;cursor:pointer}
+        .story-header:hover{background:var(--color-bg)}
+        .story-id{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:500;padding:.2rem .5rem;border-radius:var(--radius-sm);margin-bottom:.3rem;display:inline-block}
+        .story-id.p4m{background:var(--color-p4m-light);color:var(--color-p4m)}.story-id.plat{background:var(--color-plat-light);color:var(--color-plat)}.story-id.dis{background:var(--color-dis-light);color:var(--color-dis)}.story-id.onb{background:var(--color-onb-light);color:var(--color-onb)}
+        .story-title{font-size:.95rem;font-weight:600;margin-bottom:.25rem}
+        .story-meta{display:flex;gap:.4rem;flex-wrap:wrap}
+        .badge{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.03em;padding:.2rem .45rem;border-radius:100px}
+        .badge-must-have,.badge-high{background:var(--color-must-have-bg);color:var(--color-must-have)}.badge-should-have{background:var(--color-should-have-bg);color:var(--color-should-have)}.badge-medium{background:var(--color-medium-bg);color:var(--color-medium)}.badge-could-have{background:var(--color-could-have-bg);color:var(--color-could-have)}.badge-draft{background:var(--color-draft-bg);color:var(--color-draft)}
+        .story-toggle{color:var(--color-text-muted);transition:transform .2s;flex-shrink:0}
+        .story-card.open .story-toggle{transform:rotate(180deg)}
+        .story-body{display:none;padding:0 1.25rem 1.25rem;border-top:1px solid var(--color-border-light)}
+        .story-card.open .story-body{display:block}
+        .story-section{margin-top:1rem}
+        .story-section-title{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-muted);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+        .story-section-title::before{content:'';width:3px;height:12px;background:var(--color-primary);border-radius:2px}
+        .user-story{font-size:.9rem;background:linear-gradient(135deg,var(--color-primary-light) 0%,#f0fdfa 100%);padding:.8rem 1rem;border-radius:var(--radius-md);border-left:3px solid var(--color-primary);font-style:italic}
+        .acceptance-criteria{list-style:none;counter-reset:criteria}
+        .acceptance-criteria li{counter-increment:criteria;display:flex;gap:.5rem;padding:.4rem 0;border-bottom:1px solid var(--color-border-light);font-size:.85rem;align-items:flex-start}
+        .acceptance-criteria li:last-child{border-bottom:none}
+        .acceptance-criteria li::before{content:counter(criteria);min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;background:var(--color-accent-light);color:var(--color-accent);border-radius:50%;font-size:.65rem;font-weight:600;flex-shrink:0}
+        .test-count{font-size:.75rem;color:var(--color-text-secondary);background:var(--color-bg);padding:.4rem .6rem;border-radius:var(--radius-sm);margin-top:.75rem;display:inline-flex;align-items:center;gap:.4rem}
+        .footer{text-align:center;padding:2rem;color:var(--color-text-muted);font-size:.85rem;border-top:1px solid var(--color-border);margin-top:2rem}
+        @media(max-width:768px){.header{padding:1.5rem 1rem}.header h1{font-size:1.5rem}.main{padding:1rem}.summary-grid{grid-template-columns:repeat(2,1fr)}}
+        @media print{.story-body{display:block!important}.filters{display:none}}
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="header-top">
-                <div>
-                    <div class="header-badge">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        Requirements Dashboard
-                    </div>
-                    <h1>Propel Health Requirements</h1>
-                    <p>User stories and acceptance criteria for Prevention4ME, Propel Platform, and related programs.</p>
-                </div>
-            </div>
-            <div class="header-meta">
-                <div class="header-meta-item">
-                    <span class="header-meta-label">Total Stories</span>
-                    <span class="header-meta-value">16</span>
-                </div>
-                <div class="header-meta-item">
-                    <span class="header-meta-label">Test Cases</span>
-                    <span class="header-meta-value">113</span>
-                </div>
-                <div class="header-meta-item">
-                    <span class="header-meta-label">Programs</span>
-                    <span class="header-meta-value">P4M, PLAT</span>
-                </div>
-                <div class="header-meta-item">
-                    <span class="header-meta-label">Last Updated</span>
-                    <span class="header-meta-value">January 13, 2026</span>
-                </div>
-            </div>
+<header class="header">
+    <div class="header-content">
+        <div class="header-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>Requirements Dashboard</div>
+        <h1>Propel Health Requirements</h1>
+        <p>User stories and acceptance criteria across all programs</p>
+        <div class="header-meta">
+            <div class="header-meta-item"><span class="header-meta-label">Total Stories</span><span class="header-meta-value">61</span></div>
+            <div class="header-meta-item"><span class="header-meta-label">Test Cases</span><span class="header-meta-value">232</span></div>
+            <div class="header-meta-item"><span class="header-meta-label">Programs</span><span class="header-meta-value">4</span></div>
+            <div class="header-meta-item"><span class="header-meta-label">Last Updated</span><span class="header-meta-value">January 13, 2026</span></div>
         </div>
-    </header>
+    </div>
+</header>
+<main class="main">
+<div class="summary-grid">
+    <div class="summary-card"><div class="summary-card-label">Prevention4ME</div><div class="summary-card-value">14</div><div class="summary-card-sub">94 test cases</div></div>
+    <div class="summary-card"><div class="summary-card-label">Onboarding</div><div class="summary-card-value">34</div><div class="summary-card-sub">66 test cases</div></div>
+    <div class="summary-card"><div class="summary-card-label">Propel Analytics</div><div class="summary-card-value">11</div><div class="summary-card-sub">53 test cases</div></div>
+    <div class="summary-card"><div class="summary-card-label">Platform</div><div class="summary-card-value">2</div><div class="summary-card-sub">19 test cases</div></div>
+    <div class="summary-card"><div class="summary-card-label">Must Have</div><div class="summary-card-value">28</div><div class="summary-card-sub">Critical</div></div>
+    <div class="summary-card"><div class="summary-card-label">Should Have</div><div class="summary-card-value">20</div><div class="summary-card-sub">High priority</div></div>
+</div>
+<div class="filters">
+    <div class="filter-group">
+        <button class="filter-btn active" data-filter="all">All (61)</button>
+        <button class="filter-btn p4m" data-filter="p4m">P4M (14)</button>
+        <button class="filter-btn onb" data-filter="onb">ONB (34)</button>
+        <button class="filter-btn dis" data-filter="dis">DIS (11)</button>
+        <button class="filter-btn plat" data-filter="plat">PLAT (2)</button>
+    </div>
+    <div class="search-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+        <input type="text" placeholder="Search stories..." id="searchInput">
+    </div>
+</div>
 
-    <main class="main">
-        <!-- Summary -->
-        <div class="summary-grid">
-            <div class="summary-card">
-                <div class="summary-card-label">Prevention4ME</div>
-                <div class="summary-card-value">14</div>
-                <div class="summary-card-sub">94 test cases</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-card-label">Propel Platform</div>
-                <div class="summary-card-value">2</div>
-                <div class="summary-card-sub">19 test cases</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-card-label">Must Have</div>
-                <div class="summary-card-value">5</div>
-                <div class="summary-card-sub">Critical priority</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-card-label">Should Have</div>
-                <div class="summary-card-value">10</div>
-                <div class="summary-card-sub">High priority</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-card-label">Could Have</div>
-                <div class="summary-card-value">1</div>
-                <div class="summary-card-sub">Future scope</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-card-label">Compliance</div>
-                <div class="summary-card-value">Part 11</div>
-                <div class="summary-card-sub">FDA 21 CFR</div>
-            </div>
-        </div>
+<!-- ONB FORM -->
+<section class="category-section"><div class="category-header"><div class="category-icon form">📝</div><h2 class="category-title">Form Components (ONB)</h2><span class="category-count">6 stories</span></div><div class="stories-grid">
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="form driven question rendering json configuration react"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-FORM-001</span><h3 class="story-title">Form-Driven Question Rendering</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a Propel administrator, I want form questions to be rendered from a JSON configuration file, so that I can add, modify, or remove questions without changing React code.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="conditional field visibility show when logic"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-FORM-002</span><h3 class="story-title">Conditional Field Visibility</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin filling out the form, I want fields to appear/disappear based on my previous answers.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="field validation required pattern email phone npi"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-FORM-003</span><h3 class="story-title">Field Validation</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want the form to validate my inputs and show clear error messages.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="repeatable sections satellite locations providers add remove"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-FORM-004</span><h3 class="story-title">Repeatable Sections</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to add multiple satellite locations, providers, and contacts using repeatable form sections.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="composite field types address contact group stakeholder"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-FORM-005</span><h3 class="story-title">Composite Field Types</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want composite field types (address, contact_group, stakeholder_group) that render multiple related inputs together.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="should-have" data-search="default plus alternates select with alternates"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-FORM-006</span><h3 class="story-title">Default Plus Alternates Field Type</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to select a default value and optionally add alternate values from a list.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+</div></section>
 
-        <!-- Filters -->
-        <div class="filters">
-            <div class="filter-group">
-                <button class="filter-btn active" data-filter="all">All Programs</button>
-                <button class="filter-btn p4m" data-filter="p4m">P4M (14)</button>
-                <button class="filter-btn plat" data-filter="plat">PLAT (2)</button>
-            </div>
-            <div class="filter-group">
-                <button class="filter-btn" data-priority="all">All Priorities</button>
-                <button class="filter-btn" data-priority="must-have">Must Have</button>
-                <button class="filter-btn" data-priority="should-have">Should Have</button>
-                <button class="filter-btn" data-priority="could-have">Could Have</button>
-            </div>
-            <div class="search-box">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                </svg>
-                <input type="text" placeholder="Search stories..." id="searchInput">
-            </div>
-        </div>
+<!-- ONB STEP -->
+<section class="category-section"><div class="category-header"><div class="category-icon step">📋</div><h2 class="category-title">Form Steps (ONB)</h2><span class="category-count">10 stories</span></div><div class="stories-grid">
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="step 1 program selection prevention4me precision4me genomerx"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-STEP-001</span><h3 class="story-title">Step 1 - Program Selection</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to select which Propel program(s) I'm onboarding for.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="step 2 clinic information name address phone epic id"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-STEP-002</span><h3 class="story-title">Step 2 - Clinic Information</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to enter my clinic's basic information.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="step 3 satellite locations multiple addresses"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-STEP-003</span><h3 class="story-title">Step 3 - Satellite Locations</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to add satellite/secondary clinic locations.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="step 4 contacts helpdesk operations manager"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-STEP-004</span><h3 class="story-title">Step 4 - Contacts</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to provide contact information for key operational roles.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="step 5 key stakeholders genetic counselor physician champion"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-STEP-005</span><h3 class="story-title">Step 5 - Key Stakeholders</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to identify key stakeholders involved in the program.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="step 6 lab configuration ambry helix account number"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-STEP-006</span><h3 class="story-title">Step 6 - Lab Configuration</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to configure lab provider settings and account information.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="step 7 test products gene panels specimen types"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-STEP-007</span><h3 class="story-title">Step 7 - Test Products</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to select which genetic test products and specimen types to offer.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="step 8 ordering providers npi credentials"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-STEP-008</span><h3 class="story-title">Step 8 - Ordering Providers</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to add ordering provider information including NPI numbers.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="step 9 extract filtering appointment types patient status"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-STEP-010</span><h3 class="story-title">Step 9 - Extract Filtering</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to configure Epic extract filtering rules.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="step 10 review download summary json export"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-STEP-009</span><h3 class="story-title">Step 10 - Review and Download</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to review all my entries and download the completed form.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+</div></section>
 
-        <!-- REFERRAL Category -->
-        <section class="category-section" data-category="referral">
-            <div class="category-header">
-                <div class="category-icon referral">📋</div>
-                <h2 class="category-title">Referral Workflow</h2>
-                <span class="category-count">4 stories</span>
-            </div>
-            <div class="stories-grid">
-                <!-- P4M-REFERRAL-001 -->
-                <article class="story-card" data-program="p4m" data-priority="must-have" data-search="manual referral entry patient invitation fhir demographics email template audit trail">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-REFERRAL-001</span>
-                            <h3 class="story-title">Manual Referral Entry & Patient Invitation</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-must-have">Must Have</span>
-                                <span class="badge badge-draft">Draft v1</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a user (provider, genetic assistant, or referral coordinator), I want to manually create a referred patient record in the provider portal and send an invitation so the patient can complete risk assessments to determine referral eligibility.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>User can search EHR via live FHIR for patient; if match found, demographics auto-populate</li>
-                                <li>If no FHIR data, required fallback fields are: Name, DOB, Email, and Referring Provider</li>
-                                <li>User enters referring provider details during referral creation</li>
-                                <li>System sends "Referral Assessment Invitation" email using distinct template with referral-specific branding</li>
-                                <li>Referring provider details are included in the patient invitation to build trust</li>
-                                <li>Referring provider is NOT automatically notified; notification occurs manually after genetics staff reviews</li>
-                                <li>System logs audit trail: user ID, referral form inputs, invitation timestamp (Part 11 compliant)</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            5 test cases
-                        </div>
-                    </div>
-                </article>
+<!-- ONB SAVE -->
+<section class="category-section"><div class="category-header"><div class="category-icon save">💾</div><h2 class="category-title">Save & Resume (ONB)</h2><span class="category-count">6 stories</span></div><div class="stories-grid">
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="auto-save progress browser local storage"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-SAVE-001</span><h3 class="story-title">Auto-Save Progress to Browser</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want my progress to be automatically saved in my browser.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="resume session prompt continue previous"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-SAVE-002</span><h3 class="story-title">Resume Session Prompt</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin returning to the form, I want to be prompted to continue where I left off.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="download draft file json backup"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-SAVE-003</span><h3 class="story-title">Download Draft File</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to download my in-progress form as a file for backup.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="upload draft file restore progress"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-SAVE-004</span><h3 class="story-title">Upload Draft File</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to upload a previously saved draft file to restore my progress.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="clear form start over reset"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-SAVE-005</span><h3 class="story-title">Clear Form and Start Over</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to clear all form data and start over if needed.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="should-have" data-search="save options help text instructions"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-SAVE-006</span><h3 class="story-title">Save Options Help Text</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want clear explanations of save/resume options.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+</div></section>
 
-                <!-- P4M-REFERRAL-002 -->
-                <article class="story-card" data-program="p4m" data-priority="must-have" data-search="referral limited assessment flow tc nccn clinical summary pdf e-consent returning patient">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-REFERRAL-002</span>
-                            <h3 class="story-title">Referral-Limited Assessment Flow</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-must-have">Must Have</span>
-                                <span class="badge badge-draft">Draft v1</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a referred patient, I want to complete only the TC and NCCN assessments, view my risk results, and download the clinical summary—without being asked for e-consent unless a provider decides to proceed with scheduling.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>Patient is routed directly to TC → NCCN assessments; no genetic-testing consent or care-plan steps presented</li>
-                                <li>Patient can view risk results after completing assessments</li>
-                                <li>Patient can download Clinical Summary as PDF</li>
-                                <li>Provider sees same Clinical Summary document in referral dashboard</li>
-                                <li>If referral is accepted and appointment scheduled, patient follows Returning Patient experience then routes to Education + e-Consent</li>
-                                <li>Assessments capture full audit data (inputs, version, outputs) per Part 11 requirements</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            6 test cases
-                        </div>
-                    </div>
-                </article>
+<!-- ONB UI -->
+<section class="category-section"><div class="category-header"><div class="category-icon ui">🎨</div><h2 class="category-title">User Interface (ONB)</h2><span class="category-count">4 stories</span></div><div class="stories-grid">
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="progress indicator stepper navigation"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-UI-001</span><h3 class="story-title">Progress Indicator</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to see my progress through the form steps.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="step navigation buttons next previous"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-UI-002</span><h3 class="story-title">Step Navigation Buttons</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want Next and Previous buttons to navigate between steps.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="should-have" data-search="branding styling propel colors logo"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-UI-003</span><h3 class="story-title">Branding and Styling</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a Propel administrator, I want the form to use Propel branding and colors.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="should-have" data-search="mobile responsive design tablet phone"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-UI-004</span><h3 class="story-title">Mobile Responsive Design</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin using a tablet, I want the form to work well on smaller screens.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+</div></section>
 
-                <!-- P4M-REFERRAL-003 -->
-                <article class="story-card" data-program="p4m" data-priority="must-have" data-search="referral dashboard tab notifications badge email alerts filter sort triage risk">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-REFERRAL-003</span>
-                            <h3 class="story-title">Referral Dashboard Tab & Notifications</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-must-have">Must Have</span>
-                                <span class="badge badge-draft">Draft v1</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a user with Genetic Counselor or Genetic Assistant role, I want a dedicated dashboard tab listing only referral patients with alerts when new results arrive, so I can prioritize them over routine scheduled cases.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>Dashboard displays two tabs: "Scheduled Patients" and "Referral Patients"</li>
-                                <li>Referral Patients tab displays same columns as current provider dashboard</li>
-                                <li>When a referral patient completes assessment, system displays red badge on Referral tab</li>
-                                <li>User can opt-in to email alerts for new referral completions (per-user setting)</li>
-                                <li>User can filter referral patients by elevated TC or NCCN eligibility status</li>
-                                <li>User can sort referral list to triage highest-risk patients first</li>
-                                <li>Badge resets when user views the patient record</li>
-                                <li>Only users with Genetic Counselor or Genetic Assistant roles can see Referral tab</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            7 test cases
-                        </div>
-                    </div>
-                </article>
+<!-- ONB ADMIN -->
+<section class="category-section"><div class="category-header"><div class="category-icon admin">⚙️</div><h2 class="category-title">Admin Tools (ONB)</h2><span class="category-count">5 stories</span></div><div class="stories-grid">
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="mcp tool list form questions"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-ADMIN-001</span><h3 class="story-title">MCP Tool - List Form Questions</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a Propel administrator, I want an MCP tool to list all form questions.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="mcp tool add form question"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-ADMIN-002</span><h3 class="story-title">MCP Tool - Add Form Question</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a Propel administrator, I want an MCP tool to add new form questions.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="mcp tool update form question"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-ADMIN-003</span><h3 class="story-title">MCP Tool - Update Form Question</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a Propel administrator, I want an MCP tool to update existing form questions.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="mcp tool remove form question delete"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-ADMIN-004</span><h3 class="story-title">MCP Tool - Remove Form Question</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a Propel administrator, I want an MCP tool to remove form questions.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="should-have" data-search="mcp tool reorder form questions"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-ADMIN-005</span><h3 class="story-title">MCP Tool - Reorder Form Questions</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a Propel administrator, I want an MCP tool to reorder form questions.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+</div></section>
 
-                <!-- P4M-REFERRAL-004 -->
-                <article class="story-card" data-program="p4m" data-priority="could-have" data-search="epic write-back integration tc score nccn eligibility referral decision ehr">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-REFERRAL-004</span>
-                            <h3 class="story-title">Epic Write-Back for Referral Assessment Results</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-could-have">Could Have</span>
-                                <span class="badge badge-draft">Draft v1</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a provider, I want referral assessment results written back to Epic so that the patient's EHR reflects their TC score, NCCN eligibility, and referral outcome without manual data entry.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>System writes TC score and risk category to Epic patient record</li>
-                                <li>System writes NCCN eligibility status to Epic</li>
-                                <li>System writes referral decision (accepted/declined) and reason to Epic</li>
-                                <li>Write-back includes timestamp and source system identifier</li>
-                                <li>Write-back creates audit entry documenting data sent, destination, and confirmation (Part 11)</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            4 test cases
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
+<!-- ONB EXPORT -->
+<section class="category-section"><div class="category-header"><div class="category-icon export">📤</div><h2 class="category-title">Export (ONB)</h2><span class="category-count">2 stories</span></div><div class="stories-grid">
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="generate json output export download"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-EXPORT-001</span><h3 class="story-title">Generate JSON Output</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin, I want to download a JSON file containing all my form responses.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+<article class="story-card" data-program="onb" data-priority="should-have" data-search="schema validation export verify"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-EXPORT-002</span><h3 class="story-title">Schema Validation on Export</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a Propel administrator, I want exported JSON to be validated against a schema.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+</div></section>
 
-        <!-- ANALYTICS Category -->
-        <section class="category-section" data-category="analytics">
-            <div class="category-header">
-                <div class="category-icon analytics">📊</div>
-                <h2 class="category-title">Analytics</h2>
-                <span class="category-count">3 stories</span>
-            </div>
-            <div class="stories-grid">
-                <!-- P4M-ANALYTICS-001 -->
-                <article class="story-card" data-program="p4m" data-priority="should-have" data-search="analytics dashboard tc status filtering clinic type indicator metrics">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-ANALYTICS-001</span>
-                            <h3 class="story-title">Analytics Dashboard TC Status Filtering with Clinic Type Indicator</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-should-have">Should Have</span>
-                                <span class="badge badge-draft">Draft v2</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a Prevention4ME program administrator, I need the analytics dashboard to filter by TC-enabled vs TC-disabled clinics and clearly indicate which clinic types have TC data, so that I can accurately compare performance metrics and understand data completeness across the program.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>Dashboard includes filter/toggle to view by TC-enabled clinics, TC-disabled clinics, or all clinics</li>
-                                <li>Dashboard displays footnote or indicator showing which specific clinic types do/don't include TC data</li>
-                                <li>Key metrics update based on TC status filter selection</li>
-                                <li>When filtering to TC-disabled clinics only, TC-specific metrics are appropriately excluded</li>
-                                <li>Clinic type filter works in combination with TC status filter</li>
-                                <li>Dashboard clearly shows percentage of TC high-risk patients by clinic/clinic type for comparison</li>
-                                <li>Filter selections are maintained during session and can be exported with reports</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            15 test cases
-                        </div>
-                    </div>
-                </article>
+<!-- ONB GENE -->
+<section class="category-section"><div class="category-header"><div class="category-icon gene">🧬</div><h2 class="category-title">Gene Selection (ONB)</h2><span class="category-count">1 story</span></div><div class="stories-grid">
+<article class="story-card" data-program="onb" data-priority="must-have" data-search="customnext-cancer gene selector component brca"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id onb">ONB-GENE-001</span><h3 class="story-title">CustomNext-Cancer Gene Selector Component</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic admin configuring test products, I want a specialized component for selecting genes from the CustomNext-Cancer panel.</p></div><div class="test-count">✓ 2 test cases</div></div></article>
+</div></section>
 
-                <!-- P4M-ANALYTICS-002 -->
-                <article class="story-card" data-program="p4m" data-priority="should-have" data-search="analytics dashboard tc high-risk counts competing mortality cm configuration">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-ANALYTICS-002</span>
-                            <h3 class="story-title">Analytics Dashboard Shows TC High-Risk Counts With and Without CM</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-should-have">Should Have</span>
-                                <span class="badge badge-draft">Draft v1</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a program administrator, I need the analytics dashboard to show high-risk patient counts (TC >20%) calculated BOTH with and without Competing Mortality for all clinics, so that I can understand the impact of CM on risk categorization and help sites evaluate their CM configuration decisions.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>Analytics dashboard displays TC >20% count WITH CM applied (background calculated for all clinics)</li>
-                                <li>Analytics dashboard displays TC >20% count WITHOUT CM applied (standard TC)</li>
-                                <li>Both metrics are shown simultaneously to allow comparison of CM impact</li>
-                                <li>Filter/toggle allows viewing "clinics with CM on" versus "clinics with CM off"</li>
-                                <li>Master list shows which clinics have CM enabled vs disabled</li>
-                                <li>Each site can see both CM on/off analytics to understand the CM decision and its impact</li>
-                                <li>Total program analytics shows aggregate on/off metrics across all sites</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            4 test cases
-                        </div>
-                    </div>
-                </article>
+<!-- DIS RECRUIT -->
+<section class="category-section"><div class="category-header"><div class="category-icon recruit">📈</div><h2 class="category-title">Recruitment Analytics (DIS)</h2><span class="category-count">11 stories</span></div><div class="stories-grid">
+<article class="story-card" data-program="dis" data-priority="high" data-search="number invited outreach effectiveness funnel"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id dis">DIS-RECRUIT-001</span><h3 class="story-title">Number (N) Invited</h3><div class="story-meta"><span class="badge badge-high">High</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a research coordinator, I want to track number (N) of patients who received invitations.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+<article class="story-card" data-program="dis" data-priority="medium" data-search="program recruitment comparison geographic"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id dis">DIS-RECRUIT-002</span><h3 class="story-title">Program Recruitment Comparison</h3><div class="story-meta"><span class="badge badge-medium">Medium</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a research coordinator, I want to identify recruitment volume by program.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+<article class="story-card" data-program="dis" data-priority="medium" data-search="consent flow drop-off tracking ux conversion"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id dis">DIS-RECRUIT-003</span><h3 class="story-title">Consent Flow Drop-off Tracking</h3><div class="story-meta"><span class="badge badge-medium">Medium</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a research coordinator, I want to see where users stop in the consent process.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+<article class="story-card" data-program="dis" data-priority="high" data-search="email engagement tracking opened ignored"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id dis">DIS-RECRUIT-004</span><h3 class="story-title">Email Engagement Tracking</h3><div class="story-meta"><span class="badge badge-high">High</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a research coordinator, I want to monitor if emails are opened or ignored.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+<article class="story-card" data-program="dis" data-priority="high" data-search="reminder email opt-out tracking"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id dis">DIS-RECRUIT-005</span><h3 class="story-title">Reminder Email Opt-Out Tracking</h3><div class="story-meta"><span class="badge badge-high">High</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a research coordinator, I want to monitor which users opt out of reminder emails.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+<article class="story-card" data-program="dis" data-priority="high" data-search="on-demand patient lists declined consented cohorts"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id dis">DIS-RECRUIT-006</span><h3 class="story-title">On-demand Patient Lists</h3><div class="story-meta"><span class="badge badge-high">High</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a research coordinator, I want to pull lists of patients who have declined, consented, or opted-in.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+<article class="story-card" data-program="dis" data-priority="medium" data-search="time consent form page interaction"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id dis">DIS-RECRUIT-007</span><h3 class="story-title">Time on Consent Form</h3><div class="story-meta"><span class="badge badge-medium">Medium</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a research coordinator, I want to track time spent on each consent form page.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+<article class="story-card" data-program="dis" data-priority="medium" data-search="saliva kit ordering population sequencing"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id dis">DIS-RECRUIT-008</span><h3 class="story-title">Saliva Kit Ordering</h3><div class="story-meta"><span class="badge badge-medium">Medium</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a research coordinator, I want to order saliva kits via Propel dashboard.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+<article class="story-card" data-program="dis" data-priority="high" data-search="mychart recruitment cross validation duplicate"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id dis">DIS-RECRUIT-009</span><h3 class="story-title">MyChart Recruitment Cross Validation</h3><div class="story-meta"><span class="badge badge-high">High</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a research coordinator, I want to cross validate MyChart participants against existing e-consent records.</p></div><div class="test-count">✓ 4 test cases</div></div></article>
+<article class="story-card" data-program="dis" data-priority="medium" data-search="multi-study dashboard personalized accordion"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id dis">DIS-RECRUIT-010</span><h3 class="story-title">Multi-Study Dashboard</h3><div class="story-meta"><span class="badge badge-medium">Medium</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a research coordinator, I want a personalized list of available studies on the patient dashboard.</p></div><div class="test-count">✓ 4 test cases</div></div></article>
+<article class="story-card" data-program="dis" data-priority="high" data-search="sms outreach reminders multichannel text"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id dis">DIS-RECRUIT-011</span><h3 class="story-title">SMS Outreach Reminders</h3><div class="story-meta"><span class="badge badge-high">High</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a research coordinator, I want to reach out to patients via SMS through the platform.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+</div></section>
 
-                <!-- PLAT-ANALYTICS-001 -->
-                <article class="story-card" data-program="plat" data-priority="should-have" data-search="gene-level positive variant reporting brca1 brca2 pss1 redox ambry helix">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id plat">PLAT-ANALYTICS-001</span>
-                            <h3 class="story-title">Gene-Level Positive Variant Reporting in Analytics Dashboard</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-should-have">Should Have</span>
-                                <span class="badge badge-draft">Draft v1</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a program administrator, I need to track and report on positive gene variants (BRCA1, BRCA2, PSS1, etc.) in the analytics dashboard across all programs, so that I can monitor carrier identification rates, compare performance across clinics and programs, and generate monthly reporting metrics.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>Dashboard displays count of patients with each positive gene variant across all tested patients</li>
-                                <li>Dashboard displays percentage of tested patients with each positive variant</li>
-                                <li>Dashboard supports date/month filter to view carrier counts for a specific time period</li>
-                                <li>Dashboard displays total positive variant counts per month (aggregate)</li>
-                                <li>Dashboard displays breakdown of positive variants by clinic</li>
-                                <li>Dashboard displays breakdown of positive variants by program</li>
-                                <li>Data source integrates positive variant results from lab via Redox (Ambry currently, Helix future)</li>
-                                <li>Metrics update in near real-time as new lab results are received</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            10 test cases
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
+<!-- P4M REFERRAL -->
+<section class="category-section"><div class="category-header"><div class="category-icon referral">📋</div><h2 class="category-title">Referral Workflow (P4M)</h2><span class="category-count">4 stories</span></div><div class="stories-grid">
+<article class="story-card" data-program="p4m" data-priority="must-have" data-search="manual referral entry patient invitation fhir"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-REFERRAL-001</span><h3 class="story-title">Manual Referral Entry & Patient Invitation</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a user (provider, genetic assistant, or referral coordinator), I want to manually create a referred patient record and send an invitation.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+<article class="story-card" data-program="p4m" data-priority="must-have" data-search="referral limited assessment flow tc nccn clinical summary"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-REFERRAL-002</span><h3 class="story-title">Referral-Limited Assessment Flow</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a referred patient, I want to complete only TC and NCCN assessments, view results, and download clinical summary.</p></div><div class="test-count">✓ 6 test cases</div></div></article>
+<article class="story-card" data-program="p4m" data-priority="must-have" data-search="referral dashboard tab notifications badge alerts filter"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-REFERRAL-003</span><h3 class="story-title">Referral Dashboard Tab & Notifications</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a Genetic Counselor or Assistant, I want a dedicated dashboard tab for referral patients with alerts.</p></div><div class="test-count">✓ 7 test cases</div></div></article>
+<article class="story-card" data-program="p4m" data-priority="could-have" data-search="epic write-back integration tc score nccn eligibility"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-REFERRAL-004</span><h3 class="story-title">Epic Write-Back for Referral Assessment Results</h3><div class="story-meta"><span class="badge badge-could-have">Could Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a provider, I want referral assessment results written back to Epic.</p></div><div class="test-count">✓ 4 test cases</div></div></article>
+</div></section>
 
-        <!-- DASHBOARD Category -->
-        <section class="category-section" data-category="dash">
-            <div class="category-header">
-                <div class="category-icon dash">🖥️</div>
-                <h2 class="category-title">Dashboard</h2>
-                <span class="category-count">3 stories</span>
-            </div>
-            <div class="stories-grid">
-                <!-- P4M-DASH-001 -->
-                <article class="story-card" data-program="p4m" data-priority="should-have" data-search="dashboard flag hematologic malignancy bone marrow transplant bmt clinical summary">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-DASH-001</span>
-                            <h3 class="story-title">Dashboard Flag for Hematologic Malignancy or Bone Marrow Transplant</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-should-have">Should Have</span>
-                                <span class="badge badge-draft">Draft v2</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a genetic counselor (GC), GA, or program administrator, I want the program dashboard to display a visual flag for patients who report a history of hematologic malignancy or bone marrow transplant, so that I can easily identify these patients and flag for GC review as needed.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>A new column ("Hematologic/BMT Flag") is visible on the program dashboard</li>
-                                <li>Column auto-populates with visual indicator when patient reports hematologic malignancy OR bone marrow transplant</li>
-                                <li>Flag is visible to GA, GC, and Program Administrator roles</li>
-                                <li>Flag is derived from patient responses in the clinical summary/medical history</li>
-                                <li>Flag triggers when EITHER condition is reported (hematologic malignancy OR BMT)</li>
-                                <li>If underlying data is updated, flag status updates accordingly</li>
-                                <li>Clicking the flag or patient row opens the clinical summary for detailed review</li>
-                                <li>Flag does not expose type of malignancy or BMT details on dashboard (HIPAA minimum necessary)</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            13 test cases
-                        </div>
-                    </div>
-                </article>
+<!-- P4M ANALYTICS -->
+<section class="category-section"><div class="category-header"><div class="category-icon analytics">📊</div><h2 class="category-title">Analytics (P4M)</h2><span class="category-count">2 stories</span></div><div class="stories-grid">
+<article class="story-card" data-program="p4m" data-priority="should-have" data-search="analytics dashboard tc status filtering clinic type indicator"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-ANALYTICS-001</span><h3 class="story-title">Analytics Dashboard TC Status Filtering with Clinic Type Indicator</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a program administrator, I need the analytics dashboard to filter by TC-enabled vs TC-disabled clinics.</p></div><div class="test-count">✓ 15 test cases</div></div></article>
+<article class="story-card" data-program="p4m" data-priority="should-have" data-search="analytics dashboard tc high-risk counts competing mortality cm"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-ANALYTICS-002</span><h3 class="story-title">Analytics Dashboard Shows TC High-Risk Counts With and Without CM</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a program administrator, I need the analytics dashboard to show high-risk counts both with and without CM.</p></div><div class="test-count">✓ 4 test cases</div></div></article>
+</div></section>
 
-                <!-- P4M-DASH-002 -->
-                <article class="story-card" data-program="p4m" data-priority="should-have" data-search="clinician dashboard standard cm-adjusted tc scores competing mortality recalculation">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-DASH-002</span>
-                            <h3 class="story-title">Clinician Dashboard Displays Both Standard and CM-Adjusted TC Scores</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-should-have">Should Have</span>
-                                <span class="badge badge-draft">Draft v2</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a genetic counselor at a CM-enabled clinic, I need to see both the standard Tyrer-Cuzick score and the Competing Mortality-adjusted TC score on the patient dashboard, so that I can understand both risk calculations and help patients make informed decisions.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>When CM is enabled, the clinician dashboard displays BOTH the standard TC score AND the CM-adjusted TC score</li>
-                                <li>Both scores are clearly labeled to distinguish standard TC from CM-adjusted TC</li>
-                                <li>When CM is disabled, only the standard TC score is displayed</li>
-                                <li>When a GC modifies patient assessment responses and triggers recalculation, system calculates BOTH scores</li>
-                                <li>High-risk threshold indicator (>20%) applies to the clinic's configured default score</li>
-                                <li>Score display updates in real-time as patient data changes</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            4 test cases
-                        </div>
-                    </div>
-                </article>
+<!-- P4M COMPLIANCE -->
+<section class="category-section"><div class="category-header"><div class="category-icon audit">🔒</div><h2 class="category-title">Compliance - Part 11 (P4M)</h2><span class="category-count">2 stories</span></div><div class="stories-grid">
+<article class="story-card" data-program="p4m" data-priority="must-have" data-search="audit trail requirements part 11 compliance fda 21 cfr"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-AUDIT-001</span><h3 class="story-title">Audit Trail Requirements for Part 11 Compliance</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a Compliance Officer, I want all system actions captured in an immutable audit trail.</p></div><div class="test-count">✓ 18 test cases</div></div></article>
+<article class="story-card" data-program="p4m" data-priority="must-have" data-search="electronic records requirements part 11 export pdf"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-RECORD-001</span><h3 class="story-title">Electronic Records Requirements for Part 11 Compliance</h3><div class="story-meta"><span class="badge badge-must-have">Must Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a Compliance Officer, I want electronic records to be exportable in accurate, human-readable formats.</p></div><div class="test-count">✓ 14 test cases</div></div></article>
+</div></section>
 
-                <!-- PLAT-DASH-001 -->
-                <article class="story-card" data-program="plat" data-priority="should-have" data-search="download print patient artifacts consent assessment clinical summary pdf bulk zip">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id plat">PLAT-DASH-001</span>
-                            <h3 class="story-title">Download and Print Patient Artifacts from Dashboard</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-should-have">Should Have</span>
-                                <span class="badge badge-draft">Draft v1</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a genetic counselor, I need to download and print patient artifacts (consent forms, assessment forms, clinical summaries) directly from the dashboard, including the ability to select multiple patients for bulk download, so that I can efficiently prepare documentation for patient visits and records.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>From the patient dashboard, GC can select a patient and view available artifacts</li>
-                                <li>GC can download individual artifacts as PDF for the selected patient</li>
-                                <li>GC can print individual artifacts directly from the dashboard without downloading first</li>
-                                <li>GC can select multiple patients from the dashboard using checkboxes or multi-select</li>
-                                <li>GC can bulk download artifacts for multiple selected patients in a single action</li>
-                                <li>Downloaded/printed artifacts include patient identification and generation timestamp</li>
-                                <li>Artifact download/print creates audit entry documenting who accessed which patient documents</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            9 test cases
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
+<!-- P4M CONFIG -->
+<section class="category-section"><div class="category-header"><div class="category-icon config">⚙️</div><h2 class="category-title">Configuration (P4M)</h2><span class="category-count">3 stories</span></div><div class="stories-grid">
+<article class="story-card" data-program="p4m" data-priority="should-have" data-search="clinical summary excludes tyrer-cuzick tc disabled nccn"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-CONFIG-001</span><h3 class="story-title">Clinical Summary Excludes Tyrer-Cuzick When Model Disabled</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic with TC disabled, I need the clinical summary to exclude TC score references.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+<article class="story-card" data-program="p4m" data-priority="should-have" data-search="clinical summary cm-adjusted tc score competing mortality"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-CONFIG-002</span><h3 class="story-title">Clinical Summary Displays CM-Adjusted TC Score with Updated Messaging</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinic with CM enabled, I need the clinical summary to display CM-adjusted TC score.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+<article class="story-card" data-program="p4m" data-priority="should-have" data-search="clinic-level competing mortality toggle configuration"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-CONFIG-003</span><h3 class="story-title">Clinic-Level Competing Mortality Toggle Configuration</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a program administrator, I need to enable or disable CM calculations at the clinic level.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+</div></section>
 
-        <!-- CONFIG Category -->
-        <section class="category-section" data-category="config">
-            <div class="category-header">
-                <div class="category-icon config">⚙️</div>
-                <h2 class="category-title">Configuration</h2>
-                <span class="category-count">3 stories</span>
-            </div>
-            <div class="stories-grid">
-                <!-- P4M-CONFIG-001 -->
-                <article class="story-card" data-program="p4m" data-priority="should-have" data-search="clinical summary excludes tyrer-cuzick tc disabled nccn only">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-CONFIG-001</span>
-                            <h3 class="story-title">Clinical Summary Excludes Tyrer-Cuzick When Model Disabled</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-should-have">Should Have</span>
-                                <span class="badge badge-draft">Draft v2</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a Prevention4ME clinic with Tyrer-Cuzick disabled, I need the clinical summary to exclude all TC score references and only display NCCN eligibility information, so that patients receive accurate, relevant documentation.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>When TC is disabled for a clinic, clinical summary does not include any Tyrer-Cuzick score, lifetime risk %, or TC-related recommendations</li>
-                                <li>When TC is disabled, clinical summary displays NCCN eligibility status and related recommendations only</li>
-                                <li>The clinical summary generates without errors when TC is disabled</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            3 test cases
-                        </div>
-                    </div>
-                </article>
+<!-- P4M DASH -->
+<section class="category-section"><div class="category-header"><div class="category-icon dash">🖥️</div><h2 class="category-title">Dashboard (P4M)</h2><span class="category-count">2 stories</span></div><div class="stories-grid">
+<article class="story-card" data-program="p4m" data-priority="should-have" data-search="dashboard flag hematologic malignancy bone marrow transplant"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-DASH-001</span><h3 class="story-title">Dashboard Flag for Hematologic Malignancy or Bone Marrow Transplant</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a genetic counselor, I need a flag when patients have hematologic malignancy or BMT history.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+<article class="story-card" data-program="p4m" data-priority="should-have" data-search="clinician dashboard displays standard cm-adjusted tc scores"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-DASH-002</span><h3 class="story-title">Clinician Dashboard Displays Both Standard and CM-Adjusted TC Scores</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a clinician, I need to see both standard and CM-adjusted TC scores on the dashboard.</p></div><div class="test-count">✓ 5 test cases</div></div></article>
+</div></section>
 
-                <!-- P4M-CONFIG-002 -->
-                <article class="story-card" data-program="p4m" data-priority="should-have" data-search="clinical summary cm-adjusted tc score competing mortality messaging patient record">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-CONFIG-002</span>
-                            <h3 class="story-title">Clinical Summary Displays CM-Adjusted TC Score with Updated Messaging</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-should-have">Should Have</span>
-                                <span class="badge badge-draft">Draft v1</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a patient at a CM-enabled clinic, I need my clinical summary to show my Competing Mortality-adjusted Tyrer-Cuzick score with clear messaging that CM is incorporated, so that I receive accurate risk information without confusion from multiple scores.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>When CM is enabled, clinical summary displays ONLY the CM-adjusted TC score (not both)</li>
-                                <li>Clinical summary messaging indicates "Competing Mortality is incorporated into the TC score"</li>
-                                <li>When CM is disabled, clinical summary displays the standard TC score with standard messaging</li>
-                                <li>The clinical summary does NOT show both scores to avoid patient confusion</li>
-                                <li>Score presentation follows existing clinical summary formatting standards</li>
-                                <li>A note or indicator is stored in the patient record indicating whether CM was used</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            3 test cases
-                        </div>
-                    </div>
-                </article>
+<!-- P4M ROLE -->
+<section class="category-section"><div class="category-header"><div class="category-icon role">👤</div><h2 class="category-title">Roles & Permissions (P4M)</h2><span class="category-count">1 story</span></div><div class="stories-grid">
+<article class="story-card" data-program="p4m" data-priority="should-have" data-search="external contractor role risk-based patient filter visibility"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id p4m">P4M-ROLE-001</span><h3 class="story-title">External Contractor Role with Risk-Based Patient Filter</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a program administrator, I want an External Contractor role with restricted patient visibility.</p></div><div class="test-count">✓ 6 test cases</div></div></article>
+</div></section>
 
-                <!-- P4M-CONFIG-003 -->
-                <article class="story-card" data-program="p4m" data-priority="should-have" data-search="clinic-level competing mortality toggle configuration dev team audit independent tc">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-CONFIG-003</span>
-                            <h3 class="story-title">Clinic-Level Competing Mortality Toggle Configuration</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-should-have">Should Have</span>
-                                <span class="badge badge-draft">Draft v1</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a program administrator, I need Competing Mortality (CM) to be configurable at the clinic level through dev team requests, so that each clinic can choose whether to incorporate age-based competing mortality into their Tyrer-Cuzick risk calculations.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>Competing Mortality (CM) is controlled at the clinic level - each clinic either has CM enabled or disabled</li>
-                                <li>CM toggle is managed by dev team via submitted requests (Option B control model)</li>
-                                <li>CM configuration becomes part of the centralized configuration list maintained per site</li>
-                                <li>When CM is enabled for a clinic, CM-adjusted TC becomes the default score</li>
-                                <li>CM toggle is independent from TC toggle - a clinic can have TC enabled with or without CM</li>
-                                <li>Configuration change creates audit entry documenting who requested, when changed, and previous state</li>
-                                <li>Configuration is stored and retrievable for reporting on which clinics use CM</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            4 test cases
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
+<!-- PLAT ANALYTICS -->
+<section class="category-section"><div class="category-header"><div class="category-icon analytics">📊</div><h2 class="category-title">Analytics (PLAT)</h2><span class="category-count">1 story</span></div><div class="stories-grid">
+<article class="story-card" data-program="plat" data-priority="should-have" data-search="gene-level positive variant reporting brca1 brca2 pss1 redox"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id plat">PLAT-ANALYTICS-001</span><h3 class="story-title">Gene-Level Positive Variant Reporting in Analytics Dashboard</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a program administrator, I need to track positive gene variants (BRCA1, BRCA2, PSS1, etc.) in the analytics dashboard.</p></div><div class="test-count">✓ 12 test cases</div></div></article>
+</div></section>
 
-        <!-- COMPLIANCE Category -->
-        <section class="category-section" data-category="compliance">
-            <div class="category-header">
-                <div class="category-icon audit">🔒</div>
-                <h2 class="category-title">Compliance (Part 11)</h2>
-                <span class="category-count">2 stories</span>
-            </div>
-            <div class="stories-grid">
-                <!-- P4M-AUDIT-001 -->
-                <article class="story-card" data-program="p4m" data-priority="must-have" data-search="audit trail part 11 compliance user identification timestamp immutable record">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-AUDIT-001</span>
-                            <h3 class="story-title">Audit Trail Requirements for Part 11 Compliance</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-must-have">Must Have</span>
-                                <span class="badge badge-draft">Draft v1</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a Compliance Officer, I want all system actions to be captured in an immutable audit trail with user identification and timestamps, so that I can demonstrate regulatory compliance and investigate any access or data integrity concerns.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>All patient record views create audit entries with user ID, timestamp, and patient ID</li>
-                                <li>All patient record edits create audit entries with user ID, timestamp, before/after values</li>
-                                <li>All failed access attempts create audit entries with user ID, timestamp, attempted action, and denial reason</li>
-                                <li>All role assignments/changes create audit entries</li>
-                                <li>All configuration changes create audit entries with before/after values</li>
-                                <li>All data exports create audit entries with user ID, timestamp, export type</li>
-                                <li>All audit entries include computer-generated timestamp (not user-editable)</li>
-                                <li>Audit records cannot be edited or deleted after creation</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            6 test cases
-                        </div>
-                    </div>
-                </article>
+<!-- PLAT DASH -->
+<section class="category-section"><div class="category-header"><div class="category-icon dash">🖥️</div><h2 class="category-title">Dashboard (PLAT)</h2><span class="category-count">1 story</span></div><div class="stories-grid">
+<article class="story-card" data-program="plat" data-priority="should-have" data-search="download print patient artifacts consent assessment bulk"><div class="story-header" onclick="toggleStory(this)"><div><span class="story-id plat">PLAT-DASH-001</span><h3 class="story-title">Download and Print Patient Artifacts from Dashboard</h3><div class="story-meta"><span class="badge badge-should-have">Should Have</span><span class="badge badge-draft">Draft</span></div></div><svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div><div class="story-body"><div class="story-section"><p class="user-story">As a genetic counselor, I need to download and print patient artifacts directly from the dashboard.</p></div><div class="test-count">✓ 7 test cases</div></div></article>
+</div></section>
 
-                <!-- P4M-RECORD-001 -->
-                <article class="story-card" data-program="p4m" data-priority="must-have" data-search="electronic records part 11 export pdf print metadata integrity checksum signature">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-RECORD-001</span>
-                            <h3 class="story-title">Electronic Records Requirements for Part 11 Compliance</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-must-have">Must Have</span>
-                                <span class="badge badge-draft">Draft v1</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a Compliance Officer, I want electronic records to be exportable in accurate, human-readable formats with appropriate metadata and integrity protection, so that I can provide complete records for regulatory review and ensure data integrity throughout the record lifecycle.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>Clinical summary can be exported as human-readable PDF</li>
-                                <li>Clinical summary can be printed directly from the application</li>
-                                <li>Exported/printed clinical summary matches on-screen display</li>
-                                <li>Patient demographics are included in exported record</li>
-                                <li>Exported record includes generation timestamp</li>
-                                <li>Exported record includes user who generated the export</li>
-                                <li>Exported records cannot be modified after generation (PDF security)</li>
-                                <li>Export includes checksum or digital signature for integrity verification</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            14 test cases
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <!-- ROLE Category -->
-        <section class="category-section" data-category="role">
-            <div class="category-header">
-                <div class="category-icon role">👤</div>
-                <h2 class="category-title">Roles & Permissions</h2>
-                <span class="category-count">1 story</span>
-            </div>
-            <div class="stories-grid">
-                <!-- P4M-ROLE-001 -->
-                <article class="story-card" data-program="p4m" data-priority="should-have" data-search="external contractor role risk-based patient filter visibility high-risk tc nccn">
-                    <div class="story-header" onclick="toggleStory(this)">
-                        <div>
-                            <span class="story-id p4m">P4M-ROLE-001</span>
-                            <h3 class="story-title">External Contractor Role with Risk-Based Patient Filter</h3>
-                            <div class="story-meta">
-                                <span class="badge badge-should-have">Should Have</span>
-                                <span class="badge badge-draft">Draft v1</span>
-                            </div>
-                        </div>
-                        <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="story-body">
-                        <div class="story-section">
-                            <h4 class="story-section-title">User Story</h4>
-                            <p class="user-story">As a program administrator, I want to create an External Contractor role with restricted patient visibility, so that outside contractors can only view and work with high-risk patients while maintaining compliance requirements for non-employee access.</p>
-                        </div>
-                        <div class="story-section">
-                            <h4 class="story-section-title">Acceptance Criteria</h4>
-                            <ol class="acceptance-criteria">
-                                <li>External Contractor role inherits Genetic Counselor permissions (read, write, lab ordering)</li>
-                                <li>External Contractor can view patient contact information</li>
-                                <li>External Contractor can view full clinical summary</li>
-                                <li>External Contractor cannot export data</li>
-                                <li>External Contractor can see patients where TC Score > 20% (threshold TBD)</li>
-                                <li>External Contractor can see patients where NCCN criteria = met</li>
-                                <li>External Contractor cannot see patients who did not complete the questionnaire</li>
-                                <li>Role can be assigned to users at the clinic level (starting with Montana)</li>
-                            </ol>
-                        </div>
-                        <div class="test-count">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                            11 test cases
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <p>Propel Health Requirements Dashboard</p>
-        <p style="margin-top: 0.5rem;">Generated January 13, 2026 · <a href="https://github.com/glewis05/requirements_toolkit">Requirements Toolkit</a></p>
-    </footer>
-
-    <script>
-        // Toggle story expansion
-        function toggleStory(header) {
-            header.closest('.story-card').classList.toggle('open');
-        }
-
-        // Program filter
-        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                filterStories();
-            });
-        });
-
-        // Priority filter
-        document.querySelectorAll('.filter-btn[data-priority]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn[data-priority]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                filterStories();
-            });
-        });
-
-        // Search
-        document.getElementById('searchInput').addEventListener('input', filterStories);
-
-        function filterStories() {
-            const programFilter = document.querySelector('.filter-btn[data-filter].active')?.dataset.filter || 'all';
-            const priorityFilter = document.querySelector('.filter-btn[data-priority].active')?.dataset.priority || 'all';
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-
-            document.querySelectorAll('.story-card').forEach(card => {
-                const program = card.dataset.program;
-                const priority = card.dataset.priority;
-                const searchText = card.dataset.search + ' ' + card.querySelector('.story-title').textContent.toLowerCase();
-
-                const matchesProgram = programFilter === 'all' || program === programFilter;
-                const matchesPriority = priorityFilter === 'all' || priority === priorityFilter;
-                const matchesSearch = !searchTerm || searchText.includes(searchTerm);
-
-                card.classList.toggle('hidden', !(matchesProgram && matchesPriority && matchesSearch));
-            });
-
-            // Update category counts and visibility
-            document.querySelectorAll('.category-section').forEach(section => {
-                const visibleStories = section.querySelectorAll('.story-card:not(.hidden)').length;
-                section.querySelector('.category-count').textContent = visibleStories + ' stor' + (visibleStories === 1 ? 'y' : 'ies');
-                section.style.display = visibleStories === 0 ? 'none' : 'block';
-            });
-        }
-    </script>
+</main>
+<footer class="footer"><p>Propel Health Requirements Dashboard</p><p style="margin-top:.5rem">Generated January 13, 2026 • 61 stories • 232 test cases</p></footer>
+<script>
+function toggleStory(h){h.closest('.story-card').classList.toggle('open')}
+document.querySelectorAll('.filter-btn[data-filter]').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('.filter-btn[data-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');filterStories()})});
+document.getElementById('searchInput').addEventListener('input',filterStories);
+function filterStories(){const pf=document.querySelector('.filter-btn[data-filter].active')?.dataset.filter||'all',st=document.getElementById('searchInput').value.toLowerCase();document.querySelectorAll('.story-card').forEach(c=>{const p=c.dataset.program,t=c.dataset.search+' '+c.querySelector('.story-title').textContent.toLowerCase();c.classList.toggle('hidden',!((pf==='all'||p===pf)&&(!st||t.includes(st))))});document.querySelectorAll('.category-section').forEach(s=>{const v=s.querySelectorAll('.story-card:not(.hidden)').length;s.querySelector('.category-count').textContent=v+' stor'+(v===1?'y':'ies');s.style.display=v===0?'none':'block'})}
+</script>
 </body>
 </html>
