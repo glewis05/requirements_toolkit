@@ -152,6 +152,31 @@
         .filter-group {
             display: flex;
             gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .filter-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .filter-row:last-child {
+            margin-bottom: 0;
+        }
+        .filter-row-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            min-width: 70px;
+            padding-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .filter-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            flex: 1;
         }
         .filter-btn {
             padding: 0.5rem 1rem;
@@ -270,6 +295,7 @@
         .badge-must-have { background: var(--color-must-have-bg); color: var(--color-must-have); }
         .badge-should-have { background: var(--color-should-have-bg); color: var(--color-should-have); }
         .badge-could-have { background: var(--color-could-have-bg); color: var(--color-could-have); }
+        .badge-not-assigned { background: #e5e7eb; color: #6b7280; }
         .badge-status { background: var(--color-draft-bg); color: var(--color-draft); }
         /* Roadmap badges - blue/teal color scheme to differentiate from priority (red) and status (gray) */
         .badge-roadmap { background: #e0f2fe; color: #0369a1; font-weight: 600; }
@@ -583,12 +609,12 @@
             <div class="summary-grid">
                 <div class="summary-card">
                     <div class="summary-card-label">Must Have</div>
-                    <div class="summary-card-value">15</div>
+                    <div class="summary-card-value">21</div>
                     <div class="summary-card-sub">Critical priority</div>
                 </div>
                 <div class="summary-card">
                     <div class="summary-card-label">Should Have</div>
-                    <div class="summary-card-value">12</div>
+                    <div class="summary-card-value">17</div>
                     <div class="summary-card-sub">High priority</div>
                 </div>
                 <div class="summary-card">
@@ -652,17 +678,28 @@
         <!-- Filters Container -->
         <div class="filters-container">
             <div class="section-title">Filters</div>
-            <div class="filters">
-                <div class="filter-group">
+
+            <div class="filter-row">
+                <span class="filter-row-label">Programs</span>
+                <div class="filter-pills">
                     <button class="filter-btn active" data-filter="all">All Programs</button><button class="filter-btn dis" data-filter="dis">DIS (11)</button><button class="filter-btn onb" data-filter="onb">ONB (34)</button><button class="filter-btn p4m" data-filter="p4m">P4M (14)</button><button class="filter-btn plat" data-filter="plat">PLAT (3)</button><button class="filter-btn test2" data-filter="test2">TEST2 (11)</button>
                 </div>
-                <div class="filter-group">
+            </div>
+
+            <div class="filter-row">
+                <span class="filter-row-label">Priorities</span>
+                <div class="filter-pills">
                     <button class="filter-btn active" data-priority="all">All Priorities</button>
                     <button class="filter-btn" data-priority="must-have">Must Have</button>
                     <button class="filter-btn" data-priority="should-have">Should Have</button>
                     <button class="filter-btn" data-priority="could-have">Could Have</button>
+                    <button class="filter-btn" data-priority="not-assigned">Not Assigned</button>
                 </div>
-                <div class="filter-group">
+            </div>
+
+            <div class="filter-row">
+                <span class="filter-row-label">Schedule</span>
+                <div class="filter-pills">
                     <button class="filter-btn active" data-roadmap="all">All</button>
                                         <button class="filter-btn" data-roadmap="q1-2026">Q1 '26</button>
                     <button class="filter-btn" data-roadmap="q2-2026">Q2 '26</button>
@@ -676,7 +713,11 @@
                     <button class="filter-btn" data-roadmap="backlog">Backlog</button>
                     <button class="filter-btn" data-roadmap="unscheduled">Unscheduled</button>
                 </div>
-                <div class="search-box">
+            </div>
+
+            <div class="filter-row">
+                <span class="filter-row-label">Search</span>
+                <div class="search-box" style="flex: 1; max-width: none;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
@@ -2354,13 +2395,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="high" data-roadmap="unscheduled" data-search="number (n) invited as a research coordinator, i want to track number (n) of patients who received invitations, so that core metric for outreach effectiveness">
+                    <article class="story-card" data-program="test2" data-priority="must-have" data-roadmap="unscheduled" data-search="number (n) invited as a research coordinator, i want to track number (n) of patients who received invitations, so that core metric for outreach effectiveness">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-001</span>
                                 <h3 class="story-title">Number (N) Invited</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-high">High</span>
+                                    <span class="badge badge-must-have">Must Have</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2413,13 +2454,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="medium" data-roadmap="unscheduled" data-search="program recruitment comparison as a research coordinator, i want to identify recruitment volume by program, so that reveals geographic or operational biases">
+                    <article class="story-card" data-program="test2" data-priority="should-have" data-roadmap="unscheduled" data-search="program recruitment comparison as a research coordinator, i want to identify recruitment volume by program, so that reveals geographic or operational biases">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-002</span>
                                 <h3 class="story-title">Program Recruitment Comparison</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-medium">Medium</span>
+                                    <span class="badge badge-should-have">Should Have</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2472,13 +2513,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="medium" data-roadmap="unscheduled" data-search="consent flow drop-off tracking as a research coordinator, i want to see where users stop in the consent process, so that improves ux and conversion">
+                    <article class="story-card" data-program="test2" data-priority="should-have" data-roadmap="unscheduled" data-search="consent flow drop-off tracking as a research coordinator, i want to see where users stop in the consent process, so that improves ux and conversion">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-003</span>
                                 <h3 class="story-title">Consent Flow Drop-off Tracking</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-medium">Medium</span>
+                                    <span class="badge badge-should-have">Should Have</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2531,13 +2572,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="high" data-roadmap="unscheduled" data-search="email engagement tracking as a research coordinator, i want to monitor if emails are opened or ignored, so that optimizes communication strategy">
+                    <article class="story-card" data-program="test2" data-priority="must-have" data-roadmap="unscheduled" data-search="email engagement tracking as a research coordinator, i want to monitor if emails are opened or ignored, so that optimizes communication strategy">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-004</span>
                                 <h3 class="story-title">Email Engagement Tracking</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-high">High</span>
+                                    <span class="badge badge-must-have">Must Have</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2590,13 +2631,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="high" data-roadmap="unscheduled" data-search="reminder email opt-out tracking as a research coordinator, i want to monitor which users opt out of reminder emails, so that ensures effective tracking should a participant want to change their mind in the future+c9i7c7">
+                    <article class="story-card" data-program="test2" data-priority="must-have" data-roadmap="unscheduled" data-search="reminder email opt-out tracking as a research coordinator, i want to monitor which users opt out of reminder emails, so that ensures effective tracking should a participant want to change their mind in the future+c9i7c7">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-005</span>
                                 <h3 class="story-title">Reminder Email Opt-Out Tracking</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-high">High</span>
+                                    <span class="badge badge-must-have">Must Have</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2649,13 +2690,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="high" data-roadmap="unscheduled" data-search="on-demand patient lists as a research coordinator, i want to need to be able to pull list of patients who have declined to participate in the registry, consented, opted-in for future research, etc., so that applicable for future studies that we want to identify cohorts for">
+                    <article class="story-card" data-program="test2" data-priority="must-have" data-roadmap="unscheduled" data-search="on-demand patient lists as a research coordinator, i want to need to be able to pull list of patients who have declined to participate in the registry, consented, opted-in for future research, etc., so that applicable for future studies that we want to identify cohorts for">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-006</span>
                                 <h3 class="story-title">On-demand Patient Lists</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-high">High</span>
+                                    <span class="badge badge-must-have">Must Have</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2708,13 +2749,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="medium" data-roadmap="unscheduled" data-search="time on consent form as a research coordinator, i want to track amount of time spent on each consent form page, so that indicates how patients are interacting with the content of the consent form">
+                    <article class="story-card" data-program="test2" data-priority="should-have" data-roadmap="unscheduled" data-search="time on consent form as a research coordinator, i want to track amount of time spent on each consent form page, so that indicates how patients are interacting with the content of the consent form">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-007</span>
                                 <h3 class="story-title">Time on Consent Form</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-medium">Medium</span>
+                                    <span class="badge badge-should-have">Should Have</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2767,13 +2808,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="medium" data-roadmap="unscheduled" data-search="saliva kit ordering as a research coordinator, i want to enables discover research team to order saliva kits via propel dashboard for participants that opted-in for population sequencing protocol, so that reduces manual workflows and increases effiency for large-scale population sequencing across broad and program-specific recruitment pathways">
+                    <article class="story-card" data-program="test2" data-priority="should-have" data-roadmap="unscheduled" data-search="saliva kit ordering as a research coordinator, i want to enables discover research team to order saliva kits via propel dashboard for participants that opted-in for population sequencing protocol, so that reduces manual workflows and increases effiency for large-scale population sequencing across broad and program-specific recruitment pathways">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-008</span>
                                 <h3 class="story-title">Saliva Kit Ordering</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-medium">Medium</span>
+                                    <span class="badge badge-should-have">Should Have</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2826,13 +2867,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="high" data-roadmap="unscheduled" data-search="mychart recruitment cross validation as a research coordinator, i want to cross validate participants entering through the mychart recruitment pathway against existing e-consent records in propel to prevent duplicate enrollment from other recruitment pathways. once cross validation is confirmed, a patient is allowed to proceed with consent if no consent exists or presented with a screen that notes that they have already been enrolled if validation notes a consent exists, so that prevents redundant consent submission, and reduces confusion for participants recruited from other recruitment pathways">
+                    <article class="story-card" data-program="test2" data-priority="must-have" data-roadmap="unscheduled" data-search="mychart recruitment cross validation as a research coordinator, i want to cross validate participants entering through the mychart recruitment pathway against existing e-consent records in propel to prevent duplicate enrollment from other recruitment pathways. once cross validation is confirmed, a patient is allowed to proceed with consent if no consent exists or presented with a screen that notes that they have already been enrolled if validation notes a consent exists, so that prevents redundant consent submission, and reduces confusion for participants recruited from other recruitment pathways">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-009</span>
                                 <h3 class="story-title">MyChart Recruitment Cross Validation</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-high">High</span>
+                                    <span class="badge badge-must-have">Must Have</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2885,13 +2926,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="medium" data-roadmap="unscheduled" data-search="multi-study dashboard as a research coordinator, i want to show a personalized list of available studies on the patient dashboard; each study appears as a collapsible accordion with shorthand details and a "learn more/sign up" action, so that centralizes options, reduces navigation friction, and increases conversion by surfacing all eligible studies in one place with quick-scan information">
+                    <article class="story-card" data-program="test2" data-priority="should-have" data-roadmap="unscheduled" data-search="multi-study dashboard as a research coordinator, i want to show a personalized list of available studies on the patient dashboard; each study appears as a collapsible accordion with shorthand details and a "learn more/sign up" action, so that centralizes options, reduces navigation friction, and increases conversion by surfacing all eligible studies in one place with quick-scan information">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-010</span>
                                 <h3 class="story-title">Multi-Study Dashboard</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-medium">Medium</span>
+                                    <span class="badge badge-should-have">Should Have</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2944,13 +2985,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="high" data-roadmap="unscheduled" data-search="sms outreach reminders as a research coordinator, i want to allows for researchers to reach out to patients via sms through the platform, so that increases multichannel outreach to potential participants">
+                    <article class="story-card" data-program="test2" data-priority="must-have" data-roadmap="unscheduled" data-search="sms outreach reminders as a research coordinator, i want to allows for researchers to reach out to patients via sms through the platform, so that increases multichannel outreach to potential participants">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-011</span>
                                 <h3 class="story-title">SMS Outreach Reminders</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-high">High</span>
+                                    <span class="badge badge-must-have">Must Have</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
