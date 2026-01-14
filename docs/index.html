@@ -152,6 +152,31 @@
         .filter-group {
             display: flex;
             gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .filter-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .filter-row:last-child {
+            margin-bottom: 0;
+        }
+        .filter-row-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            min-width: 70px;
+            padding-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .filter-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            flex: 1;
         }
         .filter-btn {
             padding: 0.5rem 1rem;
@@ -270,6 +295,7 @@
         .badge-must-have { background: var(--color-must-have-bg); color: var(--color-must-have); }
         .badge-should-have { background: var(--color-should-have-bg); color: var(--color-should-have); }
         .badge-could-have { background: var(--color-could-have-bg); color: var(--color-could-have); }
+        .badge-not-assigned { background: #9CA3AF; color: white; }
         .badge-status { background: var(--color-draft-bg); color: var(--color-draft); }
         /* Roadmap badges - blue/teal color scheme to differentiate from priority (red) and status (gray) */
         .badge-roadmap { background: #e0f2fe; color: #0369a1; font-weight: 600; }
@@ -527,7 +553,7 @@
                 </div>
                 <div class="header-meta-item">
                     <span class="header-meta-label">Test Cases</span>
-                    <span class="header-meta-value">358</span>
+                    <span class="header-meta-value">309</span>
                 </div>
                 <div class="header-meta-item">
                     <span class="header-meta-label">Last Updated</span>
@@ -545,7 +571,7 @@
                 <div class="summary-card">
                     <div class="summary-card-label">DIS</div>
                     <div class="summary-card-value">11</div>
-                    <div class="summary-card-sub">53 test cases</div>
+                    <div class="summary-card-sub">31 test cases</div>
                 </div>
             
                 <div class="summary-card">
@@ -557,13 +583,13 @@
                 <div class="summary-card">
                     <div class="summary-card-label">P4M</div>
                     <div class="summary-card-value">14</div>
-                    <div class="summary-card-sub">99 test cases</div>
+                    <div class="summary-card-sub">73 test cases</div>
                 </div>
             
                 <div class="summary-card">
                     <div class="summary-card-label">PLAT</div>
                     <div class="summary-card-value">3</div>
-                    <div class="summary-card-sub">19 test cases</div>
+                    <div class="summary-card-sub">18 test cases</div>
                 </div>
             
                 <div class="summary-card">
@@ -652,17 +678,28 @@
         <!-- Filters Container -->
         <div class="filters-container">
             <div class="section-title">Filters</div>
-            <div class="filters">
-                <div class="filter-group">
+
+            <div class="filter-row">
+                <span class="filter-row-label">Programs</span>
+                <div class="filter-pills">
                     <button class="filter-btn active" data-filter="all">All Programs</button><button class="filter-btn dis" data-filter="dis">DIS (11)</button><button class="filter-btn onb" data-filter="onb">ONB (34)</button><button class="filter-btn p4m" data-filter="p4m">P4M (14)</button><button class="filter-btn plat" data-filter="plat">PLAT (3)</button><button class="filter-btn test2" data-filter="test2">TEST2 (11)</button>
                 </div>
-                <div class="filter-group">
+            </div>
+
+            <div class="filter-row">
+                <span class="filter-row-label">Priorities</span>
+                <div class="filter-pills">
                     <button class="filter-btn active" data-priority="all">All Priorities</button>
                     <button class="filter-btn" data-priority="must-have">Must Have</button>
                     <button class="filter-btn" data-priority="should-have">Should Have</button>
                     <button class="filter-btn" data-priority="could-have">Could Have</button>
+                    <button class="filter-btn" data-priority="not-assigned">Not Assigned</button>
                 </div>
-                <div class="filter-group">
+            </div>
+
+            <div class="filter-row">
+                <span class="filter-row-label">Schedule</span>
+                <div class="filter-pills">
                     <button class="filter-btn active" data-roadmap="all">All</button>
                                         <button class="filter-btn" data-roadmap="q1-2026">Q1 '26</button>
                     <button class="filter-btn" data-roadmap="q2-2026">Q2 '26</button>
@@ -676,7 +713,11 @@
                     <button class="filter-btn" data-roadmap="backlog">Backlog</button>
                     <button class="filter-btn" data-roadmap="unscheduled">Unscheduled</button>
                 </div>
-                <div class="search-box">
+            </div>
+
+            <div class="filter-row">
+                <span class="filter-row-label">Search</span>
+                <div class="search-box" style="flex: 1; max-width: none;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
@@ -695,13 +736,13 @@
                     </div>
                     <div class="stories-grid">
                         
-                    <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unscheduled" data-search="manual referral entry & patient invitation as a user (provider, genetic assistant, or referral coordinator), i want to manually create a referred patient record in the provider portal and send an invitation so the patient can complete risk assessments to determine referral eligibility.">
+                    <article class="story-card" data-program="p4m" data-priority="not-assigned" data-roadmap="unscheduled" data-search="manual referral entry & patient invitation as a user (provider, genetic assistant, or referral coordinator), i want to manually create a referred patient record in the provider portal and send an invitation so the patient can complete risk assessments to determine referral eligibility.">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id p4m">P4M-REFERRAL-001</span>
                                 <h3 class="story-title">Manual Referral Entry &amp; Patient Invitation</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -749,18 +790,18 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                5 test cases
+                                4 test cases
                             </div>
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unscheduled" data-search="referral-limited assessment flow as a referred patient, i want to complete only the tc and nccn assessments, view my risk results, and download the clinical summary—without being asked for e-consent unless a provider decides to proceed with scheduling.">
+                    <article class="story-card" data-program="p4m" data-priority="not-assigned" data-roadmap="unscheduled" data-search="referral-limited assessment flow as a referred patient, i want to complete only the tc and nccn assessments, view my risk results, and download the clinical summary—without being asked for e-consent unless a provider decides to proceed with scheduling.">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id p4m">P4M-REFERRAL-002</span>
                                 <h3 class="story-title">Referral-Limited Assessment Flow</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -808,18 +849,18 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                6 test cases
+                                5 test cases
                             </div>
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unscheduled" data-search="referral dashboard tab & notifications as a user with genetic counselor or genetic assistant role, i want a dedicated dashboard tab listing only referral patients with alerts when new results arrive, so i can prioritize them over routine scheduled cases.">
+                    <article class="story-card" data-program="p4m" data-priority="not-assigned" data-roadmap="unscheduled" data-search="referral dashboard tab & notifications as a user with genetic counselor or genetic assistant role, i want a dedicated dashboard tab listing only referral patients with alerts when new results arrive, so i can prioritize them over routine scheduled cases.">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id p4m">P4M-REFERRAL-003</span>
                                 <h3 class="story-title">Referral Dashboard Tab &amp; Notifications</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -872,13 +913,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="p4m" data-priority="could-have" data-roadmap="unscheduled" data-search="epic write-back for referral assessment results as a provider, i want referral assessment results written back to epic so that the patient's ehr reflects their tc score, nccn eligibility, and referral outcome without manual data entry.">
+                    <article class="story-card" data-program="p4m" data-priority="not-assigned" data-roadmap="unscheduled" data-search="epic write-back for referral assessment results as a provider, i want referral assessment results written back to epic so that the patient's ehr reflects their tc score, nccn eligibility, and referral outcome without manual data entry.">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id p4m">P4M-REFERRAL-004</span>
                                 <h3 class="story-title">Epic Write-Back for Referral Assessment Results</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-could-have">Could Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -926,7 +967,7 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                4 test cases
+                                3 test cases
                             </div>
                         </div>
                     </article>
@@ -942,13 +983,13 @@
                     </div>
                     <div class="stories-grid">
                         
-                    <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unscheduled" data-search="analytics dashboard tc status filtering with clinic type indicator as a prevention4me program administrator, i need the analytics dashboard to filter by tc-enabled vs tc-disabled clinics and clearly indicate which clinic types have tc data, so that i can accurately compare performance metrics and understand data completeness across the program.">
+                    <article class="story-card" data-program="p4m" data-priority="not-assigned" data-roadmap="unscheduled" data-search="analytics dashboard tc status filtering with clinic type indicator as a prevention4me program administrator, i need the analytics dashboard to filter by tc-enabled vs tc-disabled clinics and clearly indicate which clinic types have tc data, so that i can accurately compare performance metrics and understand data completeness across the program.">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id p4m">P4M-ANALYTICS-001</span>
                                 <h3 class="story-title">Analytics Dashboard TC Status Filtering with Clinic Type Indicator</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v2</span>
                                 </div>
@@ -996,7 +1037,7 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                15 test cases
+                                13 test cases
                             </div>
                         </div>
                     </article>
@@ -1060,13 +1101,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="plat" data-priority="should-have" data-roadmap="unscheduled" data-search="gene-level positive variant reporting in analytics dashboard as a program administrator, i need to track and report on positive gene variants (brca1, brca2, pss1, etc.) in the analytics dashboard across all programs, so that i can monitor carrier identification rates, compare performance across clinics and programs, and generate monthly reporting metrics.">
+                    <article class="story-card" data-program="plat" data-priority="not-assigned" data-roadmap="unscheduled" data-search="gene-level positive variant reporting in analytics dashboard as a program administrator, i need to track and report on positive gene variants (brca1, brca2, pss1, etc.) in the analytics dashboard across all programs, so that i can monitor carrier identification rates, compare performance across clinics and programs, and generate monthly reporting metrics.">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id plat">PLAT-ANALYTICS-001</span>
                                 <h3 class="story-title">Gene-Level Positive Variant Reporting in Analytics Dashboard</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Internal Review v2</span>
                                 </div>
@@ -1130,13 +1171,13 @@
                     </div>
                     <div class="stories-grid">
                         
-                    <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unscheduled" data-search="dashboard flag for hematologic malignancy or bone marrow transplant as a genetic counselor (gc), ga, or program administrator, i want the program dashboard to display a visual flag for patients who report a history of hematologic malignancy or bone marrow transplant, so that i can easily identify these patients, flag for gc review as needed, and remove appropriate patients from the standard workflow without manually reviewing each clinical summary.">
+                    <article class="story-card" data-program="p4m" data-priority="not-assigned" data-roadmap="unscheduled" data-search="dashboard flag for hematologic malignancy or bone marrow transplant as a genetic counselor (gc), ga, or program administrator, i want the program dashboard to display a visual flag for patients who report a history of hematologic malignancy or bone marrow transplant, so that i can easily identify these patients, flag for gc review as needed, and remove appropriate patients from the standard workflow without manually reviewing each clinical summary.">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id p4m">P4M-DASH-001</span>
                                 <h3 class="story-title">Dashboard Flag for Hematologic Malignancy or Bone Marrow Transplant</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Internal Review v4</span>
                                 </div>
@@ -1184,7 +1225,7 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                19 test cases
+                                10 test cases
                             </div>
                         </div>
                     </article>
@@ -1302,7 +1343,7 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                9 test cases
+                                8 test cases
                             </div>
                         </div>
                     </article>
@@ -1490,7 +1531,7 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                4 test cases
+                                3 test cases
                             </div>
                         </div>
                     </article>
@@ -1506,13 +1547,13 @@
                     </div>
                     <div class="stories-grid">
                         
-                    <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unscheduled" data-search="audit trail requirements for part 11 compliance as a compliance officer, i want all system actions to be captured in an immutable audit trail with user identification and timestamps, so that i can demonstrate regulatory compliance and investigate any access or data integrity concerns.">
+                    <article class="story-card" data-program="p4m" data-priority="not-assigned" data-roadmap="unscheduled" data-search="audit trail requirements for part 11 compliance as a compliance officer, i want all system actions to be captured in an immutable audit trail with user identification and timestamps, so that i can demonstrate regulatory compliance and investigate any access or data integrity concerns.">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id p4m">P4M-AUDIT-001</span>
                                 <h3 class="story-title">Audit Trail Requirements for Part 11 Compliance</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -1560,18 +1601,18 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                6 test cases
+                                0 test cases
                             </div>
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unscheduled" data-search="electronic records requirements for part 11 compliance as a compliance officer, i want electronic records to be exportable in accurate, human-readable formats with appropriate metadata and integrity protection, so that i can provide complete records for regulatory review and ensure data integrity throughout the record lifecycle.">
+                    <article class="story-card" data-program="p4m" data-priority="not-assigned" data-roadmap="unscheduled" data-search="electronic records requirements for part 11 compliance as a compliance officer, i want electronic records to be exportable in accurate, human-readable formats with appropriate metadata and integrity protection, so that i can provide complete records for regulatory review and ensure data integrity throughout the record lifecycle.">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id p4m">P4M-RECORD-001</span>
                                 <h3 class="story-title">Electronic Records Requirements for Part 11 Compliance</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -1619,7 +1660,7 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                5 test cases
+                                0 test cases
                             </div>
                         </div>
                     </article>
@@ -1759,7 +1800,7 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                13 test cases
+                                8 test cases
                             </div>
                         </div>
                     </article>
@@ -1936,7 +1977,7 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                7 test cases
+                                4 test cases
                             </div>
                         </div>
                     </article>
@@ -1995,7 +2036,7 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                7 test cases
+                                4 test cases
                             </div>
                         </div>
                     </article>
@@ -2054,7 +2095,7 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                9 test cases
+                                5 test cases
                             </div>
                         </div>
                     </article>
@@ -2231,7 +2272,7 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                8 test cases
+                                5 test cases
                             </div>
                         </div>
                     </article>
@@ -2349,18 +2390,18 @@
                             </div>
                             <div class="test-count">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                                9 test cases
+                                5 test cases
                             </div>
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="must-have" data-roadmap="unscheduled" data-search="number (n) invited as a research coordinator, i want to track number (n) of patients who received invitations, so that core metric for outreach effectiveness">
+                    <article class="story-card" data-program="test2" data-priority="not-assigned" data-roadmap="unscheduled" data-search="number (n) invited as a research coordinator, i want to track number (n) of patients who received invitations, so that core metric for outreach effectiveness">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-001</span>
                                 <h3 class="story-title">Number (N) Invited</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2413,13 +2454,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="should-have" data-roadmap="unscheduled" data-search="program recruitment comparison as a research coordinator, i want to identify recruitment volume by program, so that reveals geographic or operational biases">
+                    <article class="story-card" data-program="test2" data-priority="not-assigned" data-roadmap="unscheduled" data-search="program recruitment comparison as a research coordinator, i want to identify recruitment volume by program, so that reveals geographic or operational biases">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-002</span>
                                 <h3 class="story-title">Program Recruitment Comparison</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2472,13 +2513,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="should-have" data-roadmap="unscheduled" data-search="consent flow drop-off tracking as a research coordinator, i want to see where users stop in the consent process, so that improves ux and conversion">
+                    <article class="story-card" data-program="test2" data-priority="not-assigned" data-roadmap="unscheduled" data-search="consent flow drop-off tracking as a research coordinator, i want to see where users stop in the consent process, so that improves ux and conversion">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-003</span>
                                 <h3 class="story-title">Consent Flow Drop-off Tracking</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2531,13 +2572,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="must-have" data-roadmap="unscheduled" data-search="email engagement tracking as a research coordinator, i want to monitor if emails are opened or ignored, so that optimizes communication strategy">
+                    <article class="story-card" data-program="test2" data-priority="not-assigned" data-roadmap="unscheduled" data-search="email engagement tracking as a research coordinator, i want to monitor if emails are opened or ignored, so that optimizes communication strategy">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-004</span>
                                 <h3 class="story-title">Email Engagement Tracking</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2590,13 +2631,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="must-have" data-roadmap="unscheduled" data-search="reminder email opt-out tracking as a research coordinator, i want to monitor which users opt out of reminder emails, so that ensures effective tracking should a participant want to change their mind in the future+c9i7c7">
+                    <article class="story-card" data-program="test2" data-priority="not-assigned" data-roadmap="unscheduled" data-search="reminder email opt-out tracking as a research coordinator, i want to monitor which users opt out of reminder emails, so that ensures effective tracking should a participant want to change their mind in the future+c9i7c7">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-005</span>
                                 <h3 class="story-title">Reminder Email Opt-Out Tracking</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2649,13 +2690,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="must-have" data-roadmap="unscheduled" data-search="on-demand patient lists as a research coordinator, i want to need to be able to pull list of patients who have declined to participate in the registry, consented, opted-in for future research, etc., so that applicable for future studies that we want to identify cohorts for">
+                    <article class="story-card" data-program="test2" data-priority="not-assigned" data-roadmap="unscheduled" data-search="on-demand patient lists as a research coordinator, i want to need to be able to pull list of patients who have declined to participate in the registry, consented, opted-in for future research, etc., so that applicable for future studies that we want to identify cohorts for">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-006</span>
                                 <h3 class="story-title">On-demand Patient Lists</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2708,13 +2749,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="should-have" data-roadmap="unscheduled" data-search="time on consent form as a research coordinator, i want to track amount of time spent on each consent form page, so that indicates how patients are interacting with the content of the consent form">
+                    <article class="story-card" data-program="test2" data-priority="not-assigned" data-roadmap="unscheduled" data-search="time on consent form as a research coordinator, i want to track amount of time spent on each consent form page, so that indicates how patients are interacting with the content of the consent form">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-007</span>
                                 <h3 class="story-title">Time on Consent Form</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2767,13 +2808,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="should-have" data-roadmap="unscheduled" data-search="saliva kit ordering as a research coordinator, i want to enables discover research team to order saliva kits via propel dashboard for participants that opted-in for population sequencing protocol, so that reduces manual workflows and increases effiency for large-scale population sequencing across broad and program-specific recruitment pathways">
+                    <article class="story-card" data-program="test2" data-priority="not-assigned" data-roadmap="unscheduled" data-search="saliva kit ordering as a research coordinator, i want to enables discover research team to order saliva kits via propel dashboard for participants that opted-in for population sequencing protocol, so that reduces manual workflows and increases effiency for large-scale population sequencing across broad and program-specific recruitment pathways">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-008</span>
                                 <h3 class="story-title">Saliva Kit Ordering</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2826,13 +2867,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="must-have" data-roadmap="unscheduled" data-search="mychart recruitment cross validation as a research coordinator, i want to cross validate participants entering through the mychart recruitment pathway against existing e-consent records in propel to prevent duplicate enrollment from other recruitment pathways. once cross validation is confirmed, a patient is allowed to proceed with consent if no consent exists or presented with a screen that notes that they have already been enrolled if validation notes a consent exists, so that prevents redundant consent submission, and reduces confusion for participants recruited from other recruitment pathways">
+                    <article class="story-card" data-program="test2" data-priority="not-assigned" data-roadmap="unscheduled" data-search="mychart recruitment cross validation as a research coordinator, i want to cross validate participants entering through the mychart recruitment pathway against existing e-consent records in propel to prevent duplicate enrollment from other recruitment pathways. once cross validation is confirmed, a patient is allowed to proceed with consent if no consent exists or presented with a screen that notes that they have already been enrolled if validation notes a consent exists, so that prevents redundant consent submission, and reduces confusion for participants recruited from other recruitment pathways">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-009</span>
                                 <h3 class="story-title">MyChart Recruitment Cross Validation</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2885,13 +2926,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="should-have" data-roadmap="unscheduled" data-search="multi-study dashboard as a research coordinator, i want to show a personalized list of available studies on the patient dashboard; each study appears as a collapsible accordion with shorthand details and a "learn more/sign up" action, so that centralizes options, reduces navigation friction, and increases conversion by surfacing all eligible studies in one place with quick-scan information">
+                    <article class="story-card" data-program="test2" data-priority="not-assigned" data-roadmap="unscheduled" data-search="multi-study dashboard as a research coordinator, i want to show a personalized list of available studies on the patient dashboard; each study appears as a collapsible accordion with shorthand details and a "learn more/sign up" action, so that centralizes options, reduces navigation friction, and increases conversion by surfacing all eligible studies in one place with quick-scan information">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-010</span>
                                 <h3 class="story-title">Multi-Study Dashboard</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
@@ -2944,13 +2985,13 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="test2" data-priority="must-have" data-roadmap="unscheduled" data-search="sms outreach reminders as a research coordinator, i want to allows for researchers to reach out to patients via sms through the platform, so that increases multichannel outreach to potential participants">
+                    <article class="story-card" data-program="test2" data-priority="not-assigned" data-roadmap="unscheduled" data-search="sms outreach reminders as a research coordinator, i want to allows for researchers to reach out to patients via sms through the platform, so that increases multichannel outreach to potential participants">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id test2">TEST2-RECRUIT-011</span>
                                 <h3 class="story-title">SMS Outreach Reminders</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
                                     <span class="badge badge-status">Draft v1</span>
                                 </div>
