@@ -152,31 +152,6 @@
         .filter-group {
             display: flex;
             gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        .filter-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-        }
-        .filter-row:last-child {
-            margin-bottom: 0;
-        }
-        .filter-row-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            min-width: 70px;
-            padding-top: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
-        .filter-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            flex: 1;
         }
         .filter-btn {
             padding: 0.5rem 1rem;
@@ -295,7 +270,6 @@
         .badge-must-have { background: var(--color-must-have-bg); color: var(--color-must-have); }
         .badge-should-have { background: var(--color-should-have-bg); color: var(--color-should-have); }
         .badge-could-have { background: var(--color-could-have-bg); color: var(--color-could-have); }
-        .badge-not-assigned { background: #e5e7eb; color: #6b7280; }
         .badge-status { background: var(--color-draft-bg); color: var(--color-draft); }
         /* Roadmap badges - blue/teal color scheme to differentiate from priority (red) and status (gray) */
         .badge-roadmap { background: #e0f2fe; color: #0369a1; font-weight: 600; }
@@ -609,12 +583,12 @@
             <div class="summary-grid">
                 <div class="summary-card">
                     <div class="summary-card-label">Must Have</div>
-                    <div class="summary-card-value">21</div>
+                    <div class="summary-card-value">22</div>
                     <div class="summary-card-sub">Critical priority</div>
                 </div>
                 <div class="summary-card">
                     <div class="summary-card-label">Should Have</div>
-                    <div class="summary-card-value">17</div>
+                    <div class="summary-card-value">16</div>
                     <div class="summary-card-sub">High priority</div>
                 </div>
                 <div class="summary-card">
@@ -633,7 +607,7 @@
             </div>
             <div class="roadmap-item">
                 <div class="roadmap-item-label">Q2 '26</div>
-                <div class="roadmap-item-value">3</div>
+                <div class="roadmap-item-value">4</div>
             </div>
             <div class="roadmap-item">
                 <div class="roadmap-item-label">Q3 '26</div>
@@ -669,7 +643,7 @@
             </div>
             <div class="roadmap-item">
                 <div class="roadmap-item-label">Unscheduled</div>
-                <div class="roadmap-item-value">23</div>
+                <div class="roadmap-item-value">22</div>
             </div>
 
         </div>
@@ -678,28 +652,17 @@
         <!-- Filters Container -->
         <div class="filters-container">
             <div class="section-title">Filters</div>
-
-            <div class="filter-row">
-                <span class="filter-row-label">Programs</span>
-                <div class="filter-pills">
+            <div class="filters">
+                <div class="filter-group">
                     <button class="filter-btn active" data-filter="all">All Programs</button><button class="filter-btn dis" data-filter="dis">DIS (11)</button><button class="filter-btn onb" data-filter="onb">ONB (34)</button><button class="filter-btn p4m" data-filter="p4m">P4M (14)</button><button class="filter-btn plat" data-filter="plat">PLAT (3)</button><button class="filter-btn test2" data-filter="test2">TEST2 (11)</button>
                 </div>
-            </div>
-
-            <div class="filter-row">
-                <span class="filter-row-label">Priorities</span>
-                <div class="filter-pills">
+                <div class="filter-group">
                     <button class="filter-btn active" data-priority="all">All Priorities</button>
                     <button class="filter-btn" data-priority="must-have">Must Have</button>
                     <button class="filter-btn" data-priority="should-have">Should Have</button>
                     <button class="filter-btn" data-priority="could-have">Could Have</button>
-                    <button class="filter-btn" data-priority="not-assigned">Not Assigned</button>
                 </div>
-            </div>
-
-            <div class="filter-row">
-                <span class="filter-row-label">Schedule</span>
-                <div class="filter-pills">
+                <div class="filter-group">
                     <button class="filter-btn active" data-roadmap="all">All</button>
                                         <button class="filter-btn" data-roadmap="q1-2026">Q1 '26</button>
                     <button class="filter-btn" data-roadmap="q2-2026">Q2 '26</button>
@@ -713,11 +676,7 @@
                     <button class="filter-btn" data-roadmap="backlog">Backlog</button>
                     <button class="filter-btn" data-roadmap="unscheduled">Unscheduled</button>
                 </div>
-            </div>
-
-            <div class="filter-row">
-                <span class="filter-row-label">Search</span>
-                <div class="search-box" style="flex: 1; max-width: none;">
+                <div class="search-box">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
@@ -1367,7 +1326,7 @@
                                 <div class="story-meta">
                                     <span class="badge badge-must-have">Must Have</span>
                                     <span class="badge badge-roadmap badge-q2-2026">Q2 '26</span>
-                                    <span class="badge badge-status">Draft v3</span>
+                                    <span class="badge badge-status">Internal Review v4</span>
                                 </div>
                             </div>
                             <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -1376,16 +1335,16 @@
                             <div class="story-section">
                                 <h4 class="story-section-title">Status Timeline</h4>
                                 <div class="status-timeline">
-                        <div class="timeline-stage current">
+                        <div class="timeline-stage pending">
                             <div class="timeline-dot"></div>
                             <div class="timeline-label">Draft</div>
                             <div class="timeline-date">-</div>
                         </div>
                     <div class="timeline-connector"></div>
-                        <div class="timeline-stage pending">
+                        <div class="timeline-stage current">
                             <div class="timeline-dot"></div>
                             <div class="timeline-label">Internal Review</div>
-                            <div class="timeline-date">-</div>
+                            <div class="timeline-date">1/14/26</div>
                         </div>
                     <div class="timeline-connector"></div>
                         <div class="timeline-stage pending">
@@ -1418,15 +1377,15 @@
                         </div>
                     </article>
                 
-                    <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unscheduled" data-search="clinical summary displays cm-adjusted tc score with updated messaging as a patient at a cm-enabled clinic, i need my clinical summary to show my competing mortality-adjusted tyrer-cuzick score with clear messaging that cm is incorporated, so that i receive accurate risk information without confusion from multiple scores.">
+                    <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="q2-2026" data-search="clinical summary displays cm-adjusted tc score with updated messaging as a patient at a cm-enabled clinic, i need my clinical summary to show my competing mortality-adjusted tyrer-cuzick score with clear messaging that cm is incorporated, so that i receive accurate risk information without confusion from multiple scores.">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id p4m">P4M-CONFIG-002</span>
                                 <h3 class="story-title">Clinical Summary Displays CM-Adjusted TC Score with Updated Messaging</h3>
                                 <div class="story-meta">
-                                    <span class="badge badge-should-have">Should Have</span>
-                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
-                                    <span class="badge badge-status">Draft v1</span>
+                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-roadmap badge-q2-2026">Q2 '26</span>
+                                    <span class="badge badge-status">Internal Review v3</span>
                                 </div>
                             </div>
                             <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -1435,16 +1394,16 @@
                             <div class="story-section">
                                 <h4 class="story-section-title">Status Timeline</h4>
                                 <div class="status-timeline">
-                        <div class="timeline-stage current">
+                        <div class="timeline-stage pending">
                             <div class="timeline-dot"></div>
                             <div class="timeline-label">Draft</div>
                             <div class="timeline-date">-</div>
                         </div>
                     <div class="timeline-connector"></div>
-                        <div class="timeline-stage pending">
+                        <div class="timeline-stage current">
                             <div class="timeline-dot"></div>
                             <div class="timeline-label">Internal Review</div>
-                            <div class="timeline-date">-</div>
+                            <div class="timeline-date">1/14/26</div>
                         </div>
                     <div class="timeline-connector"></div>
                         <div class="timeline-stage pending">
@@ -1485,7 +1444,7 @@
                                 <div class="story-meta">
                                     <span class="badge badge-must-have">Must Have</span>
                                     <span class="badge badge-roadmap badge-q2-2026">Q2 '26</span>
-                                    <span class="badge badge-status">Draft v2</span>
+                                    <span class="badge badge-status">Internal Review v3</span>
                                 </div>
                             </div>
                             <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -1494,16 +1453,16 @@
                             <div class="story-section">
                                 <h4 class="story-section-title">Status Timeline</h4>
                                 <div class="status-timeline">
-                        <div class="timeline-stage current">
+                        <div class="timeline-stage pending">
                             <div class="timeline-dot"></div>
                             <div class="timeline-label">Draft</div>
                             <div class="timeline-date">-</div>
                         </div>
                     <div class="timeline-connector"></div>
-                        <div class="timeline-stage pending">
+                        <div class="timeline-stage current">
                             <div class="timeline-dot"></div>
                             <div class="timeline-label">Internal Review</div>
-                            <div class="timeline-date">-</div>
+                            <div class="timeline-date">1/14/26</div>
                         </div>
                     <div class="timeline-connector"></div>
                         <div class="timeline-stage pending">
