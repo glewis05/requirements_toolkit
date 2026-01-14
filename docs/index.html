@@ -271,14 +271,22 @@
         .badge-should-have { background: var(--color-should-have-bg); color: var(--color-should-have); }
         .badge-could-have { background: var(--color-could-have-bg); color: var(--color-could-have); }
         .badge-status { background: var(--color-draft-bg); color: var(--color-draft); }
-        .badge-roadmap { background: #fef3c7; color: #92400e; font-weight: 600; }
+        /* Roadmap badges - blue/teal color scheme to differentiate from priority (red) and status (gray) */
+        .badge-roadmap { background: #e0f2fe; color: #0369a1; font-weight: 600; }
+        /* 2025 quarters - lighter teal tones */
+        .badge-q1-2025 { background: #ccfbf1; color: #0d9488; }
+        .badge-q2-2025 { background: #cffafe; color: #0891b2; }
+        .badge-q3-2025 { background: #a5f3fc; color: #0e7490; }
+        .badge-q4-2025 { background: #99f6e4; color: #0f766e; }
+        /* 2026 quarters - blue tones */
         .badge-q1-2026 { background: #dbeafe; color: #1e40af; }
-        .badge-q2-2026 { background: #dcfce7; color: #166534; }
-        .badge-q3-2026 { background: #fef3c7; color: #92400e; }
-        .badge-q4-2026 { background: #fce7f3; color: #9d174d; }
-        .badge-2027 { background: #e0e7ff; color: #4338ca; }
+        .badge-q2-2026 { background: #c7d2fe; color: #4338ca; }
+        .badge-q3-2026 { background: #e0e7ff; color: #4f46e5; }
+        .badge-q4-2026 { background: #ede9fe; color: #6d28d9; }
+        /* Future and other */
+        .badge-2027-plus { background: #fae8ff; color: #a21caf; }
         .badge-backlog { background: #f1f5f9; color: #64748b; }
-        .badge-unassigned { background: #f1f5f9; color: #94a3b8; }
+        .badge-unscheduled { background: #f1f5f9; color: #94a3b8; }
         .story-toggle { color: var(--color-text-muted); transition: transform 0.2s; }
         .story-card.open .story-toggle { transform: rotate(180deg); }
         .story-body {
@@ -488,36 +496,36 @@
     <main class="main">
         <div class="summary-grid">
             
-        <div class="summary-card">
-            <div class="summary-card-label">DIS</div>
-            <div class="summary-card-value">11</div>
-            <div class="summary-card-sub">53 test cases</div>
-        </div>
-    
-        <div class="summary-card">
-            <div class="summary-card-label">ONB</div>
-            <div class="summary-card-value">34</div>
-            <div class="summary-card-sub">66 test cases</div>
-        </div>
-    
-        <div class="summary-card">
-            <div class="summary-card-label">P4M</div>
-            <div class="summary-card-value">14</div>
-            <div class="summary-card-sub">94 test cases</div>
-        </div>
-    
-        <div class="summary-card">
-            <div class="summary-card-label">PLAT</div>
-            <div class="summary-card-value">3</div>
-            <div class="summary-card-sub">19 test cases</div>
-        </div>
-    
-        <div class="summary-card">
-            <div class="summary-card-label">TEST2</div>
-            <div class="summary-card-value">11</div>
-            <div class="summary-card-sub">121 test cases</div>
-        </div>
-    
+                <div class="summary-card">
+                    <div class="summary-card-label">DIS</div>
+                    <div class="summary-card-value">11</div>
+                    <div class="summary-card-sub">53 test cases</div>
+                </div>
+            
+                <div class="summary-card">
+                    <div class="summary-card-label">ONB</div>
+                    <div class="summary-card-value">34</div>
+                    <div class="summary-card-sub">66 test cases</div>
+                </div>
+            
+                <div class="summary-card">
+                    <div class="summary-card-label">P4M</div>
+                    <div class="summary-card-value">14</div>
+                    <div class="summary-card-sub">94 test cases</div>
+                </div>
+            
+                <div class="summary-card">
+                    <div class="summary-card-label">PLAT</div>
+                    <div class="summary-card-value">3</div>
+                    <div class="summary-card-sub">19 test cases</div>
+                </div>
+            
+                <div class="summary-card">
+                    <div class="summary-card-label">TEST2</div>
+                    <div class="summary-card-value">11</div>
+                    <div class="summary-card-sub">121 test cases</div>
+                </div>
+            
             <div class="summary-card">
                 <div class="summary-card-label">Must Have</div>
                 <div class="summary-card-value">33</div>
@@ -538,23 +546,39 @@
         <!-- Roadmap Distribution Summary -->
         <div class="roadmap-summary">
             <div class="roadmap-item">
-                <div class="roadmap-item-label">Q1 2026</div>
+                <div class="roadmap-item-label">Q1 '25</div>
                 <div class="roadmap-item-value">0</div>
             </div>
             <div class="roadmap-item">
-                <div class="roadmap-item-label">Q2 2026</div>
+                <div class="roadmap-item-label">Q2 '25</div>
                 <div class="roadmap-item-value">0</div>
             </div>
             <div class="roadmap-item">
-                <div class="roadmap-item-label">Q3 2026</div>
+                <div class="roadmap-item-label">Q3 '25</div>
                 <div class="roadmap-item-value">0</div>
             </div>
             <div class="roadmap-item">
-                <div class="roadmap-item-label">Q4 2026</div>
+                <div class="roadmap-item-label">Q4 '25</div>
                 <div class="roadmap-item-value">0</div>
             </div>
             <div class="roadmap-item">
-                <div class="roadmap-item-label">2027</div>
+                <div class="roadmap-item-label">Q1 '26</div>
+                <div class="roadmap-item-value">0</div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-item-label">Q2 '26</div>
+                <div class="roadmap-item-value">0</div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-item-label">Q3 '26</div>
+                <div class="roadmap-item-value">0</div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-item-label">Q4 '26</div>
+                <div class="roadmap-item-value">0</div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-item-label">2027+</div>
                 <div class="roadmap-item-value">0</div>
             </div>
             <div class="roadmap-item">
@@ -562,7 +586,7 @@
                 <div class="roadmap-item-value">0</div>
             </div>
             <div class="roadmap-item">
-                <div class="roadmap-item-label">Unassigned</div>
+                <div class="roadmap-item-label">Unscheduled</div>
                 <div class="roadmap-item-value">73</div>
             </div>
         </div>
@@ -578,13 +602,18 @@
                 <button class="filter-btn" data-priority="could-have">Could Have</button>
             </div>
             <div class="filter-group">
-                <button class="filter-btn active" data-roadmap="all">All Roadmap</button>
-                <button class="filter-btn" data-roadmap="q1-2026">Q1</button>
-                <button class="filter-btn" data-roadmap="q2-2026">Q2</button>
-                <button class="filter-btn" data-roadmap="q3-2026">Q3</button>
-                <button class="filter-btn" data-roadmap="q4-2026">Q4</button>
-                <button class="filter-btn" data-roadmap="2027">'27</button>
+                <button class="filter-btn active" data-roadmap="all">All</button>
+                <button class="filter-btn" data-roadmap="q1-2025">Q1 '25</button>
+                <button class="filter-btn" data-roadmap="q2-2025">Q2 '25</button>
+                <button class="filter-btn" data-roadmap="q3-2025">Q3 '25</button>
+                <button class="filter-btn" data-roadmap="q4-2025">Q4 '25</button>
+                <button class="filter-btn" data-roadmap="q1-2026">Q1 '26</button>
+                <button class="filter-btn" data-roadmap="q2-2026">Q2 '26</button>
+                <button class="filter-btn" data-roadmap="q3-2026">Q3 '26</button>
+                <button class="filter-btn" data-roadmap="q4-2026">Q4 '26</button>
+                <button class="filter-btn" data-roadmap="2027-plus">2027+</button>
                 <button class="filter-btn" data-roadmap="backlog">Backlog</button>
+                <button class="filter-btn" data-roadmap="unscheduled">Unscheduled</button>
             </div>
             <div class="search-box">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -596,1016 +625,1016 @@
         </div>
 
         
-        <section class="category-section" data-category="referral">
-            <div class="category-header">
-                <div class="category-icon referral">📋</div>
-                <h2 class="category-title">Referral Workflow</h2>
-                <span class="category-count">4 stories</span>
-            </div>
-            <div class="stories-grid">
+                <section class="category-section" data-category="referral">
+                    <div class="category-header">
+                        <div class="category-icon referral">📋</div>
+                        <h2 class="category-title">Referral Workflow</h2>
+                        <span class="category-count">4 stories</span>
+                    </div>
+                    <div class="stories-grid">
+                        
+                    <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unscheduled" data-search="manual referral entry & patient invitation as a user (provider, genetic assistant, or referral coordinator), i want to manually create a referred patient record in the provider portal and send an invitation so the patient can complete risk assessments to determine referral eligibility.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-REFERRAL-001</span>
+                                <h3 class="story-title">Manual Referral Entry &amp; Patient Invitation</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v1</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    </div>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a user (provider, genetic assistant, or referral coordinator), I want to manually create a referred patient record in the provider portal and send an invitation so the patient can complete risk assessments to determine referral eligibility.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>User can search EHR via live FHIR for patient; if match found, demographics auto-populate</li><li>If no FHIR data, required fallback fields are: Name, DOB, Email, and Referring Provider</li><li>User enters referring provider details during referral creation</li><li>System sends &quot;Referral Assessment Invitation&quot; email using distinct template with referral-specific branding and language (e.g., &quot;XXX referred you to the YYY program. Please complete this assessment...&quot;)</li><li>Referring provider details are included in the patient invitation to build trust</li><li>Referring provider is NOT automatically notified; notification occurs manually after genetics staff reviews and decides on referral</li><li>System logs audit trail: user ID, referral form inputs, invitation timestamp (Part 11 compliant)</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                5 test cases
+                            </div>
+                        </div>
+                    </article>
                 
-            <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unassigned" data-search="manual referral entry & patient invitation as a user (provider, genetic assistant, or referral coordinator), i want to manually create a referred patient record in the provider portal and send an invitation so the patient can complete risk assessments to determine referral eligibility.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-REFERRAL-001</span>
-                        <h3 class="story-title">Manual Referral Entry &amp; Patient Invitation</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-must-have">Must Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v1</span>
+                    <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unscheduled" data-search="referral-limited assessment flow as a referred patient, i want to complete only the tc and nccn assessments, view my risk results, and download the clinical summary—without being asked for e-consent unless a provider decides to proceed with scheduling.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-REFERRAL-002</span>
+                                <h3 class="story-title">Referral-Limited Assessment Flow</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v1</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
                         </div>
                     </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a user (provider, genetic assistant, or referral coordinator), I want to manually create a referred patient record in the provider portal and send an invitation so the patient can complete risk assessments to determine referral eligibility.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>User can search EHR via live FHIR for patient; if match found, demographics auto-populate</li><li>If no FHIR data, required fallback fields are: Name, DOB, Email, and Referring Provider</li><li>User enters referring provider details during referral creation</li><li>System sends &quot;Referral Assessment Invitation&quot; email using distinct template with referral-specific branding and language (e.g., &quot;XXX referred you to the YYY program. Please complete this assessment...&quot;)</li><li>Referring provider details are included in the patient invitation to build trust</li><li>Referring provider is NOT automatically notified; notification occurs manually after genetics staff reviews and decides on referral</li><li>System logs audit trail: user ID, referral form inputs, invitation timestamp (Part 11 compliant)</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        5 test cases
-                    </div>
-                </div>
-            </article>
-        
-            <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unassigned" data-search="referral-limited assessment flow as a referred patient, i want to complete only the tc and nccn assessments, view my risk results, and download the clinical summary—without being asked for e-consent unless a provider decides to proceed with scheduling.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-REFERRAL-002</span>
-                        <h3 class="story-title">Referral-Limited Assessment Flow</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-must-have">Must Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v1</span>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a referred patient, I want to complete only the TC and NCCN assessments, view my risk results, and download the clinical summary—without being asked for e-consent unless a provider decides to proceed with scheduling.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>Patient is routed directly to TC → NCCN assessments; no genetic-testing consent or care-plan steps presented</li><li>Patient can view risk results after completing assessments</li><li>Patient can download Clinical Summary as PDF</li><li>Provider sees same Clinical Summary document in referral dashboard</li><li>If referral is accepted and appointment scheduled, patient follows Returning Patient experience then routes to Education + e-Consent</li><li>Assessments capture full audit data (inputs, version, outputs) per Part 11 requirements</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                6 test cases
+                            </div>
                         </div>
-                    </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a referred patient, I want to complete only the TC and NCCN assessments, view my risk results, and download the clinical summary—without being asked for e-consent unless a provider decides to proceed with scheduling.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>Patient is routed directly to TC → NCCN assessments; no genetic-testing consent or care-plan steps presented</li><li>Patient can view risk results after completing assessments</li><li>Patient can download Clinical Summary as PDF</li><li>Provider sees same Clinical Summary document in referral dashboard</li><li>If referral is accepted and appointment scheduled, patient follows Returning Patient experience then routes to Education + e-Consent</li><li>Assessments capture full audit data (inputs, version, outputs) per Part 11 requirements</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        6 test cases
-                    </div>
-                </div>
-            </article>
-        
-            <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unassigned" data-search="referral dashboard tab & notifications as a user with genetic counselor or genetic assistant role, i want a dedicated dashboard tab listing only referral patients with alerts when new results arrive, so i can prioritize them over routine scheduled cases.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-REFERRAL-003</span>
-                        <h3 class="story-title">Referral Dashboard Tab &amp; Notifications</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-must-have">Must Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v1</span>
-                        </div>
-                    </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a user with Genetic Counselor or Genetic Assistant role, I want a dedicated dashboard tab listing only referral patients with alerts when new results arrive, so I can prioritize them over routine scheduled cases.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>Dashboard displays two tabs: &quot;Scheduled Patients&quot; and &quot;Referral Patients&quot;</li><li>Referral Patients tab displays same columns as current provider dashboard</li><li>When a referral patient completes assessment, system displays red badge on Referral tab</li><li>User can opt-in to email alerts for new referral completions (per-user setting)</li><li>User can filter referral patients by elevated TC or NCCN eligibility status</li><li>User can sort referral list to triage highest-risk patients first</li><li>Badge resets when user views the patient record</li><li>Only users with Genetic Counselor or Genetic Assistant roles can see Referral tab</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        7 test cases
-                    </div>
-                </div>
-            </article>
-        
-            <article class="story-card" data-program="p4m" data-priority="could-have" data-roadmap="unassigned" data-search="epic write-back for referral assessment results as a provider, i want referral assessment results written back to epic so that the patient's ehr reflects their tc score, nccn eligibility, and referral outcome without manual data entry.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-REFERRAL-004</span>
-                        <h3 class="story-title">Epic Write-Back for Referral Assessment Results</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-could-have">Could Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v1</span>
-                        </div>
-                    </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a provider, I want referral assessment results written back to Epic so that the patient&#39;s EHR reflects their TC score, NCCN eligibility, and referral outcome without manual data entry.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>System writes TC score and risk category to Epic patient record</li><li>System writes NCCN eligibility status to Epic</li><li>System writes referral decision (accepted/declined) and reason to Epic</li><li>Write-back includes timestamp and source system identifier</li><li>Write-back creates audit entry documenting data sent, destination, and confirmation (Part 11)</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        4 test cases
-                    </div>
-                </div>
-            </article>
-        
-            </div>
-        </section>
-    
-        <section class="category-section" data-category="analytics">
-            <div class="category-header">
-                <div class="category-icon analytics">📊</div>
-                <h2 class="category-title">Analytics</h2>
-                <span class="category-count">3 stories</span>
-            </div>
-            <div class="stories-grid">
+                    </article>
                 
-            <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unassigned" data-search="analytics dashboard tc status filtering with clinic type indicator as a prevention4me program administrator, i need the analytics dashboard to filter by tc-enabled vs tc-disabled clinics and clearly indicate which clinic types have tc data, so that i can accurately compare performance metrics and understand data completeness across the program.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-ANALYTICS-001</span>
-                        <h3 class="story-title">Analytics Dashboard TC Status Filtering with Clinic Type Indicator</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-should-have">Should Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v2</span>
+                    <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unscheduled" data-search="referral dashboard tab & notifications as a user with genetic counselor or genetic assistant role, i want a dedicated dashboard tab listing only referral patients with alerts when new results arrive, so i can prioritize them over routine scheduled cases.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-REFERRAL-003</span>
+                                <h3 class="story-title">Referral Dashboard Tab &amp; Notifications</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v1</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
                         </div>
                     </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a Prevention4ME program administrator, I need the analytics dashboard to filter by TC-enabled vs TC-disabled clinics and clearly indicate which clinic types have TC data, so that I can accurately compare performance metrics and understand data completeness across the program.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>Dashboard includes filter/toggle to view by TC-enabled clinics, TC-disabled clinics, or all clinics</li><li>Dashboard displays footnote or indicator showing which specific clinic types do/don&#39;t include TC data (per Kate&#39;s Option B+C recommendation)</li><li>Key metrics (assessment completions, high risk patients &gt;20% TC score, NCCN eligible patients) update based on TC status filter selection</li><li>When filtering to TC-disabled clinics only, TC-specific metrics (lifetime risk %, TC score) are appropriately excluded or grayed out</li><li>Clinic type filter (mammography, OBGYN, endoscopy, etc.) works in combination with TC status filter</li><li>Dashboard clearly shows percentage of TC high-risk patients by clinic/clinic type for comparison (per Kim&#39;s request)</li><li>Filter selections are maintained during session and can be exported with reports</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        15 test cases
-                    </div>
-                </div>
-            </article>
-        
-            <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unassigned" data-search="analytics dashboard shows tc high-risk counts with and without cm as a program administrator, i need the analytics dashboard to show high-risk patient counts (tc >20%) calculated both with and without competing mortality for all clinics, so that i can understand the impact of cm on risk categorization and help sites evaluate their cm configuration decisions.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-ANALYTICS-002</span>
-                        <h3 class="story-title">Analytics Dashboard Shows TC High-Risk Counts With and Without CM</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-should-have">Should Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v1</span>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a user with Genetic Counselor or Genetic Assistant role, I want a dedicated dashboard tab listing only referral patients with alerts when new results arrive, so I can prioritize them over routine scheduled cases.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>Dashboard displays two tabs: &quot;Scheduled Patients&quot; and &quot;Referral Patients&quot;</li><li>Referral Patients tab displays same columns as current provider dashboard</li><li>When a referral patient completes assessment, system displays red badge on Referral tab</li><li>User can opt-in to email alerts for new referral completions (per-user setting)</li><li>User can filter referral patients by elevated TC or NCCN eligibility status</li><li>User can sort referral list to triage highest-risk patients first</li><li>Badge resets when user views the patient record</li><li>Only users with Genetic Counselor or Genetic Assistant roles can see Referral tab</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                7 test cases
+                            </div>
                         </div>
-                    </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a program administrator, I need the analytics dashboard to show high-risk patient counts (TC &gt;20%) calculated BOTH with and without Competing Mortality for all clinics, so that I can understand the impact of CM on risk categorization and help sites evaluate their CM configuration decisions.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>Analytics dashboard displays TC &gt;20% count WITH CM applied (background calculated for all clinics, regardless of clinic CM setting)</li><li>Analytics dashboard displays TC &gt;20% count WITHOUT CM applied (standard TC, background calculated for all clinics)</li><li>Both metrics are shown simultaneously to allow comparison of CM impact on high-risk categorization</li><li>Filter/toggle allows viewing &quot;clinics with CM on&quot; versus &quot;clinics with CM off&quot; based on their configuration</li><li>Master list or indicator shows which clinics have CM enabled vs disabled for reference</li><li>Each site can see both CM on/off analytics to understand the CM decision and its impact</li><li>Total program analytics shows aggregate on/off metrics across all sites</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        4 test cases
-                    </div>
-                </div>
-            </article>
-        
-            <article class="story-card" data-program="plat" data-priority="should-have" data-roadmap="unassigned" data-search="gene-level positive variant reporting in analytics dashboard as a program administrator, i need to track and report on positive gene variants (brca1, brca2, pss1, etc.) in the analytics dashboard across all programs, so that i can monitor carrier identification rates, compare performance across clinics and programs, and generate monthly reporting metrics.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id plat">PLAT-ANALYTICS-001</span>
-                        <h3 class="story-title">Gene-Level Positive Variant Reporting in Analytics Dashboard</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-should-have">Should Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v1</span>
-                        </div>
-                    </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a program administrator, I need to track and report on positive gene variants (BRCA1, BRCA2, PSS1, etc.) in the analytics dashboard across all programs, so that I can monitor carrier identification rates, compare performance across clinics and programs, and generate monthly reporting metrics.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>Dashboard displays count of patients with each positive gene variant (BRCA1, BRCA2, PSS1, etc.) across all tested patients</li><li>Dashboard displays percentage of tested patients with each positive variant (e.g., &quot;3% of tested patients have BRCA1 variant&quot;)</li><li>Dashboard supports date/month filter to view carrier counts for a specific time period (for monthly reporting, not trending charts)</li><li>Dashboard displays total positive variant counts per month (aggregate, not broken down by individual gene per month)</li><li>Dashboard displays breakdown of positive variants by clinic (e.g., &quot;Clinic A: 5 BRCA1, Clinic B: 10 BRCA1&quot;)</li><li>Dashboard displays breakdown of positive variants by program (e.g., &quot;Prevention4ME: 8 BRCA1, Precision4ME: 12 BRCA1&quot;)</li><li>Data source integrates positive variant results from lab via Redox (Ambry currently, Helix future)</li><li>Metrics update in near real-time as new lab results are received</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        10 test cases
-                    </div>
-                </div>
-            </article>
-        
-            </div>
-        </section>
-    
-        <section class="category-section" data-category="dash">
-            <div class="category-header">
-                <div class="category-icon dash">🖥️</div>
-                <h2 class="category-title">Dashboard</h2>
-                <span class="category-count">3 stories</span>
-            </div>
-            <div class="stories-grid">
+                    </article>
                 
-            <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unassigned" data-search="dashboard flag for hematologic malignancy or bone marrow transplant as a genetic counselor (gc), ga, or program administrator, i want the program dashboard to display a visual flag for patients who report a history of hematologic malignancy or bone marrow transplant, so that i can easily identify these patients, flag for gc review as needed, and remove appropriate patients from the standard workflow without manually reviewing each clinical summary.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-DASH-001</span>
-                        <h3 class="story-title">Dashboard Flag for Hematologic Malignancy or Bone Marrow Transplant</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-should-have">Should Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v2</span>
+                    <article class="story-card" data-program="p4m" data-priority="could-have" data-roadmap="unscheduled" data-search="epic write-back for referral assessment results as a provider, i want referral assessment results written back to epic so that the patient's ehr reflects their tc score, nccn eligibility, and referral outcome without manual data entry.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-REFERRAL-004</span>
+                                <h3 class="story-title">Epic Write-Back for Referral Assessment Results</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-could-have">Could Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v1</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
                         </div>
                     </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a genetic counselor (GC), GA, or program administrator, I want the program dashboard to display a visual flag for patients who report a history of hematologic malignancy or bone marrow transplant, so that I can easily identify these patients, flag for GC review as needed, and remove appropriate patients from the standard workflow without manually reviewing each clinical summary.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>Dashboard Display:</li><li>A new column (&quot;Hematologic/BMT Flag&quot;) is visible on the program dashboard</li><li>Column auto-populates with a visual indicator (e.g., ✅ or colored icon) when patient reports hematologic malignancy OR bone marrow transplant in clinical intake</li><li>Flag is visible to GA, GC, and Program Administrator roles</li><li>Data Source:</li><li>Flag is derived from patient responses in the clinical summary/medical history already captured in the system</li><li>Flag triggers when EITHER condition is reported (hematologic malignancy OR BMT — including allogenic or other types)</li><li>If underlying hematologic/BMT data is updated, flag status updates accordingly</li><li>Workflow:</li><li>Clicking the flag or patient row opens the clinical summary for detailed review</li><li>GA/GC determines appropriate next steps after reviewing clinical summary (some patients may continue in standard workflow, others may be removed)</li><li>Compliance:</li><li>Flag does not expose type of malignancy or BMT details on the dashboard (HIPAA minimum necessary)</li><li>Detailed clinical information only visible within the clinical summary view</li><li>Part 11 Audit Requirements:</li><li>Viewing a flagged patient&#39;s record creates an audit entry (user ID, timestamp, patient ID)</li><li>Changes to underlying hematologic/BMT data create audit entries with before/after values</li><li>Flag status changes are logged with timestamp and triggering data change</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        14 test cases
-                    </div>
-                </div>
-            </article>
-        
-            <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unassigned" data-search="clinician dashboard displays both standard and cm-adjusted tc scores as a genetic counselor at a cm-enabled clinic, i need to see both the standard tyrer-cuzick score and the competing mortality-adjusted tc score on the patient dashboard, so that i can understand both risk calculations and help patients make informed decisions.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-DASH-002</span>
-                        <h3 class="story-title">Clinician Dashboard Displays Both Standard and CM-Adjusted TC Scores</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-should-have">Should Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v2</span>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a provider, I want referral assessment results written back to Epic so that the patient&#39;s EHR reflects their TC score, NCCN eligibility, and referral outcome without manual data entry.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>System writes TC score and risk category to Epic patient record</li><li>System writes NCCN eligibility status to Epic</li><li>System writes referral decision (accepted/declined) and reason to Epic</li><li>Write-back includes timestamp and source system identifier</li><li>Write-back creates audit entry documenting data sent, destination, and confirmation (Part 11)</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                4 test cases
+                            </div>
                         </div>
-                    </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a genetic counselor at a CM-enabled clinic, I need to see both the standard Tyrer-Cuzick score and the Competing Mortality-adjusted TC score on the patient dashboard, so that I can understand both risk calculations and help patients make informed decisions.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>When Competing Mortality (CM) is enabled for a clinic, the clinician dashboard displays BOTH the standard TC score AND the CM-adjusted TC score for each patient</li><li>Both scores are clearly labeled to distinguish standard TC from CM-adjusted TC</li><li>When CM is disabled for a clinic, only the standard TC score is displayed (no CM-adjusted score)</li><li>When a GC modifies patient assessment responses and triggers recalculation, the system calculates and displays BOTH the standard TC score and the CM-adjusted TC score</li><li>High-risk threshold indicator (&gt;20%) applies to the clinic&#39;s configured default score (CM-adjusted if enabled, standard if not)</li><li>Score display updates in real-time as patient data changes</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        4 test cases
-                    </div>
-                </div>
-            </article>
-        
-            <article class="story-card" data-program="plat" data-priority="should-have" data-roadmap="unassigned" data-search="download and print patient artifacts from dashboard as a genetic counselor, i need to download and print patient artifacts (consent forms, assessment forms, clinical summaries) directly from the dashboard, including the ability to select multiple patients for bulk download, so that i can efficiently prepare documentation for patient visits and records.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id plat">PLAT-DASH-001</span>
-                        <h3 class="story-title">Download and Print Patient Artifacts from Dashboard</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-should-have">Should Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v1</span>
-                        </div>
-                    </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a genetic counselor, I need to download and print patient artifacts (consent forms, assessment forms, clinical summaries) directly from the dashboard, including the ability to select multiple patients for bulk download, so that I can efficiently prepare documentation for patient visits and records.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>From the patient dashboard, GC can select a patient and view available artifacts (consent form, assessment form, clinical summary, etc.)</li><li>GC can download individual artifacts as PDF for the selected patient</li><li>GC can print individual artifacts directly from the dashboard without downloading first</li><li>GC can select multiple patients from the dashboard using checkboxes or multi-select</li><li>GC can bulk download artifacts for multiple selected patients in a single action (e.g., ZIP file or combined PDF)</li><li>Downloaded/printed artifacts include patient identification and generation timestamp</li><li>Artifact download/print creates audit entry documenting who accessed which patient documents and when</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        9 test cases
-                    </div>
-                </div>
-            </article>
-        
-            </div>
-        </section>
-    
-        <section class="category-section" data-category="config">
-            <div class="category-header">
-                <div class="category-icon config">⚙️</div>
-                <h2 class="category-title">Configuration</h2>
-                <span class="category-count">3 stories</span>
-            </div>
-            <div class="stories-grid">
+                    </article>
                 
-            <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unassigned" data-search="clinical summary excludes tyrer-cuzick when model disabled as a prevention4me clinic with tyrer-cuzick disabled, i need the clinical summary to exclude all tc score references and only display nccn eligibility information, so that patients receive accurate, relevant documentation that reflects the risk model(s) actually used in their assessment.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-CONFIG-001</span>
-                        <h3 class="story-title">Clinical Summary Excludes Tyrer-Cuzick When Model Disabled</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-should-have">Should Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v2</span>
+                    </div>
+                </section>
+            
+                <section class="category-section" data-category="analytics">
+                    <div class="category-header">
+                        <div class="category-icon analytics">📊</div>
+                        <h2 class="category-title">Analytics</h2>
+                        <span class="category-count">3 stories</span>
+                    </div>
+                    <div class="stories-grid">
+                        
+                    <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unscheduled" data-search="analytics dashboard tc status filtering with clinic type indicator as a prevention4me program administrator, i need the analytics dashboard to filter by tc-enabled vs tc-disabled clinics and clearly indicate which clinic types have tc data, so that i can accurately compare performance metrics and understand data completeness across the program.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-ANALYTICS-001</span>
+                                <h3 class="story-title">Analytics Dashboard TC Status Filtering with Clinic Type Indicator</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v2</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
                         </div>
                     </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a Prevention4ME clinic with Tyrer-Cuzick disabled, I need the clinical summary to exclude all TC score references and only display NCCN eligibility information, so that patients receive accurate, relevant documentation that reflects the risk model(s) actually used in their assessment.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>When TC is disabled for a clinic, the clinical summary does not include any Tyrer-Cuzick score, lifetime risk percentage, or TC-related recommendations</li><li>When TC is disabled, the clinical summary displays NCCN eligibility status and related recommendations only</li><li>The clinical summary generates without errors when TC is disabled</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        3 test cases
-                    </div>
-                </div>
-            </article>
-        
-            <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unassigned" data-search="clinical summary displays cm-adjusted tc score with updated messaging as a patient at a cm-enabled clinic, i need my clinical summary to show my competing mortality-adjusted tyrer-cuzick score with clear messaging that cm is incorporated, so that i receive accurate risk information without confusion from multiple scores.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-CONFIG-002</span>
-                        <h3 class="story-title">Clinical Summary Displays CM-Adjusted TC Score with Updated Messaging</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-should-have">Should Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v1</span>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a Prevention4ME program administrator, I need the analytics dashboard to filter by TC-enabled vs TC-disabled clinics and clearly indicate which clinic types have TC data, so that I can accurately compare performance metrics and understand data completeness across the program.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>Dashboard includes filter/toggle to view by TC-enabled clinics, TC-disabled clinics, or all clinics</li><li>Dashboard displays footnote or indicator showing which specific clinic types do/don&#39;t include TC data (per Kate&#39;s Option B+C recommendation)</li><li>Key metrics (assessment completions, high risk patients &gt;20% TC score, NCCN eligible patients) update based on TC status filter selection</li><li>When filtering to TC-disabled clinics only, TC-specific metrics (lifetime risk %, TC score) are appropriately excluded or grayed out</li><li>Clinic type filter (mammography, OBGYN, endoscopy, etc.) works in combination with TC status filter</li><li>Dashboard clearly shows percentage of TC high-risk patients by clinic/clinic type for comparison (per Kim&#39;s request)</li><li>Filter selections are maintained during session and can be exported with reports</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                15 test cases
+                            </div>
                         </div>
-                    </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a patient at a CM-enabled clinic, I need my clinical summary to show my Competing Mortality-adjusted Tyrer-Cuzick score with clear messaging that CM is incorporated, so that I receive accurate risk information without confusion from multiple scores.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>When CM is enabled for a clinic, the clinical summary displays ONLY the CM-adjusted TC score (not both scores)</li><li>Clinical summary messaging indicates &quot;Competing Mortality is incorporated into the TC score&quot; when CM is enabled</li><li>When CM is disabled, the clinical summary displays the standard TC score with standard messaging</li><li>The clinical summary does NOT show both scores to avoid patient confusion</li><li>Score presentation follows existing clinical summary formatting standards</li><li>A note or indicator is stored in the patient record indicating whether CM was used in the calculation</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        3 test cases
-                    </div>
-                </div>
-            </article>
-        
-            <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unassigned" data-search="clinic-level competing mortality toggle configuration as a program administrator, i need competing mortality (cm) to be configurable at the clinic level through dev team requests, so that each clinic can choose whether to incorporate age-based competing mortality into their tyrer-cuzick risk calculations.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-CONFIG-003</span>
-                        <h3 class="story-title">Clinic-Level Competing Mortality Toggle Configuration</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-should-have">Should Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v1</span>
-                        </div>
-                    </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a program administrator, I need Competing Mortality (CM) to be configurable at the clinic level through dev team requests, so that each clinic can choose whether to incorporate age-based competing mortality into their Tyrer-Cuzick risk calculations.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>Competing Mortality (CM) is controlled at the clinic level - each clinic either has CM enabled or disabled</li><li>CM toggle is managed by dev team via submitted requests (Option B control model, same as TC toggle)</li><li>CM configuration becomes part of the centralized configuration list maintained per site</li><li>When CM is enabled for a clinic, CM-adjusted TC becomes the default score for that clinic</li><li>CM toggle is independent from TC toggle - a clinic can have TC enabled with or without CM</li><li>Configuration change creates audit entry documenting who requested, when changed, and previous state</li><li>Configuration is stored and retrievable for reporting on which clinics use CM</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        4 test cases
-                    </div>
-                </div>
-            </article>
-        
-            </div>
-        </section>
-    
-        <section class="category-section" data-category="compliance">
-            <div class="category-header">
-                <div class="category-icon audit">🔒</div>
-                <h2 class="category-title">Compliance (Part 11)</h2>
-                <span class="category-count">2 stories</span>
-            </div>
-            <div class="stories-grid">
+                    </article>
                 
-            <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unassigned" data-search="audit trail requirements for part 11 compliance as a compliance officer, i want all system actions to be captured in an immutable audit trail with user identification and timestamps, so that i can demonstrate regulatory compliance and investigate any access or data integrity concerns.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-AUDIT-001</span>
-                        <h3 class="story-title">Audit Trail Requirements for Part 11 Compliance</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-must-have">Must Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v1</span>
+                    <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unscheduled" data-search="analytics dashboard shows tc high-risk counts with and without cm as a program administrator, i need the analytics dashboard to show high-risk patient counts (tc >20%) calculated both with and without competing mortality for all clinics, so that i can understand the impact of cm on risk categorization and help sites evaluate their cm configuration decisions.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-ANALYTICS-002</span>
+                                <h3 class="story-title">Analytics Dashboard Shows TC High-Risk Counts With and Without CM</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v1</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
                         </div>
                     </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a Compliance Officer, I want all system actions to be captured in an immutable audit trail with user identification and timestamps, so that I can demonstrate regulatory compliance and investigate any access or data integrity concerns.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>Audit Entry Creation:</li><li>All patient record views create audit entries with user ID, timestamp, and patient ID</li><li>All patient record edits create audit entries with user ID, timestamp, before/after values</li><li>All failed access attempts create audit entries with user ID, timestamp, attempted action, and denial reason</li><li>All role assignments/changes create audit entries with user ID, timestamp, role changed, and target user</li><li>All configuration changes create audit entries with user ID, timestamp, setting changed, before/after values</li><li>All data exports create audit entries with user ID, timestamp, export type, and parameters</li><li>Audit Entry Content:</li><li>All audit entries include computer-generated timestamp (not user-editable)</li><li>All audit entries include unique sequential identifier</li><li>Timestamps use consistent timezone (UTC) with millisecond precision</li><li>Audit Integrity:</li><li>Audit records cannot be edited after creation</li><li>Audit records cannot be deleted</li><li>Audit table/log is protected from unauthorized access</li><li>Audit data is backed up with same frequency as production data</li><li>Audit Accessibility:</li><li>Authorized users can query audit log by date range</li><li>Authorized users can query audit log by user ID</li><li>Authorized users can query audit log by patient ID</li><li>Authorized users can query audit log by action type</li><li>Audit log can be exported for compliance reporting</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        6 test cases
-                    </div>
-                </div>
-            </article>
-        
-            <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unassigned" data-search="electronic records requirements for part 11 compliance as a compliance officer, i want electronic records to be exportable in accurate, human-readable formats with appropriate metadata and integrity protection, so that i can provide complete records for regulatory review and ensure data integrity throughout the record lifecycle.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-RECORD-001</span>
-                        <h3 class="story-title">Electronic Records Requirements for Part 11 Compliance</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-must-have">Must Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v1</span>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a program administrator, I need the analytics dashboard to show high-risk patient counts (TC &gt;20%) calculated BOTH with and without Competing Mortality for all clinics, so that I can understand the impact of CM on risk categorization and help sites evaluate their CM configuration decisions.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>Analytics dashboard displays TC &gt;20% count WITH CM applied (background calculated for all clinics, regardless of clinic CM setting)</li><li>Analytics dashboard displays TC &gt;20% count WITHOUT CM applied (standard TC, background calculated for all clinics)</li><li>Both metrics are shown simultaneously to allow comparison of CM impact on high-risk categorization</li><li>Filter/toggle allows viewing &quot;clinics with CM on&quot; versus &quot;clinics with CM off&quot; based on their configuration</li><li>Master list or indicator shows which clinics have CM enabled vs disabled for reference</li><li>Each site can see both CM on/off analytics to understand the CM decision and its impact</li><li>Total program analytics shows aggregate on/off metrics across all sites</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                4 test cases
+                            </div>
                         </div>
-                    </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a Compliance Officer, I want electronic records to be exportable in accurate, human-readable formats with appropriate metadata and integrity protection, so that I can provide complete records for regulatory review and ensure data integrity throughout the record lifecycle.</p>
-                    </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>Human Readable Copies:</li><li>Clinical summary can be exported as human-readable PDF</li><li>Clinical summary can be printed directly from the application</li><li>Exported/printed clinical summary matches on-screen display</li><li>Patient demographics are included in exported record</li><li>Export Metadata:</li><li>Exported record includes generation timestamp</li><li>Exported record includes user who generated the export</li><li>Exported record includes patient identifier</li><li>Exported record includes system version/identifier</li><li>Record Integrity:</li><li>Exported records cannot be modified after generation (PDF security)</li><li>Export includes checksum or digital signature for integrity verification</li><li>Export audit entry is created when record is generated</li><li>Record Protection:</li><li>Exported records containing PHI are appropriately marked</li><li>Export functionality is restricted to authorized roles</li><li>Bulk export requires additional authorization</li>
-                        </ol>
-                    </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        5 test cases
-                    </div>
-                </div>
-            </article>
-        
-            </div>
-        </section>
-    
-        <section class="category-section" data-category="role">
-            <div class="category-header">
-                <div class="category-icon role">👤</div>
-                <h2 class="category-title">Roles & Permissions</h2>
-                <span class="category-count">1 story</span>
-            </div>
-            <div class="stories-grid">
+                    </article>
                 
-            <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unassigned" data-search="external contractor role with risk-based patient filter as a program administrator, i want to create an external contractor role with restricted patient visibility, so that outside contractors can only view and work with high-risk patients while maintaining compliance requirements for non-employee access.">
-                <div class="story-header" onclick="toggleStory(this)">
-                    <div>
-                        <span class="story-id p4m">P4M-ROLE-001</span>
-                        <h3 class="story-title">External Contractor Role with Risk-Based Patient Filter</h3>
-                        <div class="story-meta">
-                            <span class="badge badge-should-have">Should Have</span>
-                            <span class="badge badge-roadmap badge-unassigned">-</span>
-                            <span class="badge badge-status">Draft v1</span>
+                    <article class="story-card" data-program="plat" data-priority="should-have" data-roadmap="unscheduled" data-search="gene-level positive variant reporting in analytics dashboard as a program administrator, i need to track and report on positive gene variants (brca1, brca2, pss1, etc.) in the analytics dashboard across all programs, so that i can monitor carrier identification rates, compare performance across clinics and programs, and generate monthly reporting metrics.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id plat">PLAT-ANALYTICS-001</span>
+                                <h3 class="story-title">Gene-Level Positive Variant Reporting in Analytics Dashboard</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v1</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
                         </div>
                     </div>
-                    <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="story-body">
-                    <div class="story-section">
-                        <h4 class="story-section-title">Status Timeline</h4>
-                        <div class="status-timeline">
-                <div class="timeline-stage current">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Draft</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Internal Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Client Review</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            <div class="timeline-connector"></div>
-                <div class="timeline-stage pending">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-label">Approved</div>
-                    <div class="timeline-date">-</div>
-                </div>
-            </div>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a program administrator, I need to track and report on positive gene variants (BRCA1, BRCA2, PSS1, etc.) in the analytics dashboard across all programs, so that I can monitor carrier identification rates, compare performance across clinics and programs, and generate monthly reporting metrics.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>Dashboard displays count of patients with each positive gene variant (BRCA1, BRCA2, PSS1, etc.) across all tested patients</li><li>Dashboard displays percentage of tested patients with each positive variant (e.g., &quot;3% of tested patients have BRCA1 variant&quot;)</li><li>Dashboard supports date/month filter to view carrier counts for a specific time period (for monthly reporting, not trending charts)</li><li>Dashboard displays total positive variant counts per month (aggregate, not broken down by individual gene per month)</li><li>Dashboard displays breakdown of positive variants by clinic (e.g., &quot;Clinic A: 5 BRCA1, Clinic B: 10 BRCA1&quot;)</li><li>Dashboard displays breakdown of positive variants by program (e.g., &quot;Prevention4ME: 8 BRCA1, Precision4ME: 12 BRCA1&quot;)</li><li>Data source integrates positive variant results from lab via Redox (Ambry currently, Helix future)</li><li>Metrics update in near real-time as new lab results are received</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                10 test cases
+                            </div>
+                        </div>
+                    </article>
+                
                     </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">User Story</h4>
-                        <p class="user-story">As a program administrator, I want to create an External Contractor role with restricted patient visibility, so that outside contractors can only view and work with high-risk patients while maintaining compliance requirements for non-employee access.</p>
+                </section>
+            
+                <section class="category-section" data-category="dash">
+                    <div class="category-header">
+                        <div class="category-icon dash">🖥️</div>
+                        <h2 class="category-title">Dashboard</h2>
+                        <span class="category-count">3 stories</span>
                     </div>
-                    <div class="story-section">
-                        <h4 class="story-section-title">Acceptance Criteria</h4>
-                        <ol class="acceptance-criteria">
-                            <li>Role Permissions:</li><li>External Contractor role inherits Genetic Counselor permissions (read, write, lab ordering)</li><li>External Contractor can view patient contact information</li><li>External Contractor can view full clinical summary</li><li>External Contractor cannot export data</li><li>Patient Visibility Filter:</li><li>External Contractor can see patients where TC Score [TBD: &gt; 20 or ≥ 20]</li><li>External Contractor can see patients where NCCN criteria = met</li><li>External Contractor can see patients where BOTH conditions are true</li><li>External Contractor cannot see patients who did not complete the questionnaire</li><li>External Contractor cannot see patients with TC ≤ [TBD] AND NCCN not met</li><li>Configuration:</li><li>Role can be assigned to users at the clinic level (starting with Montana)</li><li>Role is reusable for future external contractors</li>
-                        </ol>
+                    <div class="stories-grid">
+                        
+                    <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unscheduled" data-search="dashboard flag for hematologic malignancy or bone marrow transplant as a genetic counselor (gc), ga, or program administrator, i want the program dashboard to display a visual flag for patients who report a history of hematologic malignancy or bone marrow transplant, so that i can easily identify these patients, flag for gc review as needed, and remove appropriate patients from the standard workflow without manually reviewing each clinical summary.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-DASH-001</span>
+                                <h3 class="story-title">Dashboard Flag for Hematologic Malignancy or Bone Marrow Transplant</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v2</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
+                        </div>
                     </div>
-                    <div class="test-count">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                        14 test cases
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a genetic counselor (GC), GA, or program administrator, I want the program dashboard to display a visual flag for patients who report a history of hematologic malignancy or bone marrow transplant, so that I can easily identify these patients, flag for GC review as needed, and remove appropriate patients from the standard workflow without manually reviewing each clinical summary.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>Dashboard Display:</li><li>A new column (&quot;Hematologic/BMT Flag&quot;) is visible on the program dashboard</li><li>Column auto-populates with a visual indicator (e.g., ✅ or colored icon) when patient reports hematologic malignancy OR bone marrow transplant in clinical intake</li><li>Flag is visible to GA, GC, and Program Administrator roles</li><li>Data Source:</li><li>Flag is derived from patient responses in the clinical summary/medical history already captured in the system</li><li>Flag triggers when EITHER condition is reported (hematologic malignancy OR BMT — including allogenic or other types)</li><li>If underlying hematologic/BMT data is updated, flag status updates accordingly</li><li>Workflow:</li><li>Clicking the flag or patient row opens the clinical summary for detailed review</li><li>GA/GC determines appropriate next steps after reviewing clinical summary (some patients may continue in standard workflow, others may be removed)</li><li>Compliance:</li><li>Flag does not expose type of malignancy or BMT details on the dashboard (HIPAA minimum necessary)</li><li>Detailed clinical information only visible within the clinical summary view</li><li>Part 11 Audit Requirements:</li><li>Viewing a flagged patient&#39;s record creates an audit entry (user ID, timestamp, patient ID)</li><li>Changes to underlying hematologic/BMT data create audit entries with before/after values</li><li>Flag status changes are logged with timestamp and triggering data change</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                14 test cases
+                            </div>
+                        </div>
+                    </article>
+                
+                    <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unscheduled" data-search="clinician dashboard displays both standard and cm-adjusted tc scores as a genetic counselor at a cm-enabled clinic, i need to see both the standard tyrer-cuzick score and the competing mortality-adjusted tc score on the patient dashboard, so that i can understand both risk calculations and help patients make informed decisions.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-DASH-002</span>
+                                <h3 class="story-title">Clinician Dashboard Displays Both Standard and CM-Adjusted TC Scores</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v2</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
+                        </div>
                     </div>
-                </div>
-            </article>
-        
-            </div>
-        </section>
-    
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a genetic counselor at a CM-enabled clinic, I need to see both the standard Tyrer-Cuzick score and the Competing Mortality-adjusted TC score on the patient dashboard, so that I can understand both risk calculations and help patients make informed decisions.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>When Competing Mortality (CM) is enabled for a clinic, the clinician dashboard displays BOTH the standard TC score AND the CM-adjusted TC score for each patient</li><li>Both scores are clearly labeled to distinguish standard TC from CM-adjusted TC</li><li>When CM is disabled for a clinic, only the standard TC score is displayed (no CM-adjusted score)</li><li>When a GC modifies patient assessment responses and triggers recalculation, the system calculates and displays BOTH the standard TC score and the CM-adjusted TC score</li><li>High-risk threshold indicator (&gt;20%) applies to the clinic&#39;s configured default score (CM-adjusted if enabled, standard if not)</li><li>Score display updates in real-time as patient data changes</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                4 test cases
+                            </div>
+                        </div>
+                    </article>
+                
+                    <article class="story-card" data-program="plat" data-priority="should-have" data-roadmap="unscheduled" data-search="download and print patient artifacts from dashboard as a genetic counselor, i need to download and print patient artifacts (consent forms, assessment forms, clinical summaries) directly from the dashboard, including the ability to select multiple patients for bulk download, so that i can efficiently prepare documentation for patient visits and records.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id plat">PLAT-DASH-001</span>
+                                <h3 class="story-title">Download and Print Patient Artifacts from Dashboard</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v1</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    </div>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a genetic counselor, I need to download and print patient artifacts (consent forms, assessment forms, clinical summaries) directly from the dashboard, including the ability to select multiple patients for bulk download, so that I can efficiently prepare documentation for patient visits and records.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>From the patient dashboard, GC can select a patient and view available artifacts (consent form, assessment form, clinical summary, etc.)</li><li>GC can download individual artifacts as PDF for the selected patient</li><li>GC can print individual artifacts directly from the dashboard without downloading first</li><li>GC can select multiple patients from the dashboard using checkboxes or multi-select</li><li>GC can bulk download artifacts for multiple selected patients in a single action (e.g., ZIP file or combined PDF)</li><li>Downloaded/printed artifacts include patient identification and generation timestamp</li><li>Artifact download/print creates audit entry documenting who accessed which patient documents and when</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                9 test cases
+                            </div>
+                        </div>
+                    </article>
+                
+                    </div>
+                </section>
+            
+                <section class="category-section" data-category="config">
+                    <div class="category-header">
+                        <div class="category-icon config">⚙️</div>
+                        <h2 class="category-title">Configuration</h2>
+                        <span class="category-count">3 stories</span>
+                    </div>
+                    <div class="stories-grid">
+                        
+                    <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unscheduled" data-search="clinical summary excludes tyrer-cuzick when model disabled as a prevention4me clinic with tyrer-cuzick disabled, i need the clinical summary to exclude all tc score references and only display nccn eligibility information, so that patients receive accurate, relevant documentation that reflects the risk model(s) actually used in their assessment.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-CONFIG-001</span>
+                                <h3 class="story-title">Clinical Summary Excludes Tyrer-Cuzick When Model Disabled</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v2</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    </div>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a Prevention4ME clinic with Tyrer-Cuzick disabled, I need the clinical summary to exclude all TC score references and only display NCCN eligibility information, so that patients receive accurate, relevant documentation that reflects the risk model(s) actually used in their assessment.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>When TC is disabled for a clinic, the clinical summary does not include any Tyrer-Cuzick score, lifetime risk percentage, or TC-related recommendations</li><li>When TC is disabled, the clinical summary displays NCCN eligibility status and related recommendations only</li><li>The clinical summary generates without errors when TC is disabled</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                3 test cases
+                            </div>
+                        </div>
+                    </article>
+                
+                    <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unscheduled" data-search="clinical summary displays cm-adjusted tc score with updated messaging as a patient at a cm-enabled clinic, i need my clinical summary to show my competing mortality-adjusted tyrer-cuzick score with clear messaging that cm is incorporated, so that i receive accurate risk information without confusion from multiple scores.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-CONFIG-002</span>
+                                <h3 class="story-title">Clinical Summary Displays CM-Adjusted TC Score with Updated Messaging</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v1</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    </div>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a patient at a CM-enabled clinic, I need my clinical summary to show my Competing Mortality-adjusted Tyrer-Cuzick score with clear messaging that CM is incorporated, so that I receive accurate risk information without confusion from multiple scores.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>When CM is enabled for a clinic, the clinical summary displays ONLY the CM-adjusted TC score (not both scores)</li><li>Clinical summary messaging indicates &quot;Competing Mortality is incorporated into the TC score&quot; when CM is enabled</li><li>When CM is disabled, the clinical summary displays the standard TC score with standard messaging</li><li>The clinical summary does NOT show both scores to avoid patient confusion</li><li>Score presentation follows existing clinical summary formatting standards</li><li>A note or indicator is stored in the patient record indicating whether CM was used in the calculation</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                3 test cases
+                            </div>
+                        </div>
+                    </article>
+                
+                    <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unscheduled" data-search="clinic-level competing mortality toggle configuration as a program administrator, i need competing mortality (cm) to be configurable at the clinic level through dev team requests, so that each clinic can choose whether to incorporate age-based competing mortality into their tyrer-cuzick risk calculations.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-CONFIG-003</span>
+                                <h3 class="story-title">Clinic-Level Competing Mortality Toggle Configuration</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v1</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    </div>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a program administrator, I need Competing Mortality (CM) to be configurable at the clinic level through dev team requests, so that each clinic can choose whether to incorporate age-based competing mortality into their Tyrer-Cuzick risk calculations.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>Competing Mortality (CM) is controlled at the clinic level - each clinic either has CM enabled or disabled</li><li>CM toggle is managed by dev team via submitted requests (Option B control model, same as TC toggle)</li><li>CM configuration becomes part of the centralized configuration list maintained per site</li><li>When CM is enabled for a clinic, CM-adjusted TC becomes the default score for that clinic</li><li>CM toggle is independent from TC toggle - a clinic can have TC enabled with or without CM</li><li>Configuration change creates audit entry documenting who requested, when changed, and previous state</li><li>Configuration is stored and retrievable for reporting on which clinics use CM</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                4 test cases
+                            </div>
+                        </div>
+                    </article>
+                
+                    </div>
+                </section>
+            
+                <section class="category-section" data-category="compliance">
+                    <div class="category-header">
+                        <div class="category-icon audit">🔒</div>
+                        <h2 class="category-title">Compliance (Part 11)</h2>
+                        <span class="category-count">2 stories</span>
+                    </div>
+                    <div class="stories-grid">
+                        
+                    <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unscheduled" data-search="audit trail requirements for part 11 compliance as a compliance officer, i want all system actions to be captured in an immutable audit trail with user identification and timestamps, so that i can demonstrate regulatory compliance and investigate any access or data integrity concerns.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-AUDIT-001</span>
+                                <h3 class="story-title">Audit Trail Requirements for Part 11 Compliance</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v1</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    </div>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a Compliance Officer, I want all system actions to be captured in an immutable audit trail with user identification and timestamps, so that I can demonstrate regulatory compliance and investigate any access or data integrity concerns.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>Audit Entry Creation:</li><li>All patient record views create audit entries with user ID, timestamp, and patient ID</li><li>All patient record edits create audit entries with user ID, timestamp, before/after values</li><li>All failed access attempts create audit entries with user ID, timestamp, attempted action, and denial reason</li><li>All role assignments/changes create audit entries with user ID, timestamp, role changed, and target user</li><li>All configuration changes create audit entries with user ID, timestamp, setting changed, before/after values</li><li>All data exports create audit entries with user ID, timestamp, export type, and parameters</li><li>Audit Entry Content:</li><li>All audit entries include computer-generated timestamp (not user-editable)</li><li>All audit entries include unique sequential identifier</li><li>Timestamps use consistent timezone (UTC) with millisecond precision</li><li>Audit Integrity:</li><li>Audit records cannot be edited after creation</li><li>Audit records cannot be deleted</li><li>Audit table/log is protected from unauthorized access</li><li>Audit data is backed up with same frequency as production data</li><li>Audit Accessibility:</li><li>Authorized users can query audit log by date range</li><li>Authorized users can query audit log by user ID</li><li>Authorized users can query audit log by patient ID</li><li>Authorized users can query audit log by action type</li><li>Audit log can be exported for compliance reporting</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                6 test cases
+                            </div>
+                        </div>
+                    </article>
+                
+                    <article class="story-card" data-program="p4m" data-priority="must-have" data-roadmap="unscheduled" data-search="electronic records requirements for part 11 compliance as a compliance officer, i want electronic records to be exportable in accurate, human-readable formats with appropriate metadata and integrity protection, so that i can provide complete records for regulatory review and ensure data integrity throughout the record lifecycle.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-RECORD-001</span>
+                                <h3 class="story-title">Electronic Records Requirements for Part 11 Compliance</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-must-have">Must Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v1</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    </div>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a Compliance Officer, I want electronic records to be exportable in accurate, human-readable formats with appropriate metadata and integrity protection, so that I can provide complete records for regulatory review and ensure data integrity throughout the record lifecycle.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>Human Readable Copies:</li><li>Clinical summary can be exported as human-readable PDF</li><li>Clinical summary can be printed directly from the application</li><li>Exported/printed clinical summary matches on-screen display</li><li>Patient demographics are included in exported record</li><li>Export Metadata:</li><li>Exported record includes generation timestamp</li><li>Exported record includes user who generated the export</li><li>Exported record includes patient identifier</li><li>Exported record includes system version/identifier</li><li>Record Integrity:</li><li>Exported records cannot be modified after generation (PDF security)</li><li>Export includes checksum or digital signature for integrity verification</li><li>Export audit entry is created when record is generated</li><li>Record Protection:</li><li>Exported records containing PHI are appropriately marked</li><li>Export functionality is restricted to authorized roles</li><li>Bulk export requires additional authorization</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                5 test cases
+                            </div>
+                        </div>
+                    </article>
+                
+                    </div>
+                </section>
+            
+                <section class="category-section" data-category="role">
+                    <div class="category-header">
+                        <div class="category-icon role">👤</div>
+                        <h2 class="category-title">Roles & Permissions</h2>
+                        <span class="category-count">1 story</span>
+                    </div>
+                    <div class="stories-grid">
+                        
+                    <article class="story-card" data-program="p4m" data-priority="should-have" data-roadmap="unscheduled" data-search="external contractor role with risk-based patient filter as a program administrator, i want to create an external contractor role with restricted patient visibility, so that outside contractors can only view and work with high-risk patients while maintaining compliance requirements for non-employee access.">
+                        <div class="story-header" onclick="toggleStory(this)">
+                            <div>
+                                <span class="story-id p4m">P4M-ROLE-001</span>
+                                <h3 class="story-title">External Contractor Role with Risk-Based Patient Filter</h3>
+                                <div class="story-meta">
+                                    <span class="badge badge-should-have">Should Have</span>
+                                    <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
+                                    <span class="badge badge-status">Draft v1</span>
+                                </div>
+                            </div>
+                            <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="story-body">
+                            <div class="story-section">
+                                <h4 class="story-section-title">Status Timeline</h4>
+                                <div class="status-timeline">
+                        <div class="timeline-stage current">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Draft</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Internal Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Client Review</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    <div class="timeline-connector"></div>
+                        <div class="timeline-stage pending">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Approved</div>
+                            <div class="timeline-date">-</div>
+                        </div>
+                    </div>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">User Story</h4>
+                                <p class="user-story">As a program administrator, I want to create an External Contractor role with restricted patient visibility, so that outside contractors can only view and work with high-risk patients while maintaining compliance requirements for non-employee access.</p>
+                            </div>
+                            <div class="story-section">
+                                <h4 class="story-section-title">Acceptance Criteria</h4>
+                                <ol class="acceptance-criteria">
+                                    <li>Role Permissions:</li><li>External Contractor role inherits Genetic Counselor permissions (read, write, lab ordering)</li><li>External Contractor can view patient contact information</li><li>External Contractor can view full clinical summary</li><li>External Contractor cannot export data</li><li>Patient Visibility Filter:</li><li>External Contractor can see patients where TC Score [TBD: &gt; 20 or ≥ 20]</li><li>External Contractor can see patients where NCCN criteria = met</li><li>External Contractor can see patients where BOTH conditions are true</li><li>External Contractor cannot see patients who did not complete the questionnaire</li><li>External Contractor cannot see patients with TC ≤ [TBD] AND NCCN not met</li><li>Configuration:</li><li>Role can be assigned to users at the clinic level (starting with Montana)</li><li>Role is reusable for future external contractors</li>
+                                </ol>
+                            </div>
+                            <div class="test-count">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                14 test cases
+                            </div>
+                        </div>
+                    </article>
+                
+                    </div>
+                </section>
+            
     </main>
 
     <footer class="footer">
