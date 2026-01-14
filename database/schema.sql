@@ -469,3 +469,269 @@ SELECT
 FROM uat_test_cases t
 JOIN programs p ON t.program_id = p.program_id
 GROUP BY p.program_id, t.test_type, t.compliance_framework, t.test_status;
+
+
+-- ============================================================================
+-- UAT CYCLES TABLE
+-- ============================================================================
+-- Tracks UAT packages/releases with phase dates and gate sign-offs.
+-- Each cycle groups test cases for a specific release validation.
+--
+-- AVIATION ANALOGY:
+--   Think of this as a mission package - defines the objectives,
+--   timeline, checkpoints, and go/no-go criteria for a specific deployment.
+--   The Pre-UAT Gate is your preflight checklist - must pass before wheels up.
+
+CREATE TABLE IF NOT EXISTS uat_cycles (
+    cycle_id TEXT PRIMARY KEY,  -- UUID format
+    program_id TEXT,            -- Optional - can be cross-program
+    name TEXT NOT NULL,         -- "NCCN Q4 2025", "GenoRx e-Consent v1"
+    description TEXT,
+    uat_type TEXT NOT NULL,     -- 'feature', 'rule_validation', 'regression'
+    target_launch_date DATE,
+    status TEXT DEFAULT 'planning',
+    -- Status values: planning, validation, kickoff, testing, review,
+    --                retesting, decision, complete, cancelled
+
+    -- Ownership
+    clinical_pm TEXT,           -- Who owns validation
+    clinical_pm_email TEXT,
+
+    -- Phase dates (all nullable, filled as phases progress)
+    validation_start DATE,      -- Pre-UAT validation begins
+    validation_end DATE,        -- Gate sign-off target
+    kickoff_date DATE,          -- Kickoff meeting
+    testing_start DATE,         -- Testing window opens
+    testing_end DATE,           -- Testing window closes
+    review_date DATE,           -- Issue review meeting
+    retest_start DATE,          -- Retesting begins
+    retest_end DATE,            -- Retesting ends
+    go_nogo_date DATE,          -- Decision meeting
+
+    -- Pre-UAT Gate (must pass before engaging testers)
+    pre_uat_gate_passed INTEGER DEFAULT 0,  -- Boolean: 0 or 1
+    pre_uat_gate_signed_by TEXT,
+    pre_uat_gate_signed_date DATE,
+    pre_uat_gate_notes TEXT,
+
+    -- Go/No-Go Decision
+    go_nogo_decision TEXT,      -- 'go', 'conditional_go', 'no_go', NULL
+    go_nogo_signed_by TEXT,
+    go_nogo_signed_date DATE,
+    go_nogo_notes TEXT,
+
+    -- Timestamps (matching existing convention)
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by TEXT DEFAULT 'system',
+
+    FOREIGN KEY (program_id) REFERENCES programs(program_id)
+);
+
+-- Indexes for common query patterns
+CREATE INDEX IF NOT EXISTS idx_uat_cycles_program ON uat_cycles(program_id);
+CREATE INDEX IF NOT EXISTS idx_uat_cycles_status ON uat_cycles(status);
+CREATE INDEX IF NOT EXISTS idx_uat_cycles_launch ON uat_cycles(target_launch_date);
+CREATE INDEX IF NOT EXISTS idx_uat_cycles_type ON uat_cycles(uat_type);
+
+
+-- ============================================================================
+-- UAT TEST CASES EXTENSIONS
+-- ============================================================================
+-- Add new columns to support UAT cycle tracking, tester assignments,
+-- persona-based testing (Feature UAT), and NCCN rule validation.
+--
+-- NOTE: Run these ALTER TABLE statements on existing databases.
+-- For new databases, modify the uat_test_cases CREATE TABLE above.
+
+-- UAT Cycle association
+-- ALTER TABLE uat_test_cases ADD COLUMN uat_cycle_id TEXT;
+
+-- Tester assignment (pre-execution)
+-- ALTER TABLE uat_test_cases ADD COLUMN assigned_to TEXT;
+-- ALTER TABLE uat_test_cases ADD COLUMN assignment_type TEXT;  -- 'primary', 'overlap', 'backup'
+
+-- Feature UAT: Persona-based testing
+-- ALTER TABLE uat_test_cases ADD COLUMN persona TEXT;
+-- Values: 'provider_screening', 'patient', 'provider_dashboard', NULL
+
+-- NCCN Rule Validation fields (all nullable for feature tests)
+-- ALTER TABLE uat_test_cases ADD COLUMN profile_id TEXT;        -- TP-PROS007-POS-01-P4M
+-- ALTER TABLE uat_test_cases ADD COLUMN platform TEXT;          -- 'P4M', 'Px4M'
+-- ALTER TABLE uat_test_cases ADD COLUMN change_id TEXT;         -- 25Q4R-01 format
+-- ALTER TABLE uat_test_cases ADD COLUMN target_rule TEXT;       -- NCCN-PROS-007
+-- ALTER TABLE uat_test_cases ADD COLUMN change_type TEXT;       -- 'NEW', 'MODIFIED', 'DEPRECATED'
+-- ALTER TABLE uat_test_cases ADD COLUMN patient_conditions TEXT;
+-- ALTER TABLE uat_test_cases ADD COLUMN cross_trigger_check TEXT;
+
+-- Retest tracking (separate from initial execution)
+-- ALTER TABLE uat_test_cases ADD COLUMN retest_status TEXT;     -- Not Run, Pass, Fail, Blocked
+-- ALTER TABLE uat_test_cases ADD COLUMN retest_date TIMESTAMP;
+-- ALTER TABLE uat_test_cases ADD COLUMN retest_by TEXT;
+-- ALTER TABLE uat_test_cases ADD COLUMN retest_notes TEXT;
+
+-- Developer feedback (for failed tests requiring dev action)
+-- ALTER TABLE uat_test_cases ADD COLUMN dev_notes TEXT;
+-- ALTER TABLE uat_test_cases ADD COLUMN dev_status TEXT;
+-- dev_status values: 'pending', 'investigating', 'fixed', 'wont_fix', 'not_a_bug'
+
+-- New indexes for UAT queries
+CREATE INDEX IF NOT EXISTS idx_tests_cycle ON uat_test_cases(uat_cycle_id);
+CREATE INDEX IF NOT EXISTS idx_tests_platform ON uat_test_cases(platform);
+CREATE INDEX IF NOT EXISTS idx_tests_assigned ON uat_test_cases(assigned_to);
+CREATE INDEX IF NOT EXISTS idx_tests_change ON uat_test_cases(change_id);
+CREATE INDEX IF NOT EXISTS idx_tests_persona ON uat_test_cases(persona);
+
+
+-- ============================================================================
+-- PRE-UAT GATE ITEMS TABLE
+-- ============================================================================
+-- Tracks individual validation checklist items for the Pre-UAT Gate.
+-- Required for Part 11 compliance - documents who verified what and when.
+--
+-- AVIATION ANALOGY:
+--   This is your preflight checklist. Each item must be verified
+--   and signed off before the mission can proceed.
+
+CREATE TABLE IF NOT EXISTS pre_uat_gate_items (
+    item_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cycle_id TEXT NOT NULL,     -- FK to uat_cycles
+    category TEXT NOT NULL,
+    -- Categories: 'feature_deployment', 'critical_path', 'environment',
+    --             'blocker_check', 'sign_off'
+    sequence INTEGER DEFAULT 0,  -- Order within category
+    item_text TEXT NOT NULL,     -- The checklist item description
+    is_required INTEGER DEFAULT 1,  -- Boolean: 1 = must pass
+    is_complete INTEGER DEFAULT 0,  -- Boolean: 1 = verified
+    completed_by TEXT,           -- Who verified this item
+    completed_date DATE,         -- When verified
+    notes TEXT,                  -- Observations or issues
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (cycle_id) REFERENCES uat_cycles(cycle_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_gate_items_cycle ON pre_uat_gate_items(cycle_id);
+CREATE INDEX IF NOT EXISTS idx_gate_items_category ON pre_uat_gate_items(category);
+CREATE INDEX IF NOT EXISTS idx_gate_items_complete ON pre_uat_gate_items(is_complete);
+
+
+-- ============================================================================
+-- UAT CYCLE SUMMARY VIEW
+-- ============================================================================
+-- Provides progress metrics for UAT cycles.
+-- Use for dashboards and status reporting.
+
+CREATE VIEW IF NOT EXISTS v_uat_cycle_summary AS
+SELECT
+    c.cycle_id,
+    c.name,
+    c.uat_type,
+    c.status,
+    c.target_launch_date,
+    c.clinical_pm,
+    c.pre_uat_gate_passed,
+    c.go_nogo_decision,
+    p.prefix AS program_prefix,
+    p.name AS program_name,
+    -- Test counts
+    COUNT(t.test_id) AS total_tests,
+    SUM(CASE WHEN t.test_status = 'Pass' THEN 1 ELSE 0 END) AS passed,
+    SUM(CASE WHEN t.test_status = 'Fail' THEN 1 ELSE 0 END) AS failed,
+    SUM(CASE WHEN t.test_status = 'Blocked' THEN 1 ELSE 0 END) AS blocked,
+    SUM(CASE WHEN t.test_status = 'Skipped' THEN 1 ELSE 0 END) AS skipped,
+    SUM(CASE WHEN t.test_status = 'Not Run' THEN 1 ELSE 0 END) AS not_run,
+    -- Calculated metrics
+    ROUND(100.0 * SUM(CASE WHEN t.test_status != 'Not Run' THEN 1 ELSE 0 END)
+          / NULLIF(COUNT(t.test_id), 0), 1) AS execution_pct,
+    ROUND(100.0 * SUM(CASE WHEN t.test_status = 'Pass' THEN 1 ELSE 0 END)
+          / NULLIF(SUM(CASE WHEN t.test_status IN ('Pass', 'Fail') THEN 1 ELSE 0 END), 0), 1) AS pass_rate,
+    -- Days remaining
+    CAST(julianday(c.target_launch_date) - julianday('now') AS INTEGER) AS days_to_launch
+FROM uat_cycles c
+LEFT JOIN programs p ON c.program_id = p.program_id
+LEFT JOIN uat_test_cases t ON c.cycle_id = t.uat_cycle_id
+GROUP BY c.cycle_id;
+
+
+-- ============================================================================
+-- UAT TESTER PROGRESS VIEW
+-- ============================================================================
+-- Tracks test execution progress by tester within a cycle.
+
+CREATE VIEW IF NOT EXISTS v_uat_tester_progress AS
+SELECT
+    c.cycle_id,
+    c.name AS cycle_name,
+    t.assigned_to,
+    t.assignment_type,
+    COUNT(t.test_id) AS assigned_tests,
+    SUM(CASE WHEN t.test_status != 'Not Run' THEN 1 ELSE 0 END) AS completed,
+    SUM(CASE WHEN t.test_status = 'Pass' THEN 1 ELSE 0 END) AS passed,
+    SUM(CASE WHEN t.test_status = 'Fail' THEN 1 ELSE 0 END) AS failed,
+    SUM(CASE WHEN t.test_status = 'Blocked' THEN 1 ELSE 0 END) AS blocked,
+    ROUND(100.0 * SUM(CASE WHEN t.test_status != 'Not Run' THEN 1 ELSE 0 END)
+          / NULLIF(COUNT(t.test_id), 0), 1) AS completion_pct
+FROM uat_cycles c
+JOIN uat_test_cases t ON c.cycle_id = t.uat_cycle_id
+WHERE t.assigned_to IS NOT NULL
+GROUP BY c.cycle_id, t.assigned_to, t.assignment_type
+ORDER BY c.cycle_id, t.assigned_to;
+
+
+-- ============================================================================
+-- NCCN RULE COVERAGE VIEW
+-- ============================================================================
+-- NCCN-specific view for rule validation coverage.
+-- Groups tests by Change ID and platform for coverage analysis.
+
+CREATE VIEW IF NOT EXISTS v_nccn_rule_coverage AS
+SELECT
+    c.cycle_id,
+    c.name AS cycle_name,
+    t.change_id,
+    t.target_rule,
+    t.change_type,
+    t.platform,
+    COUNT(t.test_id) AS total_profiles,
+    SUM(CASE WHEN t.test_type = 'positive' THEN 1 ELSE 0 END) AS pos_tests,
+    SUM(CASE WHEN t.test_type = 'negative' THEN 1 ELSE 0 END) AS neg_tests,
+    SUM(CASE WHEN t.test_type = 'deprecated' THEN 1 ELSE 0 END) AS dep_tests,
+    SUM(CASE WHEN t.test_status = 'Pass' THEN 1 ELSE 0 END) AS passed,
+    SUM(CASE WHEN t.test_status = 'Fail' THEN 1 ELSE 0 END) AS failed,
+    SUM(CASE WHEN t.test_status = 'Not Run' THEN 1 ELSE 0 END) AS not_run
+FROM uat_cycles c
+JOIN uat_test_cases t ON c.cycle_id = t.uat_cycle_id
+WHERE t.change_id IS NOT NULL
+GROUP BY c.cycle_id, t.change_id, t.target_rule, t.change_type, t.platform
+ORDER BY t.change_id, t.platform;
+
+
+-- ============================================================================
+-- RETEST QUEUE VIEW
+-- ============================================================================
+-- Shows tests that failed and need retesting.
+
+CREATE VIEW IF NOT EXISTS v_retest_queue AS
+SELECT
+    c.cycle_id,
+    c.name AS cycle_name,
+    t.test_id,
+    t.profile_id,
+    t.title,
+    t.platform,
+    t.target_rule,
+    t.test_status AS initial_status,
+    t.tested_by AS initial_tester,
+    t.tested_date AS initial_test_date,
+    t.execution_notes,
+    t.defect_id,
+    t.dev_status,
+    t.dev_notes,
+    t.retest_status,
+    t.retest_by,
+    t.retest_date
+FROM uat_cycles c
+JOIN uat_test_cases t ON c.cycle_id = t.uat_cycle_id
+WHERE t.test_status = 'Fail'
+ORDER BY c.cycle_id, t.dev_status, t.test_id;

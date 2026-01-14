@@ -176,6 +176,55 @@
         }
         .filter-btn.p4m.active { background: var(--color-p4m); border-color: var(--color-p4m); }
         .filter-btn.plat.active { background: var(--color-plat); border-color: var(--color-plat); }
+        /* Filter Dropdowns */
+        .filter-controls {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        .filter-control {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+        .filter-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+        }
+        .filter-select {
+            padding: 0.5rem 2rem 0.5rem 0.75rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            background: var(--color-surface);
+            font-family: inherit;
+            font-size: 0.85rem;
+            color: var(--color-text);
+            cursor: pointer;
+            min-width: 160px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+        }
+        .filter-select:hover {
+            border-color: var(--color-primary);
+        }
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px var(--color-primary-light);
+        }
+        /* Section Separator */
+        .section-separator {
+            height: 1px;
+            background: var(--color-border);
+            margin: 0.5rem 0;
+        }
         .search-box {
             flex: 1;
             min-width: 200px;
@@ -502,46 +551,46 @@
                 </div>
                 <div class="header-meta-item">
                     <span class="header-meta-label">Last Updated</span>
-                    <span class="header-meta-value">January 13, 2026</span>
+                    <span class="header-meta-value">January 14, 2026</span>
                 </div>
             </div>
         </div>
     </header>
 
     <main class="main">
+        <!-- Programs Section -->
         <div class="section-title">Programs</div>
+        <div class="summary-grid" style="margin-bottom: 1rem;">
+            <div class="summary-card">
+                <div class="summary-card-label">DIS</div>
+                <div class="summary-card-value">11</div>
+                <div class="summary-card-sub">53 test cases</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-card-label">ONB</div>
+                <div class="summary-card-value">34</div>
+                <div class="summary-card-sub">66 test cases</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-card-label">P4M</div>
+                <div class="summary-card-value">14</div>
+                <div class="summary-card-sub">94 test cases</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-card-label">PLAT</div>
+                <div class="summary-card-value">3</div>
+                <div class="summary-card-sub">19 test cases</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-card-label">TEST2</div>
+                <div class="summary-card-value">11</div>
+                <div class="summary-card-sub">121 test cases</div>
+            </div>
+        </div>
+
+        <!-- Priorities Section -->
+        <div class="section-title">Priorities</div>
         <div class="summary-grid">
-            
-                <div class="summary-card">
-                    <div class="summary-card-label">DIS</div>
-                    <div class="summary-card-value">11</div>
-                    <div class="summary-card-sub">53 test cases</div>
-                </div>
-            
-                <div class="summary-card">
-                    <div class="summary-card-label">ONB</div>
-                    <div class="summary-card-value">34</div>
-                    <div class="summary-card-sub">66 test cases</div>
-                </div>
-            
-                <div class="summary-card">
-                    <div class="summary-card-label">P4M</div>
-                    <div class="summary-card-value">14</div>
-                    <div class="summary-card-sub">94 test cases</div>
-                </div>
-            
-                <div class="summary-card">
-                    <div class="summary-card-label">PLAT</div>
-                    <div class="summary-card-value">3</div>
-                    <div class="summary-card-sub">19 test cases</div>
-                </div>
-            
-                <div class="summary-card">
-                    <div class="summary-card-label">TEST2</div>
-                    <div class="summary-card-value">11</div>
-                    <div class="summary-card-sub">121 test cases</div>
-                </div>
-            
             <div class="summary-card">
                 <div class="summary-card-label">Must Have</div>
                 <div class="summary-card-value">33</div>
@@ -559,24 +608,9 @@
             </div>
         </div>
 
-        <!-- Roadmap Distribution Summary -->
+        <!-- Roadmap Distribution Summary (Next 5 Quarters) -->
+        <div class="section-title">Roadmap (Next 5 Quarters)</div>
         <div class="roadmap-summary">
-            <div class="roadmap-item">
-                <div class="roadmap-item-label">Q1 '25</div>
-                <div class="roadmap-item-value">0</div>
-            </div>
-            <div class="roadmap-item">
-                <div class="roadmap-item-label">Q2 '25</div>
-                <div class="roadmap-item-value">0</div>
-            </div>
-            <div class="roadmap-item">
-                <div class="roadmap-item-label">Q3 '25</div>
-                <div class="roadmap-item-value">0</div>
-            </div>
-            <div class="roadmap-item">
-                <div class="roadmap-item-label">Q4 '25</div>
-                <div class="roadmap-item-value">0</div>
-            </div>
             <div class="roadmap-item">
                 <div class="roadmap-item-label">Q1 '26</div>
                 <div class="roadmap-item-value">0</div>
@@ -594,7 +628,7 @@
                 <div class="roadmap-item-value">0</div>
             </div>
             <div class="roadmap-item">
-                <div class="roadmap-item-label">2027+</div>
+                <div class="roadmap-item-label">Q1 '27</div>
                 <div class="roadmap-item-value">0</div>
             </div>
             <div class="roadmap-item">
@@ -607,36 +641,54 @@
             </div>
         </div>
 
-        <div class="filters">
-            <div class="filter-group">
-                <button class="filter-btn active" data-filter="all">All Programs</button><button class="filter-btn dis" data-filter="dis">DIS (11)</button><button class="filter-btn onb" data-filter="onb">ONB (34)</button><button class="filter-btn p4m" data-filter="p4m">P4M (14)</button><button class="filter-btn plat" data-filter="plat">PLAT (3)</button><button class="filter-btn test2" data-filter="test2">TEST2 (11)</button>
+        <!-- Filter Controls -->
+        <div class="filter-controls">
+            <div class="filter-control">
+                <label class="filter-label" for="programFilter">Filter by Program</label>
+                <select class="filter-select" id="programFilter">
+                    <option value="all">All Programs</option>
+                    <option value="dis">DIS</option>
+                    <option value="onb">ONB</option>
+                    <option value="p4m">P4M</option>
+                    <option value="plat">PLAT</option>
+                    <option value="test2">TEST2</option>
+                </select>
             </div>
-            <div class="filter-group">
-                <button class="filter-btn active" data-priority="all">All Priorities</button>
-                <button class="filter-btn" data-priority="must-have">Must Have</button>
-                <button class="filter-btn" data-priority="should-have">Should Have</button>
-                <button class="filter-btn" data-priority="could-have">Could Have</button>
+            <div class="filter-control">
+                <label class="filter-label" for="priorityFilter">Filter by Priority</label>
+                <select class="filter-select" id="priorityFilter">
+                    <option value="all">All Priorities</option>
+                    <option value="must-have">Must Have</option>
+                    <option value="should-have">Should Have</option>
+                    <option value="could-have">Could Have</option>
+                </select>
             </div>
-            <div class="filter-group">
-                <button class="filter-btn active" data-roadmap="all">All</button>
-                <button class="filter-btn" data-roadmap="q1-2025">Q1 '25</button>
-                <button class="filter-btn" data-roadmap="q2-2025">Q2 '25</button>
-                <button class="filter-btn" data-roadmap="q3-2025">Q3 '25</button>
-                <button class="filter-btn" data-roadmap="q4-2025">Q4 '25</button>
-                <button class="filter-btn" data-roadmap="q1-2026">Q1 '26</button>
-                <button class="filter-btn" data-roadmap="q2-2026">Q2 '26</button>
-                <button class="filter-btn" data-roadmap="q3-2026">Q3 '26</button>
-                <button class="filter-btn" data-roadmap="q4-2026">Q4 '26</button>
-                <button class="filter-btn" data-roadmap="2027-plus">2027+</button>
-                <button class="filter-btn" data-roadmap="backlog">Backlog</button>
-                <button class="filter-btn" data-roadmap="unscheduled">Unscheduled</button>
+            <div class="filter-control">
+                <label class="filter-label" for="roadmapFilter">Filter by Roadmap</label>
+                <select class="filter-select" id="roadmapFilter">
+                    <option value="all">All Quarters</option>
+                    <option value="q1-2025">Q1 '25</option>
+                    <option value="q2-2025">Q2 '25</option>
+                    <option value="q3-2025">Q3 '25</option>
+                    <option value="q4-2025">Q4 '25</option>
+                    <option value="q1-2026">Q1 '26</option>
+                    <option value="q2-2026">Q2 '26</option>
+                    <option value="q3-2026">Q3 '26</option>
+                    <option value="q4-2026">Q4 '26</option>
+                    <option value="2027-plus">2027+</option>
+                    <option value="backlog">Backlog</option>
+                    <option value="unscheduled">Unscheduled</option>
+                </select>
             </div>
-            <div class="search-box">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                </svg>
-                <input type="text" placeholder="Search stories..." id="searchInput">
+            <div class="filter-control" style="flex: 1; min-width: 200px; max-width: 300px;">
+                <label class="filter-label" for="searchInput">Search Stories</label>
+                <div class="search-box" style="margin: 0; max-width: none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" placeholder="Search stories..." id="searchInput" style="border-radius: var(--radius-sm);">
+                </div>
             </div>
         </div>
 
@@ -1655,45 +1707,27 @@
 
     <footer class="footer">
         <p>Propel Health Requirements Dashboard</p>
-        <p style="margin-top: 0.5rem;">Generated January 13, 2026</p>
+        <p style="margin-top: 0.5rem;">Generated January 14, 2026</p>
     </footer>
     <div class="attribution">Requirements Toolkit designed by Glen Lewis</div>
 
     <script>
+        // Toggle story card expansion
         function toggleStory(header) {
             header.closest('.story-card').classList.toggle('open');
         }
 
-        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                filterStories();
-            });
-        });
-
-        document.querySelectorAll('.filter-btn[data-priority]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn[data-priority]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                filterStories();
-            });
-        });
-
-        document.querySelectorAll('.filter-btn[data-roadmap]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn[data-roadmap]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                filterStories();
-            });
-        });
-
+        // Add event listeners to filter dropdowns
+        document.getElementById('programFilter').addEventListener('change', filterStories);
+        document.getElementById('priorityFilter').addEventListener('change', filterStories);
+        document.getElementById('roadmapFilter').addEventListener('change', filterStories);
         document.getElementById('searchInput').addEventListener('input', filterStories);
 
+        // Main filter function - reads values from dropdown selects
         function filterStories() {
-            const programFilter = document.querySelector('.filter-btn[data-filter].active')?.dataset.filter || 'all';
-            const priorityFilter = document.querySelector('.filter-btn[data-priority].active')?.dataset.priority || 'all';
-            const roadmapFilter = document.querySelector('.filter-btn[data-roadmap].active')?.dataset.roadmap || 'all';
+            const programFilter = document.getElementById('programFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            const roadmapFilter = document.getElementById('roadmapFilter').value;
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
 
             document.querySelectorAll('.story-card').forEach(card => {
@@ -1710,6 +1744,7 @@
                 card.classList.toggle('hidden', !(matchesProgram && matchesPriority && matchesRoadmap && matchesSearch));
             });
 
+            // Update category counts and visibility
             document.querySelectorAll('.category-section').forEach(section => {
                 const visibleStories = section.querySelectorAll('.story-card:not(.hidden)').length;
                 section.querySelector('.category-count').textContent = visibleStories + ' stor' + (visibleStories === 1 ? 'y' : 'ies');
