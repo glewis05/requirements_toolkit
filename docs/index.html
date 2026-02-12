@@ -569,7 +569,7 @@
                 </div>
                 <div class="header-meta-item">
                     <span class="header-meta-label">Last Updated</span>
-                    <span class="header-meta-value">February 11, 2026</span>
+                    <span class="header-meta-value">February 12, 2026</span>
                 </div>
             </div>
         </div>
@@ -9431,7 +9431,7 @@
                     </div>
                     <div class="stories-grid">
                         
-                    <article class="story-card" data-program="pxme" data-priority="not-assigned" data-roadmap="unscheduled" data-status="internal-review" data-search="patient invitation without csn for outside pathology as a provider, i want to invite a patient to precision4me without requiring a biopsy-specific csn, so that patients with outside pathology results (which may not have an associated csn) can still be enrolled in the program.">
+                    <article class="story-card" data-program="pxme" data-priority="not-assigned" data-roadmap="unscheduled" data-status="internal-review" data-search="patient invitation without csn for outside pathology as a provider, i want to invite a patient to precision4me without requiring a biopsy-specific csn, so that patients with outside pathology results (which may not have an associated csn) can still be enrolled in the program. note: this is a temporary bridging solution to support outside pathology cases while the patient data extract process is being updated. this workflow will be replaced by the permanent solution once the extract update is implemented. reference to the permanent solution story will be added here when available.">
                         <div class="story-header" onclick="toggleStory(this)">
                             <div>
                                 <span class="story-id pxme">PXME-INVITE-001</span>
@@ -9439,7 +9439,7 @@
                                 <div class="story-meta">
                                     <span class="badge badge-not-assigned">Not Assigned</span>
                                     <span class="badge badge-roadmap badge-unscheduled">Unscheduled</span>
-                                    <span class="badge badge-status">Internal Review v1</span>
+                                    <span class="badge badge-status">Internal Review v3</span>
                                 </div>
                             </div>
                             <svg class="story-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -9487,12 +9487,12 @@
                             </div>
                             <div class="story-section">
                                 <h4 class="story-section-title">User Story</h4>
-                                <p class="user-story">As a provider, I want to invite a patient to Precision4ME without requiring a biopsy-specific CSN, so that patients with outside pathology results (which may not have an associated CSN) can still be enrolled in the program.</p>
+                                <p class="user-story">As a provider, I want to invite a patient to Precision4ME without requiring a biopsy-specific CSN, so that patients with outside pathology results (which may not have an associated CSN) can still be enrolled in the program. Note: This is a temporary bridging solution to support outside pathology cases while the patient data extract process is being updated. This workflow will be replaced by the permanent solution once the extract update is implemented. Reference to the permanent solution story will be added here when available.</p>
                             </div>
                             <div class="story-section">
                                 <h4 class="story-section-title">Acceptance Criteria</h4>
                                 <ol class="acceptance-criteria">
-                                    <li>When a provider initiates a patient invitation without a CSN, the system automatically generates a placeholder CSN</li><li>The system-generated CSN follows a distinguishable format or prefix that differentiates it from real CSNs (e.g., a naming convention that flags it as system-generated)</li><li>The system-generated CSN is treated as valid throughout the invitation and enrollment workflow, allowing the process to proceed without error</li><li>The system can identify and filter system-generated CSNs separately from real CSNs in reporting and dashboards</li><li>If a real CSN is later obtained (e.g., biopsy performed in-system), the system supports associating the real CSN with the existing patient record</li><li>Audit trail captures that a system-generated CSN was used, the reason (outside pathology), and any subsequent CSN updates</li><li>Existing CSN-based invitation workflow remains unchanged for patients with in-system biopsies</li>
+                                    <li>Provider can initiate a patient invitation to Precision4ME without entering a CSN</li><li>The invitation and enrollment workflow proceeds to completion when no CSN is provided</li><li>If a real CSN is later obtained (e.g., biopsy performed in-system), the provider can associate it with the existing patient record</li><li>Existing CSN-based invitation workflow remains unchanged for patients with in-system biopsies</li>
                                 </ol>
                             </div>
                             <div class="test-count">
@@ -14377,7 +14377,7 @@
     <footer class="footer">
         <p style="color: var(--providence-navy); font-weight: 600;">Providence Health | GenomicsNow</p>
         <p style="margin-top: 0.5rem;">Requirements Toolkit v1.1.0</p>
-        <p style="margin-top: 0.25rem; font-size: 0.75rem;">Generated February 11, 2026</p>
+        <p style="margin-top: 0.25rem; font-size: 0.75rem;">Generated February 12, 2026</p>
     </footer>
 
     <script>
