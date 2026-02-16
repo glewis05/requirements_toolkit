@@ -123,12 +123,13 @@ Part of the unified Propel Health database ecosystem:
 |----------|---------|
 | `~/projects/data/client_product_database.db` | Shared database for all toolkits |
 
-### Tables Managed by This Toolkit
+### Tables Managed by This Toolkit (SQLite)
 - `requirements` - Raw requirements from source documents
 - `user_stories` - Generated user stories with acceptance criteria
-- `uat_test_cases` - Test cases derived from stories
-- `traceability` - Requirements → Stories → Tests mapping
-- `compliance_gaps` - Part 11/HIPAA/SOC 2 gaps
+- `uat_test_cases` - Test cases (local SQLite only)
+
+### Supabase Cloud Sync
+The `migrations/supabase/consolidate_to_supabase.py` script syncs data to a shared Supabase instance used by TraceWell and the Onboarding Form. Test cases are written to TraceWell's `test_cases` table (UUID PK, JSONB steps). Legacy tables (`uat_test_cases`, `traceability`, `compliance_gaps`, etc.) have been archived to `_archive` schema.
 
 ## CLI Options
 

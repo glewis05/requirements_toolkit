@@ -34,20 +34,50 @@ This toolkit accesses the database via **symlink**:
 ### Requirements Tables (this toolkit manages)
 - `requirements` - Raw requirements from source documents
 - `user_stories` - Generated user stories with acceptance criteria
-- `uat_test_cases` - Test cases derived from stories (UAT toolkit extends)
-- `traceability` - Requirements → Stories → Tests mapping
-- `compliance_gaps` - Part 11/HIPAA/SOC 2 gaps
 
 ### Shared Tables
 - `clients` - Client organizations (Propel Health, etc.)
 - `programs` - All programs (P4M, Px4M, ONB, etc.) - shared with all toolkits
-- `audit_history` - Unified audit trail for compliance
+- `users` - User profiles
 
 ### Configuration Tables (configurations_toolkit manages)
 - `clinics`, `locations` - Clinic hierarchy under programs
 - `config_definitions`, `config_values` - Configuration settings
-- `providers` - Healthcare providers at locations
-- `users`, `user_access` - Access management
+- `providers`, `provider_locations` - Healthcare providers at locations
+
+### Supabase Cloud Database
+
+All data is synced to a **shared Supabase instance** (`royctwjkewpnrcqdyhzd`). Three apps share this database:
+
+| App | Role |
+|-----|------|
+| **TraceWell** | Primary schema owner — stories, UAT, compliance, risk |
+| **Onboarding Form** | Collects clinic data via `onboarding_submissions` |
+| **requirements_toolkit** | Migrates SQLite + Notion data to Supabase |
+
+**Migration script**: `migrations/supabase/consolidate_to_supabase.py`
+```bash
+# Migrate SQLite data (skipping Notion)
+python3 consolidate_to_supabase.py --execute --skip-notion
+
+# Migrate Notion tests only
+python3 consolidate_to_supabase.py --execute --notion-only nccn
+python3 consolidate_to_supabase.py --execute --notion-only grxp
+
+# Verify migration
+python3 consolidate_to_supabase.py --verify
+```
+
+**Important**: The script writes test cases to TraceWell's `test_cases` table (UUID PK, JSONB test_steps) — NOT the legacy `uat_test_cases` table, which was archived in migration 018.
+
+### Archived Tables (Feb 2026)
+The following tables were archived to `_archive` schema and removed from `public` via migration 018:
+`uat_test_cases`, `uat_test_assignments`, `traceability`, `compliance_gaps`, `compliance_test_templates`,
+`story_compliance_vetting`, `audit_history`, `story_reference`, `import_batches`, `user_access`,
+`user_training`, `pre_uat_gate_items`, `roadmap_projects`, `roadmap_project_clinics`,
+`roadmap_dependencies`, `roadmap_holidays`, `roadmap_config`, `roadmap_activity_types`.
+
+Data is preserved in `_archive.{table_name}` and queryable via SQL, but invisible to the PostgREST API.
 
 ### MCP Server Integration
 The `propel_mcp` server connects to the unified database for all operations.
@@ -301,25 +331,41 @@ python3 run.py "requirements.xlsx" --prefix PROP --output excel \
     --compliance all --save-to-db --client "Acme Corp"
 ```
 
-### Database Schema (10 Tables)
+### Database Schema (SQLite — Local)
+
+The SQLite database retains the full historical schema for local pipeline operations:
+
 | Table | Purpose |
 |-------|---------|
 | `clients` | Top-level organizations |
 | `programs` | Projects under each client (unique prefix: PROP, GRX, etc.) |
 | `requirements` | Raw requirements from source files |
 | `user_stories` | Stories with full lifecycle tracking (Draft → Approved) |
-| `uat_test_cases` | Test cases with execution status (Pass/Fail/Blocked) |
-| `traceability` | Req → Story → Test links with coverage status |
-| `compliance_gaps` | Gap tracking by framework (Part11/HIPAA/SOC2) |
-| `audit_history` | Complete change log for regulatory compliance |
-| `story_reference` | Reference library of high-quality approved stories |
-| `import_batches` | File import tracking |
+| `uat_test_cases` | Test cases (local only — Supabase equivalent is `test_cases`) |
+| `traceability` | Req → Story → Test links (archived in Supabase) |
+| `compliance_gaps` | Gap tracking (archived in Supabase) |
+| `audit_history` | Change log (archived in Supabase) |
+| `story_reference` | Reference library (archived in Supabase) |
+| `import_batches` | File import tracking (archived in Supabase) |
 
-### Database Views
-- `v_program_summary` — Dashboard stats by program
-- `v_story_workflow` — Story status with test counts
-- `v_compliance_dashboard` — Gap counts by framework/severity
-- `v_test_execution` — Test status counts by type
+### Supabase Tables (Cloud — Post-Restructuring)
+
+The migration script (`consolidate_to_supabase.py`) syncs to these tables:
+
+| Table | Purpose |
+|-------|---------|
+| `clients` | Top-level organizations |
+| `programs` | Projects under each client |
+| `clinics`, `locations` | Clinic hierarchy |
+| `providers`, `provider_locations` | Healthcare providers |
+| `config_definitions`, `config_values` | Configuration settings |
+| `requirements` | Raw requirements |
+| `users` | User profiles |
+| `user_stories` | Stories with lifecycle tracking |
+| `uat_cycles` | UAT test cycles |
+| `test_cases` | Test cases (TraceWell schema — UUID PK, JSONB steps) |
+| `test_executions` | Test execution records |
+| `onboarding_projects`, `onboarding_milestones`, `onboarding_dependencies` | Onboarding tracking |
 
 ### Command Line Options
 | Flag | Purpose |
@@ -448,6 +494,26 @@ Structured data format for downstream tools like UAT Package Builder:
 - GitHub-compatible formatting
 - Summary section at top with counts and flags
 ```
+
+## GitHub Issue Tracking
+
+### Best Practices
+- Create a GitHub issue BEFORE starting work on any feature, bug fix, or refactor
+- Reference issue numbers in commit messages (e.g., "Fix login redirect #42")
+- Every issue needs: title, description, acceptance criteria, labels (at least priority + type)
+- Close issues with a comment explaining what was implemented and where the code lives
+- Reference file paths in close comments for traceability
+- When implementation differs from the original spec, document the deviation
+- Partially completed issues get a status comment, not a close
+
+### Label Taxonomy
+- **Priority**: P0-Critical, P1-High, P2-Medium, P3-Low
+- **Status**: status:backlog, status:blocked, status:in-progress, status:review
+- **Type**: type:feature, type:bug, type:refactor, type:tech-debt, type:docs, type:compliance
+
+### Milestone Usage
+- Sprint milestones: Close when sprint ends, move remaining issues to next milestone
+- Close completed issues BEFORE closing the milestone
 
 ## Do NOT
 - Use overly clever one-liners without explanation
